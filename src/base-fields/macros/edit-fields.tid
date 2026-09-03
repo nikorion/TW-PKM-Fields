@@ -65,3 +65,38 @@ tags: $:/tags/Global
 </span>
 </$let>
 \end
+
+<!--
+	`tools` is a list field, edited exactly like `tags`: pills plus the core
+	`tag-picker` macro, retargeted with `tagField`.
+
+	The picker is deliberately kept independent of the tags picker. `tagListFilter`
+	feeds it the values already used in `tools` alone — never the wiki's tags — and
+	`newTagNameTiddler` / `newTagNameSelectionTiddler` are shadowed here, because the
+	edit template defines them once for the whole form: left as they are, the two
+	pickers would share one input state, and a half-typed tool name would be added
+	as a //tag// by the save-tiddler keyboard shortcut.
+-->
+\procedure bf-tools-field()
+\whitespace trim
+<span class="bf-tools-field">
+<em class="tc-edit tc-small-gap-right"><<base-fields-lingo "Fields/tools/Prompt">></em>
+<div class="tc-edit-tags bf-tools-box">
+<$list filter="[<currentTiddler>get[tools]enlist-input[]sort[]]" variable="tool" storyview="pop">
+<span class="tc-tag-label bf-tool-label tc-small-gap-right">
+<$text text=<<tool>>/>
+<$button class="tc-btn-invisible tc-remove-tag-button" tooltip=<<base-fields-lingo-text "Fields/tools/Remove/Hint">> aria-label=<<base-fields-lingo-text "Fields/tools/Remove/Hint">>>
+<$action-listops $tiddler=<<currentTiddler>> $field="tools" $subfilter="-[<tool>]"/>
+{{$:/core/images/close-button}}
+</$button>
+</span>
+</$list>
+<$let tabIndex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	newTagNameTiddler=<<qualify "$:/temp/NewToolName">>
+	newTagNameSelectionTiddler=<<qualify "$:/temp/NewToolName/selected-item">>
+>
+<$macrocall $name="tag-picker" tagField="tools" tagListFilter="[all[tiddlers]!has[draft.of]has[tools]get[tools]enlist-input[]sort[]]"/>
+</$let>
+</div>
+</span>
+\end

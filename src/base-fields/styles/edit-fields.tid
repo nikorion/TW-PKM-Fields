@@ -96,20 +96,31 @@ type: text/vnd.tiddlywiki
 	text-decoration: none;
 }
 
-/* `tools` sits on its own row, laid out like the tags row. */
+/* Tags and Tools share one row, each box taking half of it. */
 
-.bf-edit-tools {
+.bf-tags-row {
 	display: flex;
 	align-items: flex-start;
-	gap: 8px;
+	gap: 4px 8px;
+	flex-wrap: wrap;
 }
 
-.bf-edit-tools > em {
+.bf-tags-field,
+.bf-tools-field {
+	display: flex;
+	align-items: flex-start;
+	flex: 1 1 16em;
+	min-width: 16em;
+}
+
+.bf-tags-field > em,
+.bf-tools-field > em {
 	flex: 0 0 auto;
 	padding-top: 6px;
 }
 
-.bf-edit-tools .bf-edit-tools-box {
+.bf-tags-field .tc-edit-tags,
+.bf-tools-field .bf-tools-box {
 	flex: 1 1 auto;
 	min-width: 0;
 }

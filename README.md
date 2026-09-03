@@ -7,9 +7,9 @@ A [TiddlyWiki](https://tiddlywiki.com) plugin adding four everyday fields to the
 | `nature` | controlled vocabulary, single value | a bare slug (`concept`, `guide`, …) |
 | `status` | controlled vocabulary, single value | a bare slug (`stable`, `raw`, …) |
 | `project` | free text, with a dropdown of the values already used in the wiki | free text |
-| `tools` | list field, edited like tags | a list of titles |
+| `tools` | list field, edited like tags, on the Tags row | a list of titles |
 
-`nature`, `status` and `project` share the **Type** row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width. `tools` gets its own row just below, laid out like the Tags row.
+`nature`, `status` and `project` share the **Type** row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width. `tools` shares the **Tags** row, as a second box of the same kind — the two pickers stay strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa.
 
 Only the slug is ever stored. Icons and labels (en-GB, fr-FR) are display-only and resolved at render time, so a wiki stays readable and filterable in any language.
 
@@ -33,7 +33,7 @@ pnpm build   # dist/TW-Base-Fields-Plugin.json + docs/TW-Base-Fields-Wiki.html
 
 ## Note
 
-The plugin ships a shadow override of `$:/core/ui/EditTemplate/type` (a verbatim copy of the core tiddler plus the three extra controls). Upgrading TiddlyWiki will not bring in upstream changes to that tiddler until this plugin is updated too.
+The plugin ships verbatim copies of two core tiddlers, `$:/core/ui/EditTemplate/type` and `$:/core/ui/EditTemplate/tags`, with the extra controls inserted inside them — that is the only way to share their flex row. Upgrading TiddlyWiki will not bring in upstream changes to those two tiddlers until this plugin is updated too.
 
 ## License
 

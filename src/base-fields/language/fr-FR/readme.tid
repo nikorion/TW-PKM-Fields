@@ -9,9 +9,9 @@ Ajoute quatre champs du quotidien au template d'édition des tiddlers :
 |`nature` |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
 |`status` |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
 |`project` |texte libre, avec un menu des valeurs déjà utilisées dans le wiki |texte libre |
-|`tools` |champ liste, édité comme les tags |une liste de titres |
+|`tools` |champ liste, édité comme les tags, sur la ligne Tags |une liste de titres |
 
-`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` occupe sa propre ligne juste en dessous, disposée comme la ligne Tags et pilotée par la macro core `tag-picker`.
+`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre piloté par la macro core `tag-picker` — les deux sélecteurs restent strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement.
 
 !! Vocabulaires contrôlés
 
@@ -32,12 +32,16 @@ Deux aides sont exposées globalement pour les templates de vue et les listes : 
 
 !! Fonctionnement
 
-Le plugin livre une surcharge shadow de `$:/core/ui/EditTemplate/type` : une copie conforme du tiddler core avec trois contrôles supplémentaires insérés dans le `tc-edit-type-selector-wrapper` existant, pour qu'ils atterrissent dans le même conteneur flex que Type. Deux conséquences à connaître :
+Partager une ligne, c'est partager un conteneur flex, et le template d'édition rend chacune de ses sections comme un bloc distinct — le plugin livre donc une copie conforme de deux tiddlers core, avec les contrôles supplémentaires insérés dedans :
 
-# c'est une ''surcharge core'' — mettre TiddlyWiki à jour n'apportera pas les évolutions amont de ce tiddler tant que ce plugin n'est pas mis à jour lui aussi
+* `$:/core/ui/EditTemplate/type` — Nature, Statut et Projet entrent dans le `tc-edit-type-selector-wrapper` existant
+* `$:/core/ui/EditTemplate/tags` — l'encadré des tags et celui des outils entrent dans une même ligne flex
+
+Trois conséquences à connaître :
+
+# ce sont des ''surcharges core'' — mettre TiddlyWiki à jour n'apportera pas les évolutions amont de ces deux tiddlers tant que ce plugin n'est pas mis à jour lui aussi
 # la feuille de style neutralise le `min-width` core calculé par `set-type-selector-min-width`, qui sans cela empêcherait le contrôle de type de rétrécir
-
-La ligne `tools` est une section d'édition indépendante (`list-after: $:/core/ui/EditTemplate/type`), sans aucune surcharge core.
+# le template d'édition définit une seule fois pour tout le formulaire les tiddlers d'état de la saisie de tag ; le sélecteur d'outils les masque (`$:/temp/NewToolName…`), sans quoi les deux sélecteurs partageraient une même saisie et un nom d'outil à moitié tapé serait ajouté comme //tag// par le raccourci clavier d'enregistrement
 
 !! Prérequis
 

@@ -9,9 +9,9 @@ Adds four everyday fields to the tiddler edit template:
 |`nature` |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
 |`status` |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
 |`project` |free text, with a dropdown of the values already used in the wiki |free text |
-|`tools` |list field, edited like tags |a list of titles |
+|`tools` |list field, edited like tags, on the Tags row |a list of titles |
 
-`nature`, `status` and `project` share the ''Type'' row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow. `tools` gets its own row just below, laid out like the Tags row and driven by the core `tag-picker` macro.
+`nature`, `status` and `project` share the ''Type'' row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow. `tools` shares the ''Tags'' row, as a second box of the same kind driven by the core `tag-picker` macro — the two pickers stay strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa.
 
 !! Controlled vocabularies
 
@@ -32,12 +32,16 @@ Two helpers are exposed globally for use in view templates and lists: `<<bf-voca
 
 !! How it works
 
-The plugin ships a shadow override of `$:/core/ui/EditTemplate/type`: a verbatim copy of the core tiddler with three extra controls inserted inside the existing `tc-edit-type-selector-wrapper`, so they land in the same flex container as Type. Two consequences worth knowing:
+Sharing a row means sharing a flex container, and the edit template renders each of its sections as a separate block — so the plugin ships a verbatim copy of two core tiddlers with the extra controls inserted inside them:
 
-# it is a ''core override'' — upgrading TiddlyWiki will not bring in upstream changes to that tiddler until this plugin is updated too
+* `$:/core/ui/EditTemplate/type` — Nature, Status and Project go into the existing `tc-edit-type-selector-wrapper`
+* `$:/core/ui/EditTemplate/tags` — the tags box and the tools box go into one flex row
+
+Three consequences worth knowing:
+
+# they are ''core overrides'' — upgrading TiddlyWiki will not bring in upstream changes to those two tiddlers until this plugin is updated too
 # the stylesheet neutralises the core `min-width` computed by `set-type-selector-min-width`, which otherwise keeps the type control from shrinking
-
-The `tools` row is a separate edit-template section (`list-after: $:/core/ui/EditTemplate/type`), no core override involved.
+# the edit template defines the tag input's state tiddlers once for the whole form; the tools picker shadows them (`$:/temp/NewToolName…`), without which the two pickers would share one input and a half-typed tool name would be added as a //tag// by the save keyboard shortcut
 
 !! Requirements
 

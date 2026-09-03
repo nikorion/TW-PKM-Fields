@@ -8,5 +8,6 @@ Fields/project/Prompt: Projet
 Fields/project/Placeholder: projet
 Fields/project/Dropdown/Hint: Choisir un projet existant
 Fields/project/Dropdown/Empty: Aucun projet utilisé pour l'instant
+Fields/tags/Prompt: Tags
 Fields/tools/Prompt: Outils
 Fields/tools/Remove/Hint: Retirer cet outil
