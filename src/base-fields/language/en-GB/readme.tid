@@ -11,7 +11,9 @@ Adds four everyday fields to the tiddler edit template:
 |`project` |free text, with a dropdown of the values already used in the wiki |free text |
 |`tools` |list field, edited like tags, on the Tags row |a list of titles |
 
-`nature`, `status` and `project` share the ''Type'' row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow. `tools` shares the ''Tags'' row, as a second box of the same kind driven by the core `tag-picker` macro — the two pickers stay strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Below 1000px of window width the two boxes stack again.
+`nature`, `status` and `project` share the ''Type'' row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow. `tools` shares the ''Tags'' row, as a second box of the same kind driven by the core `tag-picker` macro — the two are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Below 1000px of window width the two boxes stack again.
+
+Nature, Status and Project each carry the same clear button the core puts on Type; it only shows when the field has a value.
 
 !! Controlled vocabularies
 
@@ -41,7 +43,7 @@ The edit template renders each of its sections as a separate block, so putting c
 Two more things the stylesheet and the markup take care of:
 
 # the stylesheet neutralises the core `min-width` computed by `set-type-selector-min-width`, which otherwise keeps the type control from shrinking
-# the edit template defines the tag input's state tiddlers once for the whole form; the tools picker shadows them (`$:/temp/NewToolName…`), without which the two pickers would share one input and a half-typed tool name would be added as a //tag// by the save keyboard shortcut
+# the tools input drives the core `keyboard-driven-input` macro directly rather than the `tag-picker` macro, which hardcodes the tags placeholder and reuses the tag input state the edit template defines once for the whole form — sharing it would let a half-typed tool name be added as a //tag// by the save keyboard shortcut
 
 !! Requirements
 

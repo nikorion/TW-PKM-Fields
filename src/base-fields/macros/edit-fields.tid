@@ -10,6 +10,21 @@ tags: $:/tags/Global
 </$list>
 \end
 
+<!-- The same clear button the core offers on Type, for the fields added here. -->
+\procedure bf-delete-field-button(field)
+\whitespace trim
+<$let hintKey={{{ [[Fields/]addsuffix<field>addsuffix[/Delete/Hint]] }}}>
+<$button class="tc-btn-invisible tc-btn-icon bf-delete-field"
+	tooltip={{{ [function[base-fields-lingo-text],<hintKey>] }}}
+	aria-label={{{ [function[base-fields-lingo-text],<hintKey>] }}}
+	disabled={{{ [<currentTiddler>has<field>then[no]else[yes]] }}}
+>
+{{$:/core/images/delete-button}}
+<$action-deletefield $field=<<field>>/>
+</$button>
+</$let>
+\end
+
 <!-- Single value picked from a controlled vocabulary (nature, status). -->
 \procedure bf-select-field(field)
 \whitespace trim
@@ -26,6 +41,7 @@ tags: $:/tags/Global
 <option value=<<slug>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
 </$list>
 </$select>
+<$transclude $variable="bf-delete-field-button" field=<<field>>/>
 </span>
 </$let>
 \end
@@ -62,23 +78,59 @@ tags: $:/tags/Global
 </$reveal>
 </div>
 </span>
+<$transclude $variable="bf-delete-field-button" field="project"/>
 </span>
 </$let>
 \end
 
 <!--
-	`tools` is a list field, edited exactly like `tags`: pills plus the core
-	`tag-picker` macro, retargeted with `tagField`.
+	`tools` is a list field, edited like tags: pills plus an input completing on the
+	values already used in `tools` elsewhere in the wiki.
 
-	The picker is deliberately kept independent of the tags picker. `tagListFilter`
-	feeds it the values already used in `tools` alone — never the wiki's tags — and
-	`newTagNameTiddler` / `newTagNameSelectionTiddler` are shadowed here, because the
-	edit template defines them once for the whole form: left as they are, the two
-	pickers would share one input state, and a half-typed tool name would be added
-	as a //tag// by the save-tiddler keyboard shortcut.
+	It deliberately does //not// call the core `tag-picker` macro. That macro
+	hardcodes the tags placeholder (`$:/language/EditTemplate/Tags/Add/Placeholder`)
+	and reuses the tag input state the edit template defines once for the whole
+	form, so the two pickers would fight over a single input — and a half-typed tool
+	name would be added as a //tag// by the save-tiddler shortcut. Driving
+	`keyboard-driven-input` directly — the very macro `tag-picker` and the core Type
+	control are built on — keeps the same keyboard behaviour (Enter to add, up/down
+	through the suggestions, Escape to clear) while owning the placeholder and the
+	state tiddlers.
 -->
+
+\procedure bf-clear-tool-state()
+<$action-deletetiddler $filter="[<toolName>] [<toolInput>] [<toolSelection>] [<toolRefresh>] [<toolPopup>]"/>
+\end
+
+<!-- `variable` is mandatory on the guard list: without it the list rebinds
+	currentTiddler to the tool name, and listops would target that tiddler
+	instead of the one being edited. -->
+\procedure bf-add-tool-actions()
+<$let tool={{{ [<toolName>get[text]trim[]] }}}>
+<$list filter="[<tool>!match[]]" variable="ignore">
+<$action-listops $tiddler=<<saveTiddler>> $field="tools" $subfilter="[<tool>]"/>
+</$list>
+<<bf-clear-tool-state>>
+</$let>
+\end
+
+\procedure bf-cancel-tool-actions()
+<%if [<toolName>has[text]] :else[<toolInput>has[text]] %>
+<<bf-clear-tool-state>>
+<%else%>
+<<cancel-delete-tiddler-actions "cancel">>
+<%endif%>
+\end
+
 \procedure bf-tools-field()
 \whitespace trim
+<$let saveTiddler=<<currentTiddler>>
+	toolName=<<qualify "$:/temp/NewToolName">>
+	toolInput=<<qualify "$:/temp/NewToolName/input">>
+	toolSelection=<<qualify "$:/temp/NewToolName/selected-item">>
+	toolRefresh=<<qualify "$:/temp/NewToolName/refresh">>
+	toolPopup=<<qualify "$:/state/popup/bf-tools-dropdown">>
+>
 <span class="bf-tools-field">
 <em class="tc-edit tc-small-gap-right"><<base-fields-lingo "Fields/tools/Prompt">></em>
 <div class="tc-edit-tags bf-tools-box">
@@ -86,17 +138,56 @@ tags: $:/tags/Global
 <span class="tc-tag-label bf-tool-label tc-small-gap-right">
 <$text text=<<tool>>/>
 <$button class="tc-btn-invisible tc-remove-tag-button" tooltip=<<base-fields-lingo-text "Fields/tools/Remove/Hint">> aria-label=<<base-fields-lingo-text "Fields/tools/Remove/Hint">>>
-<$action-listops $tiddler=<<currentTiddler>> $field="tools" $subfilter="-[<tool>]"/>
+<$action-listops $tiddler=<<saveTiddler>> $field="tools" $subfilter="-[<tool>]"/>
 {{$:/core/images/close-button}}
 </$button>
 </span>
 </$list>
-<$let tabIndex={{$:/config/EditTabIndex}} cancelPopups="yes"
-	newTagNameTiddler=<<qualify "$:/temp/NewToolName">>
-	newTagNameSelectionTiddler=<<qualify "$:/temp/NewToolName/selected-item">>
+<div class="tc-edit-add-tag">
+<div class="tc-edit-add-tag-ui">
+<span class="tc-add-tag-name tc-small-gap-right">
+<$transclude $variable="keyboard-driven-input"
+	tiddler=<<toolName>> field="text" storeTitle=<<toolInput>>
+	refreshTitle=<<toolRefresh>> selectionStateTitle=<<toolSelection>>
+	tag="input" default="" class="tc-edit-texteditor tc-popup-handle"
+	placeholder=<<base-fields-lingo-text "Fields/tools/Placeholder">>
+	focusPopup=<<toolPopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	configTiddlerFilter="[[$:/plugins/nikorion/base-fields/ui/EditTemplate/tools]]"
+	inputAcceptActions=<<bf-add-tool-actions>>
+	inputCancelActions=<<bf-cancel-tool-actions>>
+/>
+</span>
+<$button popup=<<toolPopup>> class="tc-btn-invisible tc-btn-dropdown"
+	tooltip=<<base-fields-lingo-text "Fields/tools/Dropdown/Hint">>
+	aria-label=<<base-fields-lingo-text "Fields/tools/Dropdown/Hint">>
 >
-<$macrocall $name="tag-picker" tagField="tools" tagListFilter="[all[tiddlers]!has[draft.of]has[tools]get[tools]enlist-input[]sort[]]"/>
+{{$:/core/images/down-arrow}}
+</$button>
+<span class="tc-add-tag-button tc-small-gap-left">
+<$button actions=<<bf-add-tool-actions>> disabled={{{ [<toolName>has[text]then[no]else[yes]] }}}>
+{{$:/language/EditTemplate/Tags/Add/Button}}
+</$button>
+</span>
+</div>
+<div class="tc-block-dropdown-wrapper">
+<$reveal state=<<toolPopup>> type="nomatch" text="" default="">
+<$let userInput={{{ [<toolInput>get[text]] }}}>
+<div class="tc-block-dropdown bf-tools-dropdown">
+<$list filter="[all[tiddlers]!has[draft.of]has[tools]get[tools]enlist-input[]sort[]search:title<userInput>]" variable="tool"
+	emptyMessage="""<div class="tc-dropdown-item"><<base-fields-lingo "Fields/tools/Dropdown/Empty">></div>"""
+>
+<$button tag="a" class={{{ [<tool>addsuffix[-primaryList]] :except[<toolSelection>get[text]] :and[then[tc-btn-invisible bf-dropdown-item]else[tc-btn-invisible bf-dropdown-item tc-tag-button-selected]] }}}>
+<$action-listops $tiddler=<<saveTiddler>> $field="tools" $subfilter="[<tool>]"/>
+<<bf-clear-tool-state>>
+<$text text=<<tool>>/>
+</$button>
+</$list>
+</div>
 </$let>
+</$reveal>
+</div>
+</div>
 </div>
 </span>
+</$let>
 \end

@@ -11,7 +11,9 @@ Ajoute quatre champs du quotidien au template d'édition des tiddlers :
 |`project` |texte libre, avec un menu des valeurs déjà utilisées dans le wiki |texte libre |
 |`tools` |champ liste, édité comme les tags, sur la ligne Tags |une liste de titres |
 
-`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre piloté par la macro core `tag-picker` — les deux sélecteurs restent strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. En dessous de 1000 px de largeur de fenêtre, les deux encadrés se réempilent.
+`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre piloté par la macro core `tag-picker` — les deux sélecteurs restent strictement indépendants : les deux sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. En dessous de 1000 px de largeur de fenêtre, les deux encadrés se réempilent.
+
+Nature, Statut et Projet portent chacun le même bouton de suppression que le core place sur Type ; il n'apparaît que si le champ a une valeur.
 
 !! Vocabulaires contrôlés
 
@@ -41,7 +43,7 @@ Le template d'édition rend chacune de ses sections comme un bloc distinct : met
 Deux autres points pris en charge par la feuille de style et le balisage :
 
 # la feuille de style neutralise le `min-width` core calculé par `set-type-selector-min-width`, qui sans cela empêcherait le contrôle de type de rétrécir
-# le template d'édition définit une seule fois pour tout le formulaire les tiddlers d'état de la saisie de tag ; le sélecteur d'outils les masque (`$:/temp/NewToolName…`), sans quoi les deux sélecteurs partageraient une même saisie et un nom d'outil à moitié tapé serait ajouté comme //tag// par le raccourci clavier d'enregistrement
+# la saisie des outils pilote directement la macro core `keyboard-driven-input` plutôt que la macro `tag-picker`, qui code en dur le placeholder des tags et réutilise l'état de saisie de tag que le template d'édition définit une seule fois pour tout le formulaire — le partager laisserait un nom d'outil à moitié tapé être ajouté comme //tag// par le raccourci clavier d'enregistrement
 
 !! Prérequis
 

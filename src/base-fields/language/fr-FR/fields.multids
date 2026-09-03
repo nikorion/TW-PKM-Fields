@@ -2,11 +2,17 @@ title: $:/plugins/nikorion/base-fields/language/fr-FR/
 
 Fields/nature/Prompt: Nature
 Fields/nature/None: —
+Fields/nature/Delete/Hint: Vider le champ nature
 Fields/status/Prompt: Statut
 Fields/status/None: —
+Fields/status/Delete/Hint: Vider le champ statut
 Fields/project/Prompt: Projet
-Fields/project/Placeholder: projet
+Fields/project/Placeholder: nom du projet
 Fields/project/Dropdown/Hint: Choisir un projet existant
 Fields/project/Dropdown/Empty: Aucun projet utilisé pour l'instant
+Fields/project/Delete/Hint: Vider le champ projet
 Fields/tools/Prompt: Outils
+Fields/tools/Placeholder: nom de l'outil
+Fields/tools/Dropdown/Hint: Choisir un outil existant
+Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil

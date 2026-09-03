@@ -28,8 +28,8 @@ type: text/vnd.tiddlywiki
 */
 .tc-edit-type-selector-wrapper > .tc-type-selector-dropdown-wrapper,
 .tc-edit-type-selector-wrapper > .bf-edit-field {
-	flex: 1 1 10em;
-	min-width: 10em;
+	flex: 1 1 12em;
+	min-width: 12em;
 }
 
 .tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
@@ -63,6 +63,15 @@ type: text/vnd.tiddlywiki
 	min-width: 0;
 	width: 100%;
 	box-sizing: border-box;
+}
+
+.bf-delete-field {
+	flex: 0 0 auto;
+	padding: 0 2px;
+}
+
+.bf-delete-field[disabled] {
+	visibility: hidden;
 }
 
 .bf-project-control {
@@ -131,14 +140,18 @@ type: text/vnd.tiddlywiki
 	}
 }
 
+/*
+	`baseline` lines the label up with the first line of text inside the box,
+	whatever that line happens to be — an existing tool pill, or the input when the
+	field is still empty. A fixed padding would only ever suit one of the two.
+*/
 .bf-tools-field {
 	display: flex;
-	align-items: flex-start;
+	align-items: baseline;
 }
 
 .bf-tools-field > em {
 	flex: 0 0 auto;
-	padding-top: 6px;
 }
 
 .bf-tools-field .bf-tools-box {
