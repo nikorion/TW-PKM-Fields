@@ -16,6 +16,7 @@ src/base-fields/
   vocab/nature.tid            ← valeurs autorisées + ordre, dans le champ `list`
   vocab/status.tid
   vocab/icons.multids         ← clés `<champ>/<valeur>` → émoji
+  vocabularies.tid            ← doc utilisateur des vocabulaires (onglet du plugin + ControlPanel)
   search-filters.tid          ← champs project-search-filter / tools-search-filter
   default-config.multids      ← masque les 4 champs de la liste des champs du core
   language/<lang>/vocab.multids   ← `Vocab/<champ>/<valeur>` + `…/Hint`
@@ -25,6 +26,7 @@ src/base-fields/
 
 ## Spécificités
 - **Ajouter une valeur de vocabulaire** = 3 endroits : champ `list` du `vocab/<champ>.tid`, `vocab/icons.multids`, `language/<lang>/vocab.multids` (deux entrées par langue : `Vocab/<champ>/<valeur>` pour le libellé, `Vocab/<champ>/<valeur>/Hint` pour l'infobulle — la seconde est facultative). Libellé absent → repli sur le slug ; icône absente → rendu sans icône. **Aucune UI de config, volontairement** : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions.
+- **Un saut de ligne dans un attribut** (infobulle des options) s'obtient par `[charcode[10]]` : aucune entité HTML ne serait décodée, TW pose la valeur telle quelle via `setAttribute`.
 - **Seul le slug est stocké** dans le champ. Icônes et libellés sont résolus au rendu — ne jamais les faire entrer dans la valeur.
 - **Ne pas réintroduire de surcharge core.** Deux tentatives ont été écartées : copier `$:/core/ui/EditTemplate/type` pour y loger Nature/Statut, et copier `.../tags` pour y loger Outils. Une surcharge core fige silencieusement l'ancienne version du tiddler à la montée de version TW (`tags.tid` a d'ailleurs changé entre 5.4.1 et master), et entre en collision avec tout autre plugin touchant la même ligne. Une ligne supplémentaire coûte moins cher.
 - **Les saisies outils et projet n'utilisent pas `tag-picker`, et ne doivent pas y revenir.** Cette macro code en dur le placeholder des tags (`$:/language/EditTemplate/Tags/Add/Placeholder`, aucun paramètre pour le changer) et réutilise `newTagNameTiddler`, que `$:/core/ui/EditTemplate` définit une fois pour tout le formulaire : les deux sélecteurs partageraient alors une saisie, et `save-tiddler-actions` (Ctrl+Entrée) ajouterait le texte en cours comme **tag**. Elles pilotent donc `keyboard-driven-input` directement (la macro sur laquelle `tag-picker` et le champ Type du core sont eux-mêmes bâtis), avec leurs propres tiddlers d'état `$:/temp/NewToolName*` et `$:/temp/Project/*`. Les filtres d'autocomplétion vivent sur `search-filters.tid`, atteints via `configTiddlerFilter` + `firstSearchFilterField`.

@@ -52,9 +52,18 @@ tags: $:/tags/Global
 	the button next to the control.
 -->
 <option value=""><$transclude $variable="base-fields-lingo" title=<<placeholderKey>>/></option>
+<!--
+	The tooltip carries the description and, on a second line, the value the field
+	will actually hold — the only place that correspondence still shows in the form,
+	now that the options read as plain labels. `charcode[10]` is how a newline gets
+	into an attribute; the `:else` covers a value shipped without a description.
+-->
 <$list filter="[function[bf-vocab-values],<field>]" variable="slug">
-<$let hint={{{ [function[bf-vocab-hint],<field>,<slug>] }}}>
-<option value=<<slug>> title=<<hint>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
+<$let hint={{{ [function[bf-vocab-hint],<field>,<slug>] }}}
+	newline={{{ [charcode[10]] }}}
+	tip={{{ [<hint>!match[]addsuffix<newline>addsuffix<slug>] :else[<slug>] }}}
+>
+<option value=<<slug>> title=<<tip>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
 </$let>
 </$list>
 </$select>
@@ -249,7 +258,7 @@ tags: $:/tags/Global
 {{$:/core/images/down-arrow}}
 </$button>
 <span class="tc-add-tag-button tc-small-gap-left">
-<$button actions=<<bf-add-tool-actions>> disabled={{{ [<toolName>has[text]then[no]else[yes]] }}}>
+<$button actions=<<bf-add-tool-actions>>>
 {{$:/language/EditTemplate/Tags/Add/Button}}
 </$button>
 </span>

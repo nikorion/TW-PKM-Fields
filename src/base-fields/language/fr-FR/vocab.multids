@@ -17,19 +17,26 @@ Vocab/status/deprecated: Obsolète
 Vocab/status/stable: Stable
 Vocab/status/raw: Brut
 
-Vocab/nature/concept/Hint: Une notion expliquée pour elle-même, pas un mode d'emploi
-Vocab/nature/ref/Hint: Donnée de référence que l'on revient consulter
-Vocab/nature/guide/Hint: Marche à suivre, pas à pas, pour arriver à un résultat
-Vocab/nature/pattern/Hint: Solution réutilisable à un problème qui revient sans cesse
-Vocab/nature/snippet/Hint: Court fragment de code ou de texte gardé pour être réutilisé tel quel
-Vocab/nature/template/Hint: Modèle à copier pour créer quelque chose du même genre
-Vocab/nature/decision/Hint: Choix tranché, avec ses raisons et les options écartées
-Vocab/nature/log/Hint: Suivi chronologique et daté de ce qui s'est passé
-Vocab/nature/hub/Hint: Point d'entrée qui aiguille vers d'autres tiddlers
-Vocab/nature/task/Hint: Une seule chose à faire
-Vocab/nature/tasklist/Hint: Un ensemble de tâches suivies ensemble
-Vocab/nature/routine/Hint: Procédure répétée à intervalle régulier
-Vocab/status/archived/Hint: Conservé pour mémoire, plus maintenu
-Vocab/status/deprecated/Hint: Dépassé : ne plus s'y fier, une version plus récente existe
-Vocab/status/stable/Hint: Relu et fiable, on peut construire dessus
-Vocab/status/raw/Hint: Jeté vite fait, ni relu ni vérifié
+Vocab/nature/concept/Hint: Notion expliquée pour elle-même
+Vocab/nature/ref/Hint: Données qu'on vient consulter
+Vocab/nature/guide/Hint: Marche à suivre, pas à pas
+Vocab/nature/pattern/Hint: Forme qui résout un problème récurrent
+Vocab/nature/snippet/Hint: Fragment à recopier tel quel
+Vocab/nature/template/Hint: Point de départ à dupliquer
+Vocab/nature/decision/Hint: Choix tranché, et pourquoi
+Vocab/nature/log/Hint: Ce qui s'est passé, daté
+Vocab/nature/hub/Hint: Porte d'entrée vers d'autres tiddlers
+Vocab/nature/task/Hint: Chose à faire, une seule
+Vocab/nature/tasklist/Hint: Tâches suivies ensemble
+Vocab/nature/routine/Hint: Procédure qui revient régulièrement
+Vocab/status/archived/Hint: Gardé pour mémoire, plus maintenu
+Vocab/status/deprecated/Hint: Dépassé : ne plus s'y fier
+Vocab/status/stable/Hint: Relu, fiable, on peut s'y appuyer
+Vocab/status/raw/Hint: Jeté vite fait, non relu
+
+Vocabularies/Caption: Vocabulaires
+Vocabularies/Intro: Les champs `nature` et `status` prennent leur valeur dans une liste fixe. Ce que contient le champ est la //valeur stockée// ; ce que vous lisez dans l'éditeur et dans vos listes est son libellé dans la langue du wiki. Les deux sont volontairement dissociés, pour que vos filtres continuent de fonctionner quelle que soit la langue du wiki.
+Vocabularies/Column/Value: Valeur
+Vocabularies/Column/Stored: Stocké dans le champ
+Vocabularies/Column/Meaning: Signifie
+Vocabularies/Outro: Écrivez vos filtres sur la valeur stockée : `[nature[guide]]`, `[status[stable]]`. Pour montrer une valeur à un lecteur, utilisez `<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>`, qui rend son icône et son libellé dans la langue courante.

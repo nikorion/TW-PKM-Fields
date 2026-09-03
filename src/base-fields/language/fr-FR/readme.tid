@@ -31,7 +31,9 @@ Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement �
 * les //icônes// vivent dans `vocab/icons.multids`, clé `<champ>/<valeur>`
 * les //libellés// vivent dans `language/<lang>/vocab.multids`, clé `Vocab/<champ>/<valeur>`
 
-Une valeur s'affiche partout de la même façon, listes déroulantes comprises : son icône et son libellé dans la langue du wiki — `Snippet` en anglais, `Extrait` en français. Le slug n'apparaît jamais : c'est un identifiant interne, pas quelque chose à lire. Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives.
+Une valeur s'affiche partout de la même façon, listes déroulantes comprises : son icône et son libellé dans la langue du wiki — `Snippet` en anglais, `Extrait` en français. Le slug n'apparaît jamais : c'est un identifiant interne, pas quelque chose à lire. Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol, avec la valeur stockée sur une seconde ligne : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives.
+
+L'onglet //Vocabularies// de ce plugin — repris dans $:/ControlPanel sous //Réglages// — liste chaque valeur avec ce qu'elle signifie et ce qu'elle stocke. C'est la page à montrer à un lecteur.
 
 Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône.
 

@@ -31,7 +31,9 @@ Only the slug is ever written to the field. Icons and labels are display-only, r
 * the //icons// live in `vocab/icons.multids`, keyed `<field>/<value>`
 * the //labels// live in `language/<lang>/vocab.multids`, keyed `Vocab/<field>/<value>`
 
-A value shows the same way everywhere, dropdowns included: its icon and its label in the wiki's language — `Snippet` in English, `Extrait` in French. The slug never appears; it is an internal identifier, not something to read. Each value can also carry a one-line description, shown as a tooltip on hover: the `Vocab/<field>/<value>/Hint` strings, optional.
+A value shows the same way everywhere, dropdowns included: its icon and its label in the wiki's language — `Snippet` in English, `Extrait` in French. The slug never appears; it is an internal identifier, not something to read. Each value can also carry a one-line description, shown as a tooltip on hover, with the stored value on a second line: the `Vocab/<field>/<value>/Hint` strings, optional.
+
+The //Vocabularies// tab of this plugin — also shown in $:/ControlPanel under //Settings// — lists every value with what it means and what it stores. It is the page to point a reader at.
 
 Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one.
 
