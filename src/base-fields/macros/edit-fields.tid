@@ -112,7 +112,7 @@ tags: $:/tags/Global
 <$reveal state=<<projectPopup>> type="nomatch" text="" default="">
 <$let userInput={{{ [<projectInput>get[text]] }}}>
 <div class="tc-block-dropdown bf-project-dropdown">
-<$list filter="[all[tiddlers]!has[draft.of]has[project]get[project]sort[]search:title<userInput>]" variable="proj"
+<$list filter="[all[tiddlers]!has[draft.of]has[project]get[project]each:value[]sort[]search:title<userInput>]" variable="proj"
 	emptyMessage="""<div class="tc-dropdown-item"><<base-fields-lingo "Fields/project/Dropdown/Empty">></div>"""
 >
 <$button tag="a" class={{{ [<proj>addsuffix[-primaryList]] :except[<projectSelection>get[text]] :and[then[tc-btn-invisible bf-dropdown-item]else[tc-btn-invisible bf-dropdown-item tc-tag-button-selected]] }}}>
@@ -258,7 +258,7 @@ tags: $:/tags/Global
 <$reveal state=<<toolPopup>> type="nomatch" text="" default="">
 <$let userInput={{{ [<toolInput>get[text]] }}}>
 <div class="tc-block-dropdown bf-tools-dropdown">
-<$list filter="[all[tiddlers]!has[draft.of]has[tools]get[tools]enlist-input[]sort[]search:title<userInput>]" variable="tool"
+<$list filter="[all[tiddlers]!has[draft.of]has[tools]each:list-item[tools]sort[]search:title<userInput>]" variable="tool"
 	emptyMessage="""<div class="tc-dropdown-item"><<base-fields-lingo "Fields/tools/Dropdown/Empty">></div>"""
 >
 <$button tag="a" class={{{ [<tool>addsuffix[-primaryList]] :except[<toolSelection>get[text]] :and[then[tc-btn-invisible bf-dropdown-item]else[tc-btn-invisible bf-dropdown-item tc-tag-button-selected]] }}}>

@@ -40,7 +40,19 @@ Shipped out of the box:
 * `nature` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
 * `status` — archived, deprecated, stable, raw
 
-Helpers are exposed globally for view templates and lists: `<<bf-vocab-item field value>>` renders icon + label, `<<bf-vocab-option field value>>` renders the dropdown form, and the `bf-vocab-label` / `bf-vocab-icon` / `bf-vocab-hint` / `bf-vocab-values` functions give the pieces separately.
+Helpers are exposed globally, for use in view templates and lists.
+
+`bf-vocab-item` (icon + label) and `bf-vocab-option` (the dropdown form) are //procedures//. A procedure called as `<<name arg>>` receives its arguments as literal text, so a field's value has to be passed through a transclusion rather than a macro call:
+
+```
+<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>
+```
+
+`bf-vocab-values`, `bf-vocab-label`, `bf-vocab-icon` and `bf-vocab-hint` are //functions//, and give the pieces separately. Call them through the `function` operator, which does bind their parameters:
+
+```
+<$let slug={{!!nature}}>{{{ [function[bf-vocab-label],[nature],<slug>] }}}</$let>
+```
 
 !! How it works
 

@@ -40,7 +40,19 @@ Livré tel quel :
 * `nature` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
 * `status` — archived, deprecated, stable, raw
 
-Des aides sont exposées globalement pour les templates de vue et les listes : `<<bf-vocab-item champ valeur>>` rend icône + libellé, `<<bf-vocab-option champ valeur>>` rend la forme utilisée dans les listes déroulantes, et les fonctions `bf-vocab-label` / `bf-vocab-icon` / `bf-vocab-hint` / `bf-vocab-values` en donnent les morceaux séparément.
+Des aides sont exposées globalement, pour les templates de vue et les listes.
+
+`bf-vocab-item` (icône + libellé) et `bf-vocab-option` (la forme des listes déroulantes) sont des //procédures//. Une procédure appelée en `<<nom arg>>` reçoit ses arguments comme du texte littéral : la valeur d'un champ doit donc passer par une transclusion, pas par un appel de macro.
+
+```
+<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>
+```
+
+`bf-vocab-values`, `bf-vocab-label`, `bf-vocab-icon` et `bf-vocab-hint` sont des //fonctions//, et en donnent les morceaux séparément. Les appeler via l'opérateur `function`, qui lie bien leurs paramètres :
+
+```
+<$let slug={{!!nature}}>{{{ [function[bf-vocab-label],[nature],<slug>] }}}</$let>
+```
 
 !! Fonctionnement
 

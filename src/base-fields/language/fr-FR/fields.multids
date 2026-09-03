@@ -6,7 +6,7 @@ Fields/nature/Delete/Hint: Vider le champ nature
 Fields/status/Prompt: Statut :
 Fields/status/Placeholder: maturité du tiddler
 Fields/status/Delete/Hint: Vider le champ statut
-Fields/project/Prompt: Projet :
+Fields/project/Prompt: Projet associé :
 Fields/project/Placeholder: nom du projet
 Fields/project/Dropdown/Hint: Choisir un projet existant
 Fields/project/Dropdown/Empty: Aucun projet utilisé pour l'instant

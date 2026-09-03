@@ -1,7 +1,7 @@
 title: $:/plugins/nikorion/base-fields/search-filters
 type: text/vnd.tiddlywiki
-project-search-filter: [all[tiddlers]!has[draft.of]has[project]get[project]sort[]search:title<userInput>]
-tools-search-filter: [all[tiddlers]!has[draft.of]has[tools]get[tools]enlist-input[]sort[]search:title<userInput>]
+project-search-filter: [all[tiddlers]!has[draft.of]has[project]get[project]each:value[]sort[]search:title<userInput>]
+tools-search-filter: [all[tiddlers]!has[draft.of]has[tools]each:list-item[tools]sort[]search:title<userInput>]
 
 Completion filters for the `project` and `tools` inputs: each lists the values already used in that field elsewhere in the wiki, narrowed by what has been typed.
 
