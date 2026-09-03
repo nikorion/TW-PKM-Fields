@@ -6,16 +6,18 @@ type: text/vnd.tiddlywiki
 Adds four everyday fields to the tiddler edit template:
 
 |!Field |!Row |!Control |!Stored value |
-|`nature` |Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
-|`status` |Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
-|`tools` |Tags |list field, edited like tags |a list of titles |
-|`project` |Tags |single value, typed or picked |free text |
+|`tools` |under Tags |list field, edited like tags |a list of titles |
+|`project` |under Tags |single value, typed or picked |free text |
+|`nature` |under Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
+|`status` |under Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
 
-''Nature'' and ''Status'' join Type on one flex line: the three controls shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow.
+The four controls come in two rows, each added to the edit template as an ordinary section: ''Tools'' and ''Project'' just under the tags row, ''Nature'' and ''Status'' just under the type row. No core tiddler is overridden and no core row is touched.
 
-''Tools'' and ''Project'' join the Tags row, the tags box sized to its own content and the other two sharing what is left, so the three sit flush against each other. Below 1000px of window width they stack. The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered exactly like tag pills, per-value colour cascade included.
+A row packs its blocks to the left at their natural width rather than spreading them across the tiddler, so that a block's own parts stay together — the delete button sits next to the control it clears rather than at the far end of a stretched column. Rows wrap when the tiddler gets too narrow.
 
-Each of the four controls carries the same clear button the core puts on Type, always visible. An empty Nature or Status shows a greyed hint in place of a value — a `<select>` has no placeholder attribute, so its blank first option plays that part.
+The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered exactly like tag pills, per-value colour cascade included.
+
+Each control carries the same clear button the core puts on Type, always visible. An empty Nature or Status shows a greyed hint in place of a value — a `<select>` has no placeholder attribute, so its blank first option plays that part. Hovering a label shows the field's real name.
 
 The four fields are hidden from the list of fields at the bottom of the editor, through the core's own `$:/config/EditTemplateFields/Visibility/` mechanism: editing them twice on one form would be one place too many. Setting the corresponding tiddler to `show` brings any of them back.
 
@@ -27,7 +29,7 @@ Only the slug is ever written to the field. Icons and labels are display-only, r
 * the //icons// live in `vocab/icons.multids`, keyed `<field>/<value>`
 * the //labels// live in `language/<lang>/vocab.multids`, keyed `Vocab/<field>/<value>`
 
-A dropdown entry leads with the value that will actually be written to the field; outside English the translated label follows in brackets — `snippet (Extrait)`. Each value can also carry a one-line description, shown as a tooltip on hover: the `Vocab/<field>/<value>/Hint` strings, optional.
+A dropdown entry shows the label in the wiki's language, lowercased, followed by the stored value in brackets when the two differ — `extrait (snippet)` in French, plain `snippet` in English. Each value can also carry a one-line description, shown as a tooltip on hover: the `Vocab/<field>/<value>/Hint` strings, optional.
 
 Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one.
 
@@ -40,15 +42,10 @@ Helpers are exposed globally for view templates and lists: `<<bf-vocab-item fiel
 
 !! How it works
 
-The edit template renders each of its sections as a separate block, so putting controls on a shared row takes one of two routes — and this plugin uses each one once.
+Everything is an edit-template section: four tiddlers tagged `$:/tags/EditTemplate`, placed with `list-after`, plus a stylesheet, some global procedures and the vocabularies. Nothing overrides a core tiddler, so a TiddlyWiki upgrade carries no risk of silently reverting part of the editor, and nothing collides with another plugin that touches the same rows.
 
-''Nature and Status'' go inside the Type control itself: `$:/core/ui/EditTemplate/type` is shipped as a verbatim copy of the core tiddler, with the two controls inserted into the existing `tc-edit-type-selector-wrapper`. It is a ''core override'': upgrading TiddlyWiki will not bring in upstream changes to that tiddler until this plugin is updated too.
+Two details worth knowing:
 
-''Tools and Project'' take the other route, and override nothing. Each stays a section of its own, placed after `$:/core/ui/EditTemplate/tags`, and the stylesheet turns the container the sections already share into a three-column grid: every section spans all three columns, except the tags box, the tools box and the project control, which take one each. The tags tiddler — the one that does change between TiddlyWiki releases — is left untouched, and nothing conflicts with another plugin styling or overriding it. The trade-off is that the selector leans on the edit form's internal nesting (`.tc-keyboard > .tc-keyboard`): should that ever change, the three controls simply stack again, which is visible at a glance rather than silently wrong.
-
-Three more things the stylesheet and the markup take care of:
-
-# the stylesheet neutralises the core `min-width` computed by `set-type-selector-min-width`, which otherwise keeps the type control from shrinking
 # the tools and project inputs drive the core `keyboard-driven-input` macro directly rather than the `tag-picker` macro, which hardcodes the tags placeholder and reuses the tag input state the edit template defines once for the whole form — sharing it would let a half-typed tool name be added as a //tag// by the save keyboard shortcut
 # their completion filters live on `search-filters`, read through `configTiddlerFilter` and `firstSearchFilterField`
 

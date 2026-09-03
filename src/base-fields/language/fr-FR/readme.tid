@@ -6,16 +6,18 @@ type: text/vnd.tiddlywiki
 Ajoute quatre champs du quotidien au template d'édition des tiddlers :
 
 |!Champ |!Ligne |!Contrôle |!Valeur stockée |
-|`nature` |Type |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
-|`status` |Type |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
-|`tools` |Tags |champ liste, édité comme les tags |une liste de titres |
-|`project` |Tags |valeur unique, saisie ou choisie |texte libre |
+|`tools` |sous Tags |champ liste, édité comme les tags |une liste de titres |
+|`project` |sous Tags |valeur unique, saisie ou choisie |texte libre |
+|`nature` |sous Type |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
+|`status` |sous Type |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
 
-''Nature'' et ''Statut'' rejoignent Type sur une même ligne flex : les trois contrôles rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit.
+Les quatre contrôles tiennent sur deux lignes, chacune ajoutée au template d'édition comme une section ordinaire : ''Outils'' et ''Projet'' juste sous la ligne des tags, ''Nature'' et ''Statut'' juste sous la ligne de type. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée.
 
-''Outils'' et ''Projet'' rejoignent la ligne des tags, l'encadré des tags étant dimensionné sur son contenu et les deux autres se partageant le reste, si bien que les trois se touchent. En dessous de 1000 px de largeur de fenêtre, ils s'empilent. Les sélecteurs d'outils et de tags sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. Les pastilles d'outils sont rendues exactement comme celles des tags, cascade de couleur par valeur comprise.
+Une ligne cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler dans le tiddler : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une colonne étirée. Les lignes passent à la ligne quand le tiddler devient étroit.
 
-Chacun des quatre contrôles porte le même bouton de suppression que le core place sur Type, toujours visible. Un Nature ou un Statut vide affiche une indication grisée en guise de valeur — un `<select>` n'a pas d'attribut placeholder, c'est donc sa première option, vide, qui en tient lieu.
+Les sélecteurs d'outils et de tags sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. Les pastilles d'outils sont rendues exactement comme celles des tags, cascade de couleur par valeur comprise.
+
+Chaque contrôle porte le même bouton de suppression que le core place sur Type, toujours visible. Un Nature ou un Statut vide affiche une indication grisée en guise de valeur — un `<select>` n'a pas d'attribut placeholder, c'est donc sa première option, vide, qui en tient lieu. Survoler un libellé montre le nom réel du champ.
 
 Les quatre champs sont masqués de la liste des champs en bas de l'éditeur, via le mécanisme `$:/config/EditTemplateFields/Visibility/` du core : les éditer à deux endroits d'un même formulaire en ferait un de trop. Passer le tiddler correspondant à `show` ramène celui qu'on veut.
 
@@ -27,7 +29,7 @@ Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement �
 * les //icônes// vivent dans `vocab/icons.multids`, clé `<champ>/<valeur>`
 * les //libellés// vivent dans `language/<lang>/vocab.multids`, clé `Vocab/<champ>/<valeur>`
 
-Une entrée de liste déroulante commence par la valeur qui sera réellement écrite dans le champ ; hors anglais, le libellé traduit suit entre parenthèses — `snippet (Extrait)`. Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives.
+Une entrée de liste déroulante affiche le libellé dans la langue du wiki, en minuscules, suivi entre parenthèses de la valeur stockée quand les deux diffèrent — `extrait (snippet)` en français, `snippet` tout court en anglais. Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives.
 
 Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône.
 
@@ -40,15 +42,10 @@ Des aides sont exposées globalement pour les templates de vue et les listes : `
 
 !! Fonctionnement
 
-Le template d'édition rend chacune de ses sections comme un bloc distinct : mettre des contrôles sur une même ligne passe donc par l'une de deux voies — ce plugin emprunte chacune une fois.
+Tout est section du template d'édition : quatre tiddlers taggés `$:/tags/EditTemplate`, placés par `list-after`, plus une feuille de style, quelques procédures globales et les vocabulaires. Rien ne surcharge de tiddler core : une montée de version de TiddlyWiki ne risque donc pas d'annuler silencieusement une partie de l'éditeur, et rien n'entre en collision avec un autre plugin qui toucherait aux mêmes lignes.
 
-''Nature et Statut'' entrent dans le contrôle de type lui-même : `$:/core/ui/EditTemplate/type` est livré comme copie conforme du tiddler core, avec les deux contrôles insérés dans le `tc-edit-type-selector-wrapper` existant. C'est une ''surcharge core'' : mettre TiddlyWiki à jour n'apportera pas les évolutions amont de ce tiddler tant que ce plugin n'est pas mis à jour lui aussi.
+Deux détails à connaître :
 
-''Outils et Projet'' empruntent l'autre voie, et ne surchargent rien. Chacun reste une section à part entière, placée après `$:/core/ui/EditTemplate/tags`, et la feuille de style transforme le conteneur que les sections partagent déjà en grille à trois colonnes : chaque section s'étale sur les trois colonnes, sauf l'encadré des tags, celui des outils et le contrôle projet, qui en prennent une chacun. Le tiddler des tags — celui qui, lui, change d'une version de TiddlyWiki à l'autre — reste intact, et rien n'entre en conflit avec un autre plugin qui le styliserait ou le surchargerait. La contrepartie : le sélecteur s'appuie sur le nesting interne du formulaire (`.tc-keyboard > .tc-keyboard`) ; si celui-ci changeait un jour, les trois contrôles se réempileraient simplement — visible au premier coup d'oeil, plutôt que faux en silence.
-
-Trois autres points pris en charge par la feuille de style et le balisage :
-
-# la feuille de style neutralise le `min-width` core calculé par `set-type-selector-min-width`, qui sans cela empêcherait le contrôle de type de rétrécir
 # les saisies outils et projet pilotent directement la macro core `keyboard-driven-input` plutôt que la macro `tag-picker`, qui code en dur le placeholder des tags et réutilise l'état de saisie de tag que le template d'édition définit une seule fois pour tout le formulaire — le partager laisserait un nom d'outil à moitié tapé être ajouté comme //tag// par le raccourci clavier d'enregistrement
 # leurs filtres d'autocomplétion vivent sur `search-filters`, lus via `configTiddlerFilter` et `firstSearchFilterField`
 

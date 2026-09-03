@@ -1,0 +1,17 @@
+title: $:/plugins/nikorion/base-fields/ui/EditTemplate/extra-fields
+tags: $:/tags/EditTemplate
+list-after: $:/core/ui/EditTemplate/tags
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<!--
+	Tools and Project share one row of their own, right under the tags row. Being a
+	single edit-template section, they are one block the stylesheet can lay out as it
+	likes — no need to reach for the container the sections sit in.
+-->
+
+<div class="bf-extra-row">
+<$transclude $variable="bf-tools-field"/>
+<$transclude $variable="bf-project-field"/>
+</div>

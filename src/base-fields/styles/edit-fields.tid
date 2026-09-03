@@ -3,77 +3,40 @@ tags: $:/tags/Stylesheet
 type: text/vnd.tiddlywiki
 
 /*
-	The Type row becomes a single flex line carrying Type, Nature, Status and
-	Project. Every control shares the width evenly and is allowed to shrink, so the
-	row always fits inside the tiddler; below a readable floor it wraps onto a
-	second line rather than squeezing the controls into nothing.
+	Each pair of controls occupies a row of its own, added to the edit template as a
+	section like any other — the core rows are left exactly as they are.
+
+	A row packs its blocks to the left at their natural width rather than spreading
+	them across the tiddler, so that a block's own parts stay together: the delete
+	button sits right next to the control it clears, not at the far end of a stretched
+	column. Rows wrap when the tiddler is too narrow.
 */
 
-.tc-edit-type-selector-wrapper {
+.bf-extra-row {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
-	gap: 4px 8px;
+	align-items: baseline;
+	gap: 4px 16px;
 }
 
-/*
-	The core label carries `tc-small-gap-right` (0.5em), which on a flex row adds to
-	the row's own gap — Type would sit visibly further from its control than the
-	other three. One distance for all four, expressed once.
-*/
-.tc-edit-type-selector-wrapper > em {
+.bf-extra-row > * {
 	flex: 0 0 auto;
-	margin-inline-end: 0;
-}
-
-.bf-edit-field > em,
-.bf-tools-field > em {
-	margin-inline-end: 8px;
-}
-
-/*
-	`10em` is the readable floor of a control: the four of them share whatever room
-	is left, evenly, and wrap once they no longer fit. It also overrides the core
-	min-width computed from the longest type name (`set-type-selector-min-width`),
-	which would otherwise keep the type control from shrinking at all.
-*/
-.tc-edit-type-selector-wrapper > .tc-type-selector-dropdown-wrapper,
-.tc-edit-type-selector-wrapper > .bf-edit-field {
-	flex: 1 1 12em;
-	min-width: 12em;
-}
-
-.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
-	min-width: 0;
-}
-
-.tc-edit-type-selector-wrapper .tc-type-selector {
-	display: flex;
-	align-items: center;
-}
-
-.tc-edit-type-selector-wrapper .tc-type-selector .tc-edit-typeeditor {
-	flex: 1 1 0;
-	min-width: 0;
-	width: 100%;
 }
 
 .bf-edit-field {
 	display: flex;
 	align-items: center;
-	min-width: 0;
 }
 
-.bf-edit-field > em {
+.bf-edit-field > em,
+.bf-tools-field > em {
 	flex: 0 0 auto;
+	margin-inline-end: 8px;
 }
 
-.bf-edit-field .bf-edit-select,
-.bf-edit-field .bf-edit-input {
-	flex: 1 1 0;
-	min-width: 0;
-	width: 100%;
-	box-sizing: border-box;
+.bf-edit-select {
+	width: auto;
+	max-width: 18em;
 }
 
 /*
@@ -94,12 +57,16 @@ type: text/vnd.tiddlywiki
 	padding: 0 2px;
 }
 
+/* Project: a single value, typed or picked, so the input is sized for a name. */
+
 .bf-project-control {
 	display: flex;
 	align-items: center;
-	flex: 1 1 0;
-	min-width: 0;
 	position: relative;
+}
+
+.bf-project-control .bf-edit-input {
+	width: 14em;
 }
 
 /* Drop the suggestions right under the input rather than after the flex row. */
@@ -111,7 +78,7 @@ type: text/vnd.tiddlywiki
 	z-index: 1000;
 }
 
-.bf-project-dropdown .bf-dropdown-item {
+.bf-dropdown-item {
 	display: block;
 	width: 100%;
 	text-align: left;
@@ -119,61 +86,14 @@ type: text/vnd.tiddlywiki
 	color: <<colour foreground>>;
 }
 
-.bf-project-dropdown .bf-dropdown-item:hover {
+.bf-dropdown-item:hover {
 	background-color: <<colour dropdown-background>>;
 	color: <<colour foreground>>;
 	text-decoration: none;
 }
 
 /*
-	Tags and Tools share one row without either being a core override: the edit
-	template renders its sections as siblings of one anonymous container, so that
-	container becomes a two-column grid. Every section spans both columns except
-	the tags box and the tools box, which take one each.
-*/
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard {
-	display: grid;
-	/*
-		The tags box is sized to its own content and the tools and project controls
-		share what is left, so the three sit flush against each other rather than
-		meeting at fixed marks. The `minmax()` floors keep them usable when the tags
-		box grows.
-	*/
-	grid-template-columns: auto minmax(18em, 1.2fr) minmax(12em, 1fr);
-	align-items: start;
-	column-gap: 8px;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > * {
-	grid-column: 1 / -1;
-	min-width: 0;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags {
-	grid-column: 1;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-tools-field {
-	grid-column: 2;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-edit-field-project {
-	grid-column: 3;
-	align-items: baseline;
-}
-
-/* Too narrow for three columns: each control takes the full width again. */
-@media (max-width: 1000px) {
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-tools-field,
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-edit-field-project {
-		grid-column: 1 / -1;
-	}
-}
-
-/*
-	`baseline` lines the label up with the first line of text inside the box,
+	`baseline` lines the tools label up with the first line of text inside the box,
 	whatever that line happens to be — an existing tool pill, or the input when the
 	field is still empty. A fixed padding would only ever suit one of the two.
 */
@@ -182,11 +102,6 @@ type: text/vnd.tiddlywiki
 	align-items: baseline;
 }
 
-.bf-tools-field > em {
-	flex: 0 0 auto;
-}
-
 .bf-tools-field .bf-tools-box {
-	flex: 1 1 auto;
-	min-width: 0;
+	min-width: 20em;
 }

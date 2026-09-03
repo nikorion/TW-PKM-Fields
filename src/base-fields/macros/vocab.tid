@@ -31,16 +31,16 @@ tags: $:/tags/Global
 \end
 
 <!--
-	How a value reads in a dropdown: the stored value first, so that picking one also
-	tells you what will be written to the field. In English that is the whole story;
-	in any other language the translated label follows in brackets.
+	How a value reads in a dropdown: the label in the wiki's language, lowercased so
+	that the list reads as a set of values rather than as prose, followed by the
+	stored value in brackets — but only when the two differ, which in English is
+	almost never.
 -->
 \procedure bf-vocab-option(field,value)
 \whitespace trim
 <$let icon={{{ [function[bf-vocab-icon],<field>,<value>] }}}
-	label={{{ [function[bf-vocab-label],<field>,<value>] }}}
-	english={{{ [[$:/language]get[text]get[name]else[en-GB]prefix[en]then[yes]else[no]] }}}
-	body={{{ [<english>match[yes]then<value>] :else[<value>addsuffix[ (]addsuffix<label>addsuffix[)]] }}}
+	label={{{ [function[bf-vocab-label],<field>,<value>lowercase[]] }}}
+	body={{{ [<label>match<value>then<label>] :else[<label>addsuffix[ (]addsuffix<value>addsuffix[)]] }}}
 >
 <$text text={{{ [<icon>addsuffix[ ]addsuffix<body>trim[]] }}}/>
 </$let>

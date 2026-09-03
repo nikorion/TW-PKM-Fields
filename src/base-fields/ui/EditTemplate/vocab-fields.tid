@@ -1,0 +1,13 @@
+title: $:/plugins/nikorion/base-fields/ui/EditTemplate/vocab-fields
+tags: $:/tags/EditTemplate
+list-after: $:/core/ui/EditTemplate/type
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<!-- Nature and Status, on a row of their own right under the Type row. -->
+
+<div class="bf-extra-row">
+<$transclude $variable="bf-select-field" field="nature"/>
+<$transclude $variable="bf-select-field" field="status"/>
+</div>

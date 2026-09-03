@@ -1,7 +1,0 @@
-title: $:/plugins/nikorion/base-fields/ui/EditTemplate/project
-tags: $:/tags/EditTemplate
-list-after: $:/plugins/nikorion/base-fields/ui/EditTemplate/tools
-type: text/vnd.tiddlywiki
-
-\whitespace trim
-<$transclude $variable="bf-project-field"/>
