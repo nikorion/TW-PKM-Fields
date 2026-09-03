@@ -1,0 +1,7 @@
+title: $:/plugins/nikorion/base-fields/ui/EditTemplate/tools
+tags: $:/tags/EditTemplate
+list-after: $:/core/ui/EditTemplate/tags
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+<$transclude $variable="bf-tools-field"/>

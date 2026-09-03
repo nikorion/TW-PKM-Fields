@@ -33,7 +33,9 @@ pnpm build   # dist/TW-Base-Fields-Plugin.json + docs/TW-Base-Fields-Wiki.html
 
 ## Note
 
-The plugin ships verbatim copies of two core tiddlers, `$:/core/ui/EditTemplate/type` and `$:/core/ui/EditTemplate/tags`, with the extra controls inserted inside them — that is the only way to share their flex row. Upgrading TiddlyWiki will not bring in upstream changes to those two tiddlers until this plugin is updated too.
+The plugin ships one core override: `$:/core/ui/EditTemplate/type`, a verbatim copy of the core tiddler with Nature, Status and Project inserted into it. Upgrading TiddlyWiki will not bring in upstream changes to that tiddler until this plugin is updated too.
+
+Tools overrides nothing: it stays a section of its own, placed beside the tags box by turning the container the edit-template sections already share into a two-column grid. Should the edit form's internal nesting ever change, the two boxes just stack again.
 
 ## License
 

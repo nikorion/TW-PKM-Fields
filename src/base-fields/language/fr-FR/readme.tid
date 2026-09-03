@@ -11,7 +11,7 @@ Ajoute quatre champs du quotidien au template d'édition des tiddlers :
 |`project` |texte libre, avec un menu des valeurs déjà utilisées dans le wiki |texte libre |
 |`tools` |champ liste, édité comme les tags, sur la ligne Tags |une liste de titres |
 
-`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre piloté par la macro core `tag-picker` — les deux sélecteurs restent strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement.
+`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre piloté par la macro core `tag-picker` — les deux sélecteurs restent strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. En dessous de 1000 px de largeur de fenêtre, les deux encadrés se réempilent.
 
 !! Vocabulaires contrôlés
 
@@ -32,14 +32,14 @@ Deux aides sont exposées globalement pour les templates de vue et les listes : 
 
 !! Fonctionnement
 
-Partager une ligne, c'est partager un conteneur flex, et le template d'édition rend chacune de ses sections comme un bloc distinct — le plugin livre donc une copie conforme de deux tiddlers core, avec les contrôles supplémentaires insérés dedans :
+Le template d'édition rend chacune de ses sections comme un bloc distinct : mettre des contrôles sur une même ligne passe donc par l'une de deux voies — ce plugin emprunte chacune une fois.
 
-* `$:/core/ui/EditTemplate/type` — Nature, Statut et Projet entrent dans le `tc-edit-type-selector-wrapper` existant
-* `$:/core/ui/EditTemplate/tags` — l'encadré des tags et celui des outils entrent dans une même ligne flex
+''Nature, Statut et Projet'' entrent dans le contrôle de type lui-même : `$:/core/ui/EditTemplate/type` est livré comme copie conforme du tiddler core, avec les trois contrôles insérés dans le `tc-edit-type-selector-wrapper` existant. C'est une ''surcharge core'' : mettre TiddlyWiki à jour n'apportera pas les évolutions amont de ce tiddler tant que ce plugin n'est pas mis à jour lui aussi.
 
-Trois conséquences à connaître :
+''Outils'' emprunte l'autre voie, et ne surcharge rien. Il reste une section à part entière (`list-after: $:/core/ui/EditTemplate/tags`), et la feuille de style transforme le conteneur que les sections partagent déjà en grille à deux colonnes : chaque section s'étale sur les deux colonnes, sauf l'encadré des tags et celui des outils, qui en prennent une chacune. Le tiddler des tags — celui qui, lui, change d'une version de TiddlyWiki à l'autre — reste intact, et rien n'entre en conflit avec un autre plugin qui le styliserait ou le surchargerait. La contrepartie : le sélecteur s'appuie sur le nesting interne du formulaire (`.tc-keyboard > .tc-keyboard`) ; si celui-ci changeait un jour, les deux encadrés se réempileraient simplement — visible au premier coup d'oeil, plutôt que faux en silence.
 
-# ce sont des ''surcharges core'' — mettre TiddlyWiki à jour n'apportera pas les évolutions amont de ces deux tiddlers tant que ce plugin n'est pas mis à jour lui aussi
+Deux autres points pris en charge par la feuille de style et le balisage :
+
 # la feuille de style neutralise le `min-width` core calculé par `set-type-selector-min-width`, qui sans cela empêcherait le contrôle de type de rétrécir
 # le template d'édition définit une seule fois pour tout le formulaire les tiddlers d'état de la saisie de tag ; le sélecteur d'outils les masque (`$:/temp/NewToolName…`), sans quoi les deux sélecteurs partageraient une même saisie et un nom d'outil à moitié tapé serait ajouté comme //tag// par le raccourci clavier d'enregistrement
 
