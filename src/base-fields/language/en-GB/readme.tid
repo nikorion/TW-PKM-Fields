@@ -31,7 +31,7 @@ Only the slug is ever written to the field. Icons and labels are display-only, r
 * the //icons// live in `vocab/icons.multids`, keyed `<field>/<value>`
 * the //labels// live in `language/<lang>/vocab.multids`, keyed `Vocab/<field>/<value>`
 
-A dropdown entry shows the label in the wiki's language, lowercased, followed by the stored value in brackets when the two differ — `extrait (snippet)` in French, plain `snippet` in English. Each value can also carry a one-line description, shown as a tooltip on hover: the `Vocab/<field>/<value>/Hint` strings, optional.
+A value shows the same way everywhere, dropdowns included: its icon and its label in the wiki's language — `Snippet` in English, `Extrait` in French. The slug never appears; it is an internal identifier, not something to read. Each value can also carry a one-line description, shown as a tooltip on hover: the `Vocab/<field>/<value>/Hint` strings, optional.
 
 Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one.
 
@@ -42,7 +42,7 @@ Shipped out of the box:
 
 Helpers are exposed globally, for use in view templates and lists.
 
-`bf-vocab-item` (icon + label) and `bf-vocab-option` (the dropdown form) are //procedures//. A procedure called as `<<name arg>>` receives its arguments as literal text, so a field's value has to be passed through a transclusion rather than a macro call:
+`bf-vocab-item` (icon + label) is a //procedure//. A procedure called as `<<name arg>>` receives its arguments as literal text, so a field's value has to be passed through a transclusion rather than a macro call:
 
 ```
 <$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>

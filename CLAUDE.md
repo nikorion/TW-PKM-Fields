@@ -12,7 +12,7 @@ src/base-fields/
   ui/EditTemplate/vocab-fields.tid  ← section Nature + Statut, list-after: $:/core/ui/EditTemplate/type
   macros/edit-fields.tid      ← bf-select-field, bf-project-field, bf-tools-field, bf-tool-pill,
                                  bf-delete-field-button, bf-clear-empty-field
-  macros/vocab.tid            ← bf-vocab-values / -label / -icon / -hint / -item / -option
+  macros/vocab.tid            ← bf-vocab-values / -label / -icon / -hint / -item
   vocab/nature.tid            ← valeurs autorisées + ordre, dans le champ `list`
   vocab/status.tid
   vocab/icons.multids         ← clés `<champ>/<valeur>` → émoji

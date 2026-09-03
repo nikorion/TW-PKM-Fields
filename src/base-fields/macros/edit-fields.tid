@@ -54,7 +54,7 @@ tags: $:/tags/Global
 <option value=""><$transclude $variable="base-fields-lingo" title=<<placeholderKey>>/></option>
 <$list filter="[function[bf-vocab-values],<field>]" variable="slug">
 <$let hint={{{ [function[bf-vocab-hint],<field>,<slug>] }}}>
-<option value=<<slug>> title=<<hint>>><$transclude $variable="bf-vocab-option" field=<<field>> value=<<slug>>/></option>
+<option value=<<slug>> title=<<hint>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
 </$let>
 </$list>
 </$select>

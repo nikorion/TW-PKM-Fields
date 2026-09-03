@@ -31,7 +31,7 @@ Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement �
 * les //icônes// vivent dans `vocab/icons.multids`, clé `<champ>/<valeur>`
 * les //libellés// vivent dans `language/<lang>/vocab.multids`, clé `Vocab/<champ>/<valeur>`
 
-Une entrée de liste déroulante affiche le libellé dans la langue du wiki, en minuscules, suivi entre parenthèses de la valeur stockée quand les deux diffèrent — `extrait (snippet)` en français, `snippet` tout court en anglais. Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives.
+Une valeur s'affiche partout de la même façon, listes déroulantes comprises : son icône et son libellé dans la langue du wiki — `Snippet` en anglais, `Extrait` en français. Le slug n'apparaît jamais : c'est un identifiant interne, pas quelque chose à lire. Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives.
 
 Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône.
 
@@ -42,7 +42,7 @@ Livré tel quel :
 
 Des aides sont exposées globalement, pour les templates de vue et les listes.
 
-`bf-vocab-item` (icône + libellé) et `bf-vocab-option` (la forme des listes déroulantes) sont des //procédures//. Une procédure appelée en `<<nom arg>>` reçoit ses arguments comme du texte littéral : la valeur d'un champ doit donc passer par une transclusion, pas par un appel de macro.
+`bf-vocab-item` (icône + libellé) est une //procédure//. Une procédure appelée en `<<nom arg>>` reçoit ses arguments comme du texte littéral : la valeur d'un champ doit donc passer par une transclusion, pas par un appel de macro.
 
 ```
 <$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>

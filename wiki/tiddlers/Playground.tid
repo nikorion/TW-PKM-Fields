@@ -35,7 +35,6 @@ Edit this tiddler to see the extra fields: ''Nature'', ''Status'' and ''Project'
 
 |!Call |!Result |
 |`<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>` |<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/> |
-|`<$transclude $variable="bf-vocab-option" field="nature" value={{!!nature}}/>` |<$transclude $variable="bf-vocab-option" field="nature" value={{!!nature}}/> |
 |`[function[bf-vocab-label],[nature],<slug>]` |<$let slug={{!!nature}}>{{{ [function[bf-vocab-label],[nature],<slug>] }}}</$let> |
 |`[function[bf-vocab-icon],[nature],<slug>]` |<$let slug={{!!nature}}>{{{ [function[bf-vocab-icon],[nature],<slug>] }}}</$let> |
 |`[function[bf-vocab-hint],[nature],<slug>]` |<$let slug={{!!nature}}>{{{ [function[bf-vocab-hint],[nature],<slug>] }}}</$let> |

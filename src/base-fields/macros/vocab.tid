@@ -31,22 +31,10 @@ tags: $:/tags/Global
 \end
 
 <!--
-	How a value reads in a dropdown: the label in the wiki's language, lowercased so
-	that the list reads as a set of values rather than as prose, followed by the
-	stored value in brackets — but only when the two differ, which in English is
-	almost never.
+	Icon + label, as a single text node — what a value looks like everywhere it is
+	shown, dropdowns included. Both are display-only: neither ever enters the field,
+	which keeps holding the slug alone.
 -->
-\procedure bf-vocab-option(field,value)
-\whitespace trim
-<$let icon={{{ [function[bf-vocab-icon],<field>,<value>] }}}
-	label={{{ [function[bf-vocab-label],<field>,<value>lowercase[]] }}}
-	body={{{ [<label>match<value>then<label>] :else[<label>addsuffix[ (]addsuffix<value>addsuffix[)]] }}}
->
-<$text text={{{ [<icon>addsuffix[ ]addsuffix<body>trim[]] }}}/>
-</$let>
-\end
-
-<!-- Icon + label, as a single text node. The icon is display-only: it never enters the field. -->
 \procedure bf-vocab-item(field,value)
 \whitespace trim
 <$let icon={{{ [function[bf-vocab-icon],<field>,<value>] }}} label={{{ [function[bf-vocab-label],<field>,<value>] }}}>
