@@ -23,6 +23,8 @@ Les quatre champs sont masqués de la liste des champs en bas de l'éditeur, via
 
 !! Vocabulaires contrôlés
 
+Un //slug// est l'identifiant court, en minuscules et sans ponctuation, qui tient lieu de valeur — `snippet`, `raw`. Le mot vient de l'imprimerie : le slug était une ligne de texte fondue d'un seul bloc de métal, et les salles de rédaction ont fini par appeler ainsi le nom de travail court inscrit sur un article en cours de fabrication. Le web l'a gardé pour l'identifiant qui représente une chose dans une URL — ou, ici, dans un champ.
+
 Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement à l'affichage et sont résolus au rendu : le wiki reste lisible et filtrable quelle que soit la langue.
 
 * les //valeurs autorisées et leur ordre// vivent dans le champ `list` de `vocab/nature` et `vocab/status`

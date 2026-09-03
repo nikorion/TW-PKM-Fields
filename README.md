@@ -11,6 +11,8 @@ A [TiddlyWiki](https://tiddlywiki.com) plugin adding four everyday fields to the
 
 The four controls come in two rows added to the edit template as ordinary sections — Tools and Project under the tags row, Nature and Status under the type row. **No core tiddler is overridden.** Each row packs its blocks to the left at their natural width, and wraps when the tiddler gets too narrow.
 
+A *slug* is the short, lowercase, unpunctuated identifier that stands for a value — `snippet`, `raw`. The word comes from the printing trade: a slug was a line of text cast in a single piece of metal, and newsrooms came to call the short working name written on a story in production its slug; web publishing kept it for the identifier that stands for something in a URL, or here in a field.
+
 Only the slug is ever stored for `nature` and `status`. Icons and labels (en-GB, fr-FR) are display-only and resolved at render time, so a wiki stays readable and filterable in any language.
 
 ## Customising the vocabularies

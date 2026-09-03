@@ -23,6 +23,8 @@ The four fields are hidden from the list of fields at the bottom of the editor, 
 
 !! Controlled vocabularies
 
+A //slug// is the short, lowercase, unpunctuated identifier that stands for a value — `snippet`, `raw`. The word comes from the printing trade: a slug was a line of text cast in a single piece of metal, and newsrooms came to call the short working name written on a story in production its slug. Web publishing kept it for the identifier that stands for something in a URL, or here in a field.
+
 Only the slug is ever written to the field. Icons and labels are display-only, resolved at render time, so a wiki stays readable and filterable in any language:
 
 * the //allowed values and their order// live in the `list` field of `vocab/nature` and `vocab/status`
