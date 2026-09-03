@@ -16,8 +16,19 @@ type: text/vnd.tiddlywiki
 	gap: 4px 8px;
 }
 
+/*
+	The core label carries `tc-small-gap-right` (0.5em), which on a flex row adds to
+	the row's own gap — Type would sit visibly further from its control than the
+	other three. One distance for all four, expressed once.
+*/
 .tc-edit-type-selector-wrapper > em {
 	flex: 0 0 auto;
+	margin-inline-end: 0;
+}
+
+.bf-edit-field > em,
+.bf-tools-field > em {
+	margin-inline-end: 8px;
 }
 
 /*
@@ -65,6 +76,19 @@ type: text/vnd.tiddlywiki
 	box-sizing: border-box;
 }
 
+/*
+	While the blank first option is the selected one, the select reads as a
+	placeholder rather than as a value. `:has()` is a progressive nicety: without
+	it the hint simply shows in the normal text colour.
+*/
+.bf-edit-select:has(option[value=""]:checked) {
+	color: <<colour muted-foreground>>;
+}
+
+.bf-edit-select option {
+	color: <<colour foreground>>;
+}
+
 .bf-delete-field {
 	flex: 0 0 auto;
 	padding: 0 2px;
@@ -110,7 +134,13 @@ type: text/vnd.tiddlywiki
 
 .tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	/*
+		The tags box is sized to its own content and the tools and project controls
+		share what is left, so the three sit flush against each other rather than
+		meeting at fixed marks. The `minmax()` floors keep them usable when the tags
+		box grows.
+	*/
+	grid-template-columns: auto minmax(18em, 1.2fr) minmax(12em, 1fr);
 	align-items: start;
 	column-gap: 8px;
 }
@@ -128,10 +158,16 @@ type: text/vnd.tiddlywiki
 	grid-column: 2;
 }
 
-/* Too narrow for two columns: each box takes the full width again. */
+.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-edit-field-project {
+	grid-column: 3;
+	align-items: baseline;
+}
+
+/* Too narrow for three columns: each control takes the full width again. */
 @media (max-width: 1000px) {
 	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-tools-field {
+	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-tools-field,
+	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-edit-field-project {
 		grid-column: 1 / -1;
 	}
 }
@@ -153,11 +189,4 @@ type: text/vnd.tiddlywiki
 .bf-tools-field .bf-tools-box {
 	flex: 1 1 auto;
 	min-width: 0;
-}
-
-.bf-tool-label {
-	display: inline-block;
-	background-color: <<colour tag-background>>;
-	color: <<colour tag-foreground>>;
-	fill: <<colour tag-foreground>>;
 }

@@ -1,16 +1,19 @@
 title: $:/plugins/nikorion/base-fields/language/en-GB/
 
-Fields/nature/Prompt: Nature
+Fields/nature/Prompt: Nature:
+Fields/nature/Placeholder: functional role
 Fields/nature/Delete/Hint: Clear the nature field
-Fields/status/Prompt: Status
+Fields/status/Prompt: Status:
+Fields/status/Placeholder: tiddler maturity
 Fields/status/Delete/Hint: Clear the status field
-Fields/project/Prompt: Project
+Fields/project/Prompt: Project:
 Fields/project/Placeholder: project name
 Fields/project/Dropdown/Hint: Pick an existing project
 Fields/project/Dropdown/Empty: No project used yet
 Fields/project/Delete/Hint: Clear the project field
-Fields/tools/Prompt: Tools
+Fields/tools/Prompt: Tool(s) used:
 Fields/tools/Placeholder: tool name
 Fields/tools/Dropdown/Hint: Pick an existing tool
 Fields/tools/Dropdown/Empty: No tool used yet
 Fields/tools/Remove/Hint: Remove this tool
+Fields/ActualName/Hint: actual field name:

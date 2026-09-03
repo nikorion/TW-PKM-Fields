@@ -52,7 +52,6 @@ first-search-filter: [all[shadows+tiddlers]prefix[$:/language/Docs/Types/]sort[d
 <!-- Base Fields: extra controls sharing the Type row -->
 <$transclude $variable="bf-select-field" field="nature"/>
 <$transclude $variable="bf-select-field" field="status"/>
-<$transclude $variable="bf-project-field"/>
 <!-- /Base Fields -->
 </div>
 </$set>

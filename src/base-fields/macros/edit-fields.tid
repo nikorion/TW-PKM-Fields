@@ -31,21 +31,30 @@ tags: $:/tags/Global
 <!-- Single value picked from a controlled vocabulary (nature, status). -->
 \procedure bf-select-field(field)
 \whitespace trim
-<$let promptKey={{{ [[Fields/]addsuffix<field>addsuffix[/Prompt]] }}}>
+<$let promptKey={{{ [[Fields/]addsuffix<field>addsuffix[/Prompt]] }}}
+	placeholderKey={{{ [[Fields/]addsuffix<field>addsuffix[/Placeholder]] }}}
+>
 <span class="bf-edit-field">
-<em class="tc-edit tc-small-gap-right"><$transclude $variable="base-fields-lingo" title=<<promptKey>>/></em>
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ ]addsuffix<field>] }}}><$transclude $variable="base-fields-lingo" title=<<promptKey>>/></em>
+<!--
+	`default` is not optional: with no value the select widget assigns `undefined`
+	to the DOM node, which matches no option at all — the control would go blank
+	instead of falling back to the placeholder option below.
+-->
 <$select tiddler=<<currentTiddler>> field=<<field>> class="tc-edit-texteditor bf-edit-select"
-	tabindex={{$:/config/EditTabIndex}} actions=<<bf-clear-empty-field>>
+	default="" tabindex={{$:/config/EditTabIndex}} actions=<<bf-clear-empty-field>>
 >
 <!--
-	A blank first option, with no label of its own: it is what an empty field shows,
-	and without it the select would display the first vocabulary value on a tiddler
-	that has no value at all. Clearing is done with the button next to the control.
+	A `<select>` has no placeholder attribute, so its first option plays that part:
+	it is what an empty field shows, and without it the select would display the
+	first vocabulary value on a tiddler that has no value at all. The stylesheet
+	greys the control while this option is the one selected. Clearing is done with
+	the button next to the control.
 -->
-<option value=""></option>
+<option value=""><$transclude $variable="base-fields-lingo" title=<<placeholderKey>>/></option>
 <$list filter="[function[bf-vocab-values],<field>]" variable="slug">
 <$let hint={{{ [function[bf-vocab-hint],<field>,<slug>] }}}>
-<option value=<<slug>> title=<<hint>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
+<option value=<<slug>> title=<<hint>>><$transclude $variable="bf-vocab-option" field=<<field>> value=<<slug>>/></option>
 </$let>
 </$list>
 </$select>
@@ -54,35 +63,69 @@ tags: $:/tags/Global
 </$let>
 \end
 
-<!-- Free single value, with a dropdown of the values already used in the wiki. -->
+<!--
+	A single free value, typed or picked from the values already used in the wiki —
+	the same machinery as the tools input and as the core Type control, except that
+	the input writes straight into the field instead of feeding a list.
+-->
+
+\procedure bf-clear-project-state()
+<$action-deletetiddler $filter="[<projectInput>] [<projectSelection>] [<projectRefresh>] [<projectPopup>]"/>
+\end
+
+\procedure bf-cancel-project-actions()
+<%if [<projectInput>has[text]] %>
+<<bf-clear-project-state>>
+<%else%>
+<<cancel-delete-tiddler-actions "cancel">>
+<%endif%>
+\end
+
 \procedure bf-project-field()
 \whitespace trim
-<$let popupState=<<qualify "$:/state/popup/bf-project-dropdown">>>
+<$let saveTiddler=<<currentTiddler>>
+	projectInput=<<qualify "$:/temp/Project/input">>
+	projectSelection=<<qualify "$:/temp/Project/selected-item">>
+	projectRefresh=<<qualify "$:/temp/Project/refresh">>
+	projectPopup=<<qualify "$:/state/popup/bf-project-dropdown">>
+>
 <span class="bf-edit-field bf-edit-field-project">
-<em class="tc-edit tc-small-gap-right"><<base-fields-lingo "Fields/project/Prompt">></em>
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ project]] }}}><<base-fields-lingo "Fields/project/Prompt">></em>
 <span class="bf-project-control">
-<$edit-text tiddler=<<currentTiddler>> field="project" tag="input" class="tc-edit-texteditor bf-edit-input"
-	placeholder=<<base-fields-lingo-text "Fields/project/Placeholder">> tabindex={{$:/config/EditTabIndex}}
+<$transclude $variable="keyboard-driven-input"
+	tiddler=<<currentTiddler>> field="project" storeTitle=<<projectInput>>
+	refreshTitle=<<projectRefresh>> selectionStateTitle=<<projectSelection>>
+	tag="input" default="" class="tc-edit-texteditor tc-popup-handle bf-edit-input"
+	placeholder=<<base-fields-lingo-text "Fields/project/Placeholder">>
+	focusPopup=<<projectPopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	configTiddlerFilter="[[$:/plugins/nikorion/base-fields/search-filters]]"
+	firstSearchFilterField="project-search-filter"
+	inputCancelActions=<<bf-cancel-project-actions>>
 />
-<$button popup=<<popupState>> class="tc-btn-invisible tc-btn-dropdown"
+<$button popup=<<projectPopup>> class="tc-btn-invisible tc-btn-dropdown"
 	tooltip=<<base-fields-lingo-text "Fields/project/Dropdown/Hint">>
 	aria-label=<<base-fields-lingo-text "Fields/project/Dropdown/Hint">>
 >
 {{$:/core/images/down-arrow}}
 </$button>
 <div class="tc-block-dropdown-wrapper">
-<$reveal state=<<popupState>> type="nomatch" text="" default="">
+<$reveal state=<<projectPopup>> type="nomatch" text="" default="">
+<$let userInput={{{ [<projectInput>get[text]] }}}>
 <div class="tc-block-dropdown bf-project-dropdown">
-<$list filter="[all[tiddlers]!has[draft.of]has[project]get[project]sort[]]" variable="proj"
+<$list filter="[all[tiddlers]!has[draft.of]has[project]get[project]sort[]search:title<userInput>]" variable="proj"
 	emptyMessage="""<div class="tc-dropdown-item"><<base-fields-lingo "Fields/project/Dropdown/Empty">></div>"""
 >
-<$button tag="a" class="tc-btn-invisible bf-dropdown-item">
-<$action-setfield $field="project" $value=<<proj>>/>
-<$action-deletetiddler $filter="[<popupState>]"/>
+<$button tag="a" class={{{ [<proj>addsuffix[-primaryList]] :except[<projectSelection>get[text]] :and[then[tc-btn-invisible bf-dropdown-item]else[tc-btn-invisible bf-dropdown-item tc-tag-button-selected]] }}}>
+<$action-setfield $tiddler=<<saveTiddler>> $field="project" $value=<<proj>>/>
+<$action-deletetiddler $filter="[<projectInput>] [<projectSelection>] [<projectPopup>]"/>
+<!-- The input keeps showing what was typed unless it is told to re-read the field:
+	an edit-text widget leaves a focused element alone so as not to clobber typing. -->
+<$action-setfield $tiddler=<<projectRefresh>> text="yes"/>
 <$text text=<<proj>>/>
 </$button>
 </$list>
 </div>
+</$let>
 </$reveal>
 </div>
 </span>
@@ -105,6 +148,45 @@ tags: $:/tags/Global
 	through the suggestions, Escape to clear) while owning the placeholder and the
 	state tiddlers.
 -->
+
+<!--
+	A tool pill, rendered exactly like a tag pill: same classes, same per-value
+	colour cascade (`$:/tags/TiddlerColourFilter`), same contrast-computed
+	foreground, same icon cascade. The core equivalent lives in
+	`$:/core/ui/EditTemplate/tags` as the local procedures `tag-body`/`tag-body-inner`,
+	which are not reachable from outside that tiddler — hence this copy rather than a
+	call. Keep it in step with the core version when upgrading TiddlyWiki.
+-->
+\procedure bf-tool-pill(tool)
+\whitespace trim
+<$let palette={{$:/palette}}>
+<$let colour={{{ [<tool>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerColourFilter]!is[draft]get[text]] }}}
+	icon={{{ [<tool>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerIconFilter]!is[draft]get[text]] }}}
+	colourA={{{ [<palette>getindex[foreground]] }}}
+	colourB={{{ [<palette>getindex[background]] }}}
+	fallbackTarget={{{ [<palette>getindex[tag-background]] }}}
+>
+<$wikify name="foregroundColor" text="""<$macrocall $name="contrastcolour" target=<<colour>> fallbackTarget=<<fallbackTarget>> colourA=<<colourA>> colourB=<<colourB>>/>""">
+<$let backgroundColor=<<colour>>>
+<span class="tc-tag-label tc-tag-list-item tc-small-gap-right"
+	data-tag-title=<<tool>>
+	style=`color:$(foregroundColor)$; fill:$(foregroundColor)$; background-color:$(backgroundColor)$;`
+>
+<$transclude tiddler=<<icon>>/>
+<$text text=<<tool>>/>
+<$button class="tc-btn-invisible tc-remove-tag-button" style.fill=<<foregroundColor>>
+	tooltip=<<base-fields-lingo-text "Fields/tools/Remove/Hint">>
+	aria-label=<<base-fields-lingo-text "Fields/tools/Remove/Hint">>
+>
+<$action-listops $tiddler=<<saveTiddler>> $field="tools" $subfilter="-[<tool>]"/>
+{{$:/core/images/close-button}}
+</$button>
+</span>
+</$let>
+</$wikify>
+</$let>
+</$let>
+\end
 
 \procedure bf-clear-tool-state()
 <$action-deletetiddler $filter="[<toolName>] [<toolInput>] [<toolSelection>] [<toolRefresh>] [<toolPopup>]"/>
@@ -140,16 +222,10 @@ tags: $:/tags/Global
 	toolPopup=<<qualify "$:/state/popup/bf-tools-dropdown">>
 >
 <span class="bf-tools-field">
-<em class="tc-edit tc-small-gap-right"><<base-fields-lingo "Fields/tools/Prompt">></em>
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ tools]] }}}><<base-fields-lingo "Fields/tools/Prompt">></em>
 <div class="tc-edit-tags bf-tools-box">
 <$list filter="[<currentTiddler>get[tools]enlist-input[]sort[]]" variable="tool" storyview="pop">
-<span class="tc-tag-label bf-tool-label tc-small-gap-right">
-<$text text=<<tool>>/>
-<$button class="tc-btn-invisible tc-remove-tag-button" tooltip=<<base-fields-lingo-text "Fields/tools/Remove/Hint">> aria-label=<<base-fields-lingo-text "Fields/tools/Remove/Hint">>>
-<$action-listops $tiddler=<<saveTiddler>> $field="tools" $subfilter="-[<tool>]"/>
-{{$:/core/images/close-button}}
-</$button>
-</span>
+<$transclude $variable="bf-tool-pill" tool=<<tool>>/>
 </$list>
 <div class="tc-edit-add-tag">
 <div class="tc-edit-add-tag-ui">
@@ -160,7 +236,8 @@ tags: $:/tags/Global
 	tag="input" default="" class="tc-edit-texteditor tc-popup-handle"
 	placeholder=<<base-fields-lingo-text "Fields/tools/Placeholder">>
 	focusPopup=<<toolPopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
-	configTiddlerFilter="[[$:/plugins/nikorion/base-fields/ui/EditTemplate/tools]]"
+	configTiddlerFilter="[[$:/plugins/nikorion/base-fields/search-filters]]"
+	firstSearchFilterField="tools-search-filter"
 	inputAcceptActions=<<bf-add-tool-actions>>
 	inputCancelActions=<<bf-cancel-tool-actions>>
 />

@@ -30,6 +30,22 @@ tags: $:/tags/Global
 [[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>addsuffix[/Hint]get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>addsuffix[/Hint]get[text]]
 \end
 
+<!--
+	How a value reads in a dropdown: the stored value first, so that picking one also
+	tells you what will be written to the field. In English that is the whole story;
+	in any other language the translated label follows in brackets.
+-->
+\procedure bf-vocab-option(field,value)
+\whitespace trim
+<$let icon={{{ [function[bf-vocab-icon],<field>,<value>] }}}
+	label={{{ [function[bf-vocab-label],<field>,<value>] }}}
+	english={{{ [[$:/language]get[text]get[name]else[en-GB]prefix[en]then[yes]else[no]] }}}
+	body={{{ [<english>match[yes]then<value>] :else[<value>addsuffix[ (]addsuffix<label>addsuffix[)]] }}}
+>
+<$text text={{{ [<icon>addsuffix[ ]addsuffix<body>trim[]] }}}/>
+</$let>
+\end
+
 <!-- Icon + label, as a single text node. The icon is display-only: it never enters the field. -->
 \procedure bf-vocab-item(field,value)
 \whitespace trim

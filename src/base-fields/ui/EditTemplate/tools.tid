@@ -2,7 +2,6 @@ title: $:/plugins/nikorion/base-fields/ui/EditTemplate/tools
 tags: $:/tags/EditTemplate
 list-after: $:/core/ui/EditTemplate/tags
 type: text/vnd.tiddlywiki
-first-search-filter: [all[tiddlers]!has[draft.of]has[tools]get[tools]enlist-input[]sort[]search:title<userInput>]
 
 \whitespace trim
 <$transclude $variable="bf-tools-field"/>
