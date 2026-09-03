@@ -1,0 +1,18 @@
+title: $:/plugins/nikorion/base-fields/language/en-GB/
+
+Vocab/nature/concept: Concept
+Vocab/nature/ref: Ref
+Vocab/nature/guide: Guide
+Vocab/nature/pattern: Pattern
+Vocab/nature/snippet: Snippet
+Vocab/nature/template: Template
+Vocab/nature/decision: Decision
+Vocab/nature/log: Log
+Vocab/nature/hub: Hub
+Vocab/nature/task: Task
+Vocab/nature/tasklist: Tasklist
+Vocab/nature/routine: Routine
+Vocab/status/archived: Archived
+Vocab/status/deprecated: Deprecated
+Vocab/status/stable: Stable
+Vocab/status/raw: Raw

@@ -1,0 +1,7 @@
+title: $:/plugins/nikorion/base-fields/vocab/status
+type: text/vnd.tiddlywiki
+list: archived deprecated stable raw
+
+Allowed values for the `status` field, in display order.
+
+To customise the vocabulary, edit the `list` field above (source file: `src/base-fields/vocab/status.tid`), then add the matching entries to `vocab/icons.multids` and to `language/<lang>/vocab.multids`. A value with no translation falls back to its own slug; a value with no icon simply renders without one.

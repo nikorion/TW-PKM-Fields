@@ -1,0 +1,12 @@
+title: $:/plugins/nikorion/base-fields/language/en-GB/
+
+Fields/nature/Prompt: Nature
+Fields/nature/None: —
+Fields/status/Prompt: Status
+Fields/status/None: —
+Fields/project/Prompt: Project
+Fields/project/Placeholder: project
+Fields/project/Dropdown/Hint: Pick an existing project
+Fields/project/Dropdown/Empty: No project used yet
+Fields/tools/Prompt: Tools
+Fields/tools/Remove/Hint: Remove this tool

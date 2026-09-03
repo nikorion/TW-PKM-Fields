@@ -1,0 +1,122 @@
+title: $:/plugins/nikorion/base-fields/styles/edit-fields
+tags: $:/tags/Stylesheet
+type: text/vnd.tiddlywiki
+
+/*
+	The Type row becomes a single flex line carrying Type, Nature, Status and
+	Project. Every control shares the width evenly and is allowed to shrink, so the
+	row always fits inside the tiddler; below a readable floor it wraps onto a
+	second line rather than squeezing the controls into nothing.
+*/
+
+.tc-edit-type-selector-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 8px;
+}
+
+.tc-edit-type-selector-wrapper > em {
+	flex: 0 0 auto;
+}
+
+/*
+	`10em` is the readable floor of a control: the four of them share whatever room
+	is left, evenly, and wrap once they no longer fit. It also overrides the core
+	min-width computed from the longest type name (`set-type-selector-min-width`),
+	which would otherwise keep the type control from shrinking at all.
+*/
+.tc-edit-type-selector-wrapper > .tc-type-selector-dropdown-wrapper,
+.tc-edit-type-selector-wrapper > .bf-edit-field {
+	flex: 1 1 10em;
+	min-width: 10em;
+}
+
+.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
+	min-width: 0;
+}
+
+.tc-edit-type-selector-wrapper .tc-type-selector {
+	display: flex;
+	align-items: center;
+}
+
+.tc-edit-type-selector-wrapper .tc-type-selector .tc-edit-typeeditor {
+	flex: 1 1 0;
+	min-width: 0;
+	width: 100%;
+}
+
+.bf-edit-field {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+}
+
+.bf-edit-field > em {
+	flex: 0 0 auto;
+}
+
+.bf-edit-field .bf-edit-select,
+.bf-edit-field .bf-edit-input {
+	flex: 1 1 0;
+	min-width: 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.bf-project-control {
+	display: flex;
+	align-items: center;
+	flex: 1 1 0;
+	min-width: 0;
+	position: relative;
+}
+
+/* Drop the suggestions right under the input rather than after the flex row. */
+.bf-project-control .tc-block-dropdown-wrapper {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+.bf-project-dropdown .bf-dropdown-item {
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 3px 14px;
+	color: <<colour foreground>>;
+}
+
+.bf-project-dropdown .bf-dropdown-item:hover {
+	background-color: <<colour dropdown-background>>;
+	color: <<colour foreground>>;
+	text-decoration: none;
+}
+
+/* `tools` sits on its own row, laid out like the tags row. */
+
+.bf-edit-tools {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+.bf-edit-tools > em {
+	flex: 0 0 auto;
+	padding-top: 6px;
+}
+
+.bf-edit-tools .bf-edit-tools-box {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.bf-tool-label {
+	display: inline-block;
+	background-color: <<colour tag-background>>;
+	color: <<colour tag-foreground>>;
+	fill: <<colour tag-foreground>>;
+}

@@ -1,0 +1,31 @@
+title: $:/plugins/nikorion/base-fields/macros/vocab
+tags: $:/tags/Global
+
+<!--
+	Controlled vocabularies for the `nature` and `status` fields.
+
+	A vocabulary lives in `$:/plugins/nikorion/base-fields/vocab/<field>`: its `list`
+	field holds the allowed values, in display order. Only the raw value is ever
+	stored in the tiddler field — the icon and the localised label are resolved at
+	render time by the helpers below.
+-->
+
+\function bf-vocab-values(field)
+[[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>get[list]enlist-input[]]
+\end
+
+\function bf-vocab-label(field,value)
+[[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]] :else[<value>]
+\end
+
+\function bf-vocab-icon(field,value)
+[[$:/plugins/nikorion/base-fields/vocab/icons/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]]
+\end
+
+<!-- Icon + label, as a single text node. The icon is display-only: it never enters the field. -->
+\procedure bf-vocab-item(field,value)
+\whitespace trim
+<$let icon={{{ [function[bf-vocab-icon],<field>,<value>] }}} label={{{ [function[bf-vocab-label],<field>,<value>] }}}>
+<$text text={{{ [<icon>addsuffix[ ]addsuffix<label>trim[]] }}}/>
+</$let>
+\end

@@ -1,0 +1,32 @@
+title: Playground
+nature: guide
+status: raw
+project: TW-Base-Fields
+tools: TiddlyWiki Claude
+type: text/vnd.tiddlywiki
+
+Edit this tiddler to see the extra fields: ''Nature'', ''Status'' and ''Project'' share the Type row, ''Tools'' sits just below.
+
+!! Values stored on this tiddler
+
+<table><tbody>
+<tr><th>Field</th><th>Raw value</th><th>Rendered</th></tr>
+<tr><td><code>nature</code></td><td><code>{{!!nature}}</code></td><td><$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/></td></tr>
+<tr><td><code>status</code></td><td><code>{{!!status}}</code></td><td><$transclude $variable="bf-vocab-item" field="status" value={{!!status}}/></td></tr>
+<tr><td><code>project</code></td><td><code>{{!!project}}</code></td><td></td></tr>
+<tr><td><code>tools</code></td><td><code>{{!!tools}}</code></td><td></td></tr>
+</tbody></table>
+
+!! Full vocabularies
+
+<$list filter="nature status" variable="vocabField">
+<h3><code><$text text=<<vocabField>>/></code></h3>
+<table><tbody>
+<$list filter="[function[bf-vocab-values],<vocabField>]" variable="slug">
+<tr>
+<td><$transclude $variable="bf-vocab-item" field=<<vocabField>> value=<<slug>>/></td>
+<td><code><$text text=<<slug>>/></code></td>
+</tr>
+</$list>
+</tbody></table>
+</$list>

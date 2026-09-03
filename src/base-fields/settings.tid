@@ -1,0 +1,20 @@
+title: $:/plugins/nikorion/base-fields/settings
+tags: $:/tags/ControlPanel/SettingsTab
+caption: <<base-fields-lingo Configs/Caption>>
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<$transclude $variable="base-fields-lingo" title="Settings/Intro" $mode="block"/>
+
+<$list filter="nature status" variable="vocabField">
+<h3><code><$text text=<<vocabField>>/></code></h3>
+<table class="bf-vocab-table"><tbody>
+<$list filter="[function[bf-vocab-values],<vocabField>]" variable="slug">
+<tr>
+<td><$transclude $variable="bf-vocab-item" field=<<vocabField>> value=<<slug>>/></td>
+<td><code><$text text=<<slug>>/></code></td>
+</tr>
+</$list>
+</tbody></table>
+</$list>

@@ -1,0 +1,16 @@
+title: $:/plugins/nikorion/base-fields/vocab/icons/
+
+nature/concept: 🧠
+nature/ref: 📚
+nature/guide: 📘
+nature/pattern: 🧩
+nature/snippet: ✂️
+nature/template: 🧱
+nature/decision: ⚖️
+nature/task: 📌
+nature/tasklist: 📋
+nature/routine: 🔁
+status/archived: 📦
+status/deprecated: 🕸️
+status/stable: ✅
+status/raw: 🚧

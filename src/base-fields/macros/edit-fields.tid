@@ -1,0 +1,67 @@
+title: $:/plugins/nikorion/base-fields/macros/edit-fields
+tags: $:/tags/Global
+
+<!-- Controls rendered on the Type row of the edit template. -->
+
+<!-- Choosing the empty option clears the field instead of storing an empty string. -->
+\procedure bf-clear-empty-field()
+<$list filter="[<currentTiddler>!has<field>]">
+<$action-deletefield $field=<<field>>/>
+</$list>
+\end
+
+<!-- Single value picked from a controlled vocabulary (nature, status). -->
+\procedure bf-select-field(field)
+\whitespace trim
+<$let promptKey={{{ [[Fields/]addsuffix<field>addsuffix[/Prompt]] }}}
+	noneKey={{{ [[Fields/]addsuffix<field>addsuffix[/None]] }}}
+>
+<span class="bf-edit-field">
+<em class="tc-edit tc-small-gap-right"><$transclude $variable="base-fields-lingo" title=<<promptKey>>/></em>
+<$select tiddler=<<currentTiddler>> field=<<field>> class="tc-edit-texteditor bf-edit-select"
+	tabindex={{$:/config/EditTabIndex}} actions=<<bf-clear-empty-field>>
+>
+<option value=""><$transclude $variable="base-fields-lingo" title=<<noneKey>>/></option>
+<$list filter="[function[bf-vocab-values],<field>]" variable="slug">
+<option value=<<slug>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
+</$list>
+</$select>
+</span>
+</$let>
+\end
+
+<!-- Free single value, with a dropdown of the values already used in the wiki. -->
+\procedure bf-project-field()
+\whitespace trim
+<$let popupState=<<qualify "$:/state/popup/bf-project-dropdown">>>
+<span class="bf-edit-field bf-edit-field-project">
+<em class="tc-edit tc-small-gap-right"><<base-fields-lingo "Fields/project/Prompt">></em>
+<span class="bf-project-control">
+<$edit-text tiddler=<<currentTiddler>> field="project" tag="input" class="tc-edit-texteditor bf-edit-input"
+	placeholder=<<base-fields-lingo-text "Fields/project/Placeholder">> tabindex={{$:/config/EditTabIndex}}
+/>
+<$button popup=<<popupState>> class="tc-btn-invisible tc-btn-dropdown"
+	tooltip=<<base-fields-lingo-text "Fields/project/Dropdown/Hint">>
+	aria-label=<<base-fields-lingo-text "Fields/project/Dropdown/Hint">>
+>
+{{$:/core/images/down-arrow}}
+</$button>
+<div class="tc-block-dropdown-wrapper">
+<$reveal state=<<popupState>> type="nomatch" text="" default="">
+<div class="tc-block-dropdown bf-project-dropdown">
+<$list filter="[all[tiddlers]!has[draft.of]has[project]get[project]sort[]]" variable="proj"
+	emptyMessage="""<div class="tc-dropdown-item"><<base-fields-lingo "Fields/project/Dropdown/Empty">></div>"""
+>
+<$button tag="a" class="tc-btn-invisible bf-dropdown-item">
+<$action-setfield $field="project" $value=<<proj>>/>
+<$action-deletetiddler $filter="[<popupState>]"/>
+<$text text=<<proj>>/>
+</$button>
+</$list>
+</div>
+</$reveal>
+</div>
+</span>
+</span>
+</$let>
+\end

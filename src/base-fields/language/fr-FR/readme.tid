@@ -1,0 +1,58 @@
+title: $:/plugins/nikorion/base-fields/language/fr-FR/readme
+type: text/vnd.tiddlywiki
+
+!! Aperçu
+
+Ajoute quatre champs du quotidien au template d'édition des tiddlers :
+
+|!Champ |!Contrôle |!Valeur stockée |
+|`nature` |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
+|`status` |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
+|`project` |texte libre, avec un menu des valeurs déjà utilisées dans le wiki |texte libre |
+|`tools` |champ liste, édité comme les tags |une liste de titres |
+
+`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` occupe sa propre ligne juste en dessous, disposée comme la ligne Tags et pilotée par la macro core `tag-picker`.
+
+!! Vocabulaires contrôlés
+
+Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement à l'affichage et sont résolus au rendu : le wiki reste lisible et filtrable quelle que soit la langue.
+
+* les //valeurs autorisées et leur ordre// vivent dans le champ `list` de `vocab/nature` et `vocab/status`
+* les //icônes// vivent dans `vocab/icons.multids`, clé `<champ>/<valeur>`
+* les //libellés// vivent dans `language/<lang>/vocab.multids`, clé `Vocab/<champ>/<valeur>`
+
+Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône.
+
+Livré tel quel :
+
+* `nature` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
+* `status` — archived, deprecated, stable, raw
+
+`log` et `hub` sont livrés sans icône ; ajoutez la vôtre dans `vocab/icons.multids` si vous en voulez une.
+
+Deux aides sont exposées globalement pour les templates de vue et les listes : `<<bf-vocab-item champ valeur>>` rend icône + libellé, et les fonctions `bf-vocab-label` / `bf-vocab-icon` / `bf-vocab-values` en donnent les morceaux séparément.
+
+!! Fonctionnement
+
+Le plugin livre une surcharge shadow de `$:/core/ui/EditTemplate/type` : une copie conforme du tiddler core avec trois contrôles supplémentaires insérés dans le `tc-edit-type-selector-wrapper` existant, pour qu'ils atterrissent dans le même conteneur flex que Type. Deux conséquences à connaître :
+
+# c'est une ''surcharge core'' — mettre TiddlyWiki à jour n'apportera pas les évolutions amont de ce tiddler tant que ce plugin n'est pas mis à jour lui aussi
+# la feuille de style neutralise le `min-width` core calculé par `set-type-selector-min-width`, qui sans cela empêcherait le contrôle de type de rétrécir
+
+La ligne `tools` est une section d'édition indépendante (`list-after: $:/core/ui/EditTemplate/type`), sans aucune surcharge core.
+
+!! Prérequis
+
+TiddlyWiki >= 5.3.0. Aucune autre dépendance.
+
+---
+
+!! Crédits
+
+Développé avec l'aide d'Anthropic Claude pour le code, la relecture et la documentation.
+
+---
+
+!! Licence
+
+MIT — voir `LICENSE`.

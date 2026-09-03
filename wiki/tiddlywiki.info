@@ -1,0 +1,29 @@
+{
+  "description": "TW-Base-Fields development wiki",
+  "plugins": [
+    "tiddlywiki/filesystem",
+    "tiddlywiki/tiddlyweb",
+    "nikorion/base-fields"
+  ],
+  "themes": [
+    "tiddlywiki/vanilla"
+  ],
+  "languages": [
+    "fr-FR"
+  ],
+  "pluginPath": "../src",
+  "config": {
+    "retain-original-tiddler-path": true
+  },
+  "build": {
+    "plugin-json": [
+      "--output", "dist",
+      "--render", "$:/core/templates/exporters/JsonFile", "TW-Base-Fields-Plugin.json", "text/plain", "", "exportFilter", "[[$:/plugins/nikorion/base-fields]]"
+    ],
+    "html": [
+      "--output", "docs",
+      "--rendertiddler", "$:/core/save/all", "TW-Base-Fields-Wiki.html", "text/plain", "",
+      "publishFilter", "-[[$:/dev/hmr]] -[[$:/config/dev/hmr-port]] -[[$:/config/SyncFilter]] -[[$:/config/FileSystemPaths]] -[[$:/config/OriginalTiddlerPaths]]"
+    ]
+  }
+}
