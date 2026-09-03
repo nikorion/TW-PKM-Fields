@@ -5,9 +5,9 @@ type: text/vnd.tiddlywiki
 
 \whitespace trim
 
-<!-- Nature and Status, on a row of their own right under the Type row. -->
+<!-- Nature and Status, placed beside the type control by the stylesheet. -->
 
-<div class="bf-extra-row">
+<div class="bf-extra-row bf-type-extras">
 <$transclude $variable="bf-select-field" field="nature"/>
 <$transclude $variable="bf-select-field" field="status"/>
 </div>

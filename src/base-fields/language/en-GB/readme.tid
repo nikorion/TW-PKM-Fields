@@ -6,14 +6,16 @@ type: text/vnd.tiddlywiki
 Adds four everyday fields to the tiddler edit template:
 
 |!Field |!Row |!Control |!Stored value |
-|`tools` |under Tags |list field, edited like tags |a list of titles |
-|`project` |under Tags |single value, typed or picked |free text |
-|`nature` |under Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
-|`status` |under Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
+|`tools` |Tags |list field, edited like tags |a list of titles |
+|`project` |Tags |single value, typed or picked |free text |
+|`nature` |Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
+|`status` |Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
 
-The four controls come in two rows, each added to the edit template as an ordinary section: ''Tools'' and ''Project'' just under the tags row, ''Nature'' and ''Status'' just under the type row. No core tiddler is overridden and no core row is touched.
+The four controls join the core rows rather than adding rows of their own: ''Tools'' and ''Project'' beside the tags box, ''Nature'' and ''Status'' beside the type control. No core tiddler is overridden and no core row is touched — the pairing is done in the stylesheet (see //How it works//).
 
-A row packs its blocks to the left at their natural width rather than spreading them across the tiddler, so that a block's own parts stay together — the delete button sits next to the control it clears rather than at the far end of a stretched column. Rows wrap when the tiddler gets too narrow.
+A pair packs its blocks to the left at their natural width rather than spreading them across the column, so that a block's own parts stay together — the delete button sits next to the control it clears rather than at the far end of a stretched column. Below 1000px of window width the pairs drop onto rows of their own.
+
+Tools and Project carry no visible label: their placeholder says what they are for, which spares the width, and hovering either one names the field it writes to.
 
 The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered exactly like tag pills, per-value colour cascade included.
 
@@ -58,7 +60,9 @@ Helpers are exposed globally, for use in view templates and lists.
 
 !! How it works
 
-Everything is an edit-template section: four tiddlers tagged `$:/tags/EditTemplate`, placed with `list-after`, plus a stylesheet, some global procedures and the vocabularies. Nothing overrides a core tiddler, so a TiddlyWiki upgrade carries no risk of silently reverting part of the editor, and nothing collides with another plugin that touches the same rows.
+Everything is an edit-template section: two tiddlers tagged `$:/tags/EditTemplate`, placed with `list-after`, plus a stylesheet, some global procedures and the vocabularies. Nothing overrides a core tiddler, so a TiddlyWiki upgrade carries no risk of silently reverting part of the editor, and nothing collides with another plugin that touches the same rows.
+
+Sharing a row without owning it is the stylesheet's doing: the edit template renders its sections as siblings of one container, so that container becomes a two-column grid — every section spans both columns, except the tags box, the type control and the two added pairs, which take one each. The trade-off is a selector leaning on the form's internal nesting (`.tc-keyboard > .tc-keyboard`): should that ever change, the sections simply stack again, which is visible at a glance rather than silently wrong.
 
 Two details worth knowing:
 

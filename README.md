@@ -4,12 +4,12 @@ A [TiddlyWiki](https://tiddlywiki.com) plugin adding four everyday fields to the
 
 | Field | Row | Control | Stored value |
 |---|---|---|---|
-| `tools` | under Tags | list field, edited like tags | a list of titles |
-| `project` | under Tags | single value, typed or picked | free text |
-| `nature` | under Type | controlled vocabulary, single value | a bare slug (`concept`, `guide`, …) |
-| `status` | under Type | controlled vocabulary, single value | a bare slug (`stable`, `raw`, …) |
+| `tools` | Tags | list field, edited like tags | a list of titles |
+| `project` | Tags | single value, typed or picked | free text |
+| `nature` | Type | controlled vocabulary, single value | a bare slug (`concept`, `guide`, …) |
+| `status` | Type | controlled vocabulary, single value | a bare slug (`stable`, `raw`, …) |
 
-The four controls come in two rows added to the edit template as ordinary sections — Tools and Project under the tags row, Nature and Status under the type row. **No core tiddler is overridden.** Each row packs its blocks to the left at their natural width, and wraps when the tiddler gets too narrow.
+The four controls join the core rows — Tools and Project beside the tags box, Nature and Status beside the type control — with **no core tiddler overridden**: the pairing is done in the stylesheet, by turning the container the edit-template sections share into a two-column grid. Each pair packs its blocks to the left at their natural width, and drops onto a row of its own on a narrow window.
 
 A *slug* is the short, lowercase, unpunctuated identifier that stands for a value — `snippet`, `raw`. The word comes from the printing trade: a slug was a line of text cast in a single piece of metal, and newsrooms came to call the short working name written on a story in production its slug; web publishing kept it for the identifier that stands for something in a URL, or here in a field.
 
@@ -35,7 +35,7 @@ pnpm build   # dist/TW-Base-Fields-Plugin.json + docs/TW-Base-Fields-Wiki.html
 
 ## Note
 
-Everything is a section tagged `$:/tags/EditTemplate` plus a stylesheet: nothing overrides a core tiddler, so a TiddlyWiki upgrade cannot silently revert part of the editor.
+Everything is a section tagged `$:/tags/EditTemplate` plus a stylesheet: nothing overrides a core tiddler, so a TiddlyWiki upgrade cannot silently revert part of the editor. The stylesheet does lean on the edit form's internal nesting to pair the rows; should that change, the sections simply stack again.
 
 ## License
 

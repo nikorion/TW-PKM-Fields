@@ -7,12 +7,12 @@ Fields/status/Prompt: Statut :
 Fields/status/Placeholder: maturité du tiddler
 Fields/status/Delete/Hint: Vider le champ statut
 Fields/project/Prompt: Projet associé :
-Fields/project/Placeholder: nom du projet
+Fields/project/Placeholder: projet de rattachement
 Fields/project/Dropdown/Hint: Choisir un projet existant
 Fields/project/Dropdown/Empty: Aucun projet utilisé pour l'instant
 Fields/project/Delete/Hint: Vider le champ projet
 Fields/tools/Prompt: Outil(s) utilisé(s) :
-Fields/tools/Placeholder: nom de l'outil
+Fields/tools/Placeholder: nom de l'outil utilisé
 Fields/tools/Dropdown/Hint: Choisir un outil existant
 Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil

@@ -6,12 +6,12 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Tools and Project share one row of their own, right under the tags row. Being a
-	single edit-template section, they are one block the stylesheet can lay out as it
-	likes — no need to reach for the container the sections sit in.
+	Tools and Project, meant to sit beside the tags box. Being a section of their
+	own they are a block the stylesheet can place in the row the tags box occupies,
+	which is how they share that row without any core tiddler being overridden.
 -->
 
-<div class="bf-extra-row">
+<div class="bf-extra-row bf-tags-extras">
 <$transclude $variable="bf-tools-field"/>
 <$transclude $variable="bf-project-field"/>
 </div>

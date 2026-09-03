@@ -3,23 +3,86 @@ tags: $:/tags/Stylesheet
 type: text/vnd.tiddlywiki
 
 /*
-	Each pair of controls occupies a row of its own, added to the edit template as a
-	section like any other — the core rows are left exactly as they are.
+	Each pair of controls joins a core row — Nature and Status beside Type, Tools and
+	Project beside Tags — without any core tiddler being overridden.
 
-	A row packs its blocks to the left at their natural width rather than spreading
-	them across the tiddler, so that a block's own parts stay together: the delete
-	button sits right next to the control it clears, not at the far end of a stretched
-	column. Rows wrap when the tiddler is too narrow.
+	The edit template renders its sections as siblings of one container, so that
+	container becomes a two-column grid: every section spans both columns, except the
+	four that pair up, which take one each. The core sections keep column 1, sized to
+	their content; the pairs take column 2. Should the edit form's internal nesting
+	(`.tc-keyboard > .tc-keyboard`) ever change, the sections simply stack again —
+	visible at a glance rather than silently wrong.
 */
 
+.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: start;
+	column-gap: 16px;
+}
+
+.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > * {
+	grid-column: 1 / -1;
+	min-width: 0;
+}
+
+.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
+.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-type-selector-wrapper {
+	grid-column: 1;
+}
+
+.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-extra-row {
+	grid-column: 2;
+}
+
+/*
+	The core sizes the type control from the longest type name
+	(`set-type-selector-min-width`), which would set the width of column 1 for the
+	whole form. Let it shrink to what it actually needs.
+*/
+.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper,
+.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
+	min-width: 0;
+}
+
+/* Too narrow for two columns: every section takes the full width again. */
+@media (max-width: 1000px) {
+	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
+	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-type-selector-wrapper,
+	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-extra-row {
+		grid-column: 1 / -1;
+	}
+}
+
+/*
+	Within a pair, blocks are packed to the left at their natural width rather than
+	spread across the column, so a block's own parts stay together: the delete button
+	sits next to the control it clears, not at the far end of a stretched column.
+*/
+
+/*
+	`nowrap` on purpose: with wrapping, a block one pixel too wide drops onto its own
+	line instead of giving way, and the pair no longer reads as one row. Below the
+	breakpoint above, the whole section takes the full width anyway.
+*/
 .bf-extra-row {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	align-items: baseline;
 	gap: 4px 16px;
 }
 
 .bf-extra-row > * {
+	flex: 0 1 auto;
+	min-width: 0;
+}
+
+/* The tools box is the one that gives: its pills wrap inside it. */
+.bf-tags-extras > .bf-tools-field {
+	flex: 1 1 12em;
+}
+
+.bf-tags-extras > .bf-edit-field-project {
 	flex: 0 0 auto;
 }
 
@@ -66,7 +129,8 @@ type: text/vnd.tiddlywiki
 }
 
 .bf-project-control .bf-edit-input {
-	width: 14em;
+	width: 12em;
+	min-width: 0;
 }
 
 /* Drop the suggestions right under the input rather than after the flex row. */
@@ -103,5 +167,5 @@ type: text/vnd.tiddlywiki
 }
 
 .bf-tools-field .bf-tools-box {
-	min-width: 20em;
+	min-width: 12em;
 }

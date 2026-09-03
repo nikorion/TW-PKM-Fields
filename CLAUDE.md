@@ -3,13 +3,13 @@
 > **Avant toute tâche sur ce plugin, consulter d'abord le `CLAUDE.md` du workspace** (`../CLAUDE.md`) et ses `guides/` : outillage de dev commun (pnpm, `dev.cjs`/HMR, Ctrl+C, git push), pièges PowerShell/Windows, `publishFilter`, conventions de nommage/i18n, symlink. Ci-dessous : uniquement le spécifique à TW-Base-Fields.
 
 ## Ce que c'est
-Plugin TiddlyWiki (`$:/plugins/nikorion/base-fields`) qui ajoute 4 champs au template d'édition, sur deux lignes à lui : `tools` + `project` sous la ligne des tags, `nature` + `status` sous la ligne de type. Aucun JS : que du wikitext + CSS. **Aucune surcharge de tiddler core** — tout passe par des sections `$:/tags/EditTemplate` placées avec `list-after`.
+Plugin TiddlyWiki (`$:/plugins/nikorion/base-fields`) qui ajoute 4 champs au template d'édition, appariés aux lignes du core : `tools` + `project` à côté de l'encadré des tags, `nature` + `status` à côté du contrôle de type. Aucun JS : que du wikitext + CSS. **Aucune surcharge de tiddler core** — tout passe par des sections `$:/tags/EditTemplate` placées avec `list-after`.
 
 ## Structure
 ```
 src/base-fields/
-  ui/EditTemplate/extra-fields.tid  ← section Outils + Projet, list-after: $:/core/ui/EditTemplate/tags
-  ui/EditTemplate/vocab-fields.tid  ← section Nature + Statut, list-after: $:/core/ui/EditTemplate/type
+  ui/EditTemplate/extra-fields.tid  ← Outils + Projet (.bf-tags-extras), list-after: .../EditTemplate/tags
+  ui/EditTemplate/vocab-fields.tid  ← Nature + Statut (.bf-type-extras), list-after: .../EditTemplate/type
   macros/edit-fields.tid      ← bf-select-field, bf-project-field, bf-tools-field, bf-tool-pill,
                                  bf-delete-field-button, bf-clear-empty-field
   macros/vocab.tid            ← bf-vocab-values / -label / -icon / -hint / -item
@@ -28,6 +28,7 @@ src/base-fields/
 - **Ajouter une valeur de vocabulaire** = 3 endroits : champ `list` du `vocab/<champ>.tid`, `vocab/icons.multids`, `language/<lang>/vocab.multids` (deux entrées par langue : `Vocab/<champ>/<valeur>` pour le libellé, `Vocab/<champ>/<valeur>/Hint` pour l'infobulle — la seconde est facultative). Libellé absent → repli sur le slug ; icône absente → rendu sans icône. **Aucune UI de config, volontairement** : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions.
 - **Un saut de ligne dans un attribut** (infobulle des options) s'obtient par `[charcode[10]]` : aucune entité HTML ne serait décodée, TW pose la valeur telle quelle via `setAttribute`.
 - **Seul le slug est stocké** dans le champ. Icônes et libellés sont résolus au rendu — ne jamais les faire entrer dans la valeur.
+- **L'appariement des lignes se fait en CSS**, sur `.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard` (le conteneur des sections) passé en grille 2 colonnes : chaque section s'étale sur `1 / -1` sauf `.tc-edit-tags`, `.tc-edit-type-selector-wrapper` (colonne 1) et `.bf-extra-row` (colonne 2). Dépend du nesting interne du formulaire ; si celui-ci change, les sections se réempilent — panne visible, pas silencieuse.
 - **Ne pas réintroduire de surcharge core.** Deux tentatives ont été écartées : copier `$:/core/ui/EditTemplate/type` pour y loger Nature/Statut, et copier `.../tags` pour y loger Outils. Une surcharge core fige silencieusement l'ancienne version du tiddler à la montée de version TW (`tags.tid` a d'ailleurs changé entre 5.4.1 et master), et entre en collision avec tout autre plugin touchant la même ligne. Une ligne supplémentaire coûte moins cher.
 - **Les saisies outils et projet n'utilisent pas `tag-picker`, et ne doivent pas y revenir.** Cette macro code en dur le placeholder des tags (`$:/language/EditTemplate/Tags/Add/Placeholder`, aucun paramètre pour le changer) et réutilise `newTagNameTiddler`, que `$:/core/ui/EditTemplate` définit une fois pour tout le formulaire : les deux sélecteurs partageraient alors une saisie, et `save-tiddler-actions` (Ctrl+Entrée) ajouterait le texte en cours comme **tag**. Elles pilotent donc `keyboard-driven-input` directement (la macro sur laquelle `tag-picker` et le champ Type du core sont eux-mêmes bâtis), avec leurs propres tiddlers d'état `$:/temp/NewToolName*` et `$:/temp/Project/*`. Les filtres d'autocomplétion vivent sur `search-filters.tid`, atteints via `configTiddlerFilter` + `firstSearchFilterField`.
 - **Dédupliquer explicitement les listes de suggestions** (`each:value[]` pour une valeur simple, `each:list-item[<champ>]` pour un champ liste) : `pushTop` ne déduplique qu'entre un run de filtre et l'accumulateur, **jamais à l'intérieur d'un run**. Un `[all[tiddlers]has[x]get[x]]` en un seul run rend donc une entrée par tiddler, pas par valeur distincte.

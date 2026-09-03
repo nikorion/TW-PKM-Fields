@@ -6,14 +6,16 @@ type: text/vnd.tiddlywiki
 Ajoute quatre champs du quotidien au template d'édition des tiddlers :
 
 |!Champ |!Ligne |!Contrôle |!Valeur stockée |
-|`tools` |sous Tags |champ liste, édité comme les tags |une liste de titres |
-|`project` |sous Tags |valeur unique, saisie ou choisie |texte libre |
-|`nature` |sous Type |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
-|`status` |sous Type |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
+|`tools` |Tags |champ liste, édité comme les tags |une liste de titres |
+|`project` |Tags |valeur unique, saisie ou choisie |texte libre |
+|`nature` |Type |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
+|`status` |Type |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
 
-Les quatre contrôles tiennent sur deux lignes, chacune ajoutée au template d'édition comme une section ordinaire : ''Outils'' et ''Projet'' juste sous la ligne des tags, ''Nature'' et ''Statut'' juste sous la ligne de type. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée.
+Les quatre contrôles rejoignent les lignes du core plutôt que d'en ajouter : ''Outils'' et ''Projet'' à côté de l'encadré des tags, ''Nature'' et ''Statut'' à côté du contrôle de type. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée — l'appariement se fait dans la feuille de style (voir //Fonctionnement//).
 
-Une ligne cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler dans le tiddler : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une colonne étirée. Les lignes passent à la ligne quand le tiddler devient étroit.
+Une paire cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler dans la colonne : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une colonne étirée. En dessous de 1000 px de largeur de fenêtre, les paires passent sur des lignes à elles.
+
+Outils et Projet ne portent pas de libellé visible : leur placeholder dit à quoi ils servent, ce qui épargne la largeur, et les survoler nomme le champ qu'ils écrivent.
 
 Les sélecteurs d'outils et de tags sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. Les pastilles d'outils sont rendues exactement comme celles des tags, cascade de couleur par valeur comprise.
 
@@ -58,7 +60,9 @@ Des aides sont exposées globalement, pour les templates de vue et les listes.
 
 !! Fonctionnement
 
-Tout est section du template d'édition : quatre tiddlers taggés `$:/tags/EditTemplate`, placés par `list-after`, plus une feuille de style, quelques procédures globales et les vocabulaires. Rien ne surcharge de tiddler core : une montée de version de TiddlyWiki ne risque donc pas d'annuler silencieusement une partie de l'éditeur, et rien n'entre en collision avec un autre plugin qui toucherait aux mêmes lignes.
+Tout est section du template d'édition : deux tiddlers taggés `$:/tags/EditTemplate`, placés par `list-after`, plus une feuille de style, quelques procédures globales et les vocabulaires. Rien ne surcharge de tiddler core : une montée de version de TiddlyWiki ne risque donc pas d'annuler silencieusement une partie de l'éditeur, et rien n'entre en collision avec un autre plugin qui toucherait aux mêmes lignes.
+
+Partager une ligne sans la posséder est l'affaire de la feuille de style : le template d'édition rend ses sections comme frères d'un même conteneur, lequel devient une grille à deux colonnes — chaque section s'étale sur les deux colonnes, sauf l'encadré des tags, le contrôle de type et les deux paires ajoutées, qui en prennent une chacun. La contrepartie : un sélecteur qui s'appuie sur le nesting interne du formulaire (`.tc-keyboard > .tc-keyboard`) ; si celui-ci changeait un jour, les sections se réempileraient simplement — visible au premier coup d'oeil, plutôt que faux en silence.
 
 Deux détails à connaître :
 
