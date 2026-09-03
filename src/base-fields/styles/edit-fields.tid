@@ -70,10 +70,6 @@ type: text/vnd.tiddlywiki
 	padding: 0 2px;
 }
 
-.bf-delete-field[disabled] {
-	visibility: hidden;
-}
-
 .bf-project-control {
 	display: flex;
 	align-items: center;

@@ -1,10 +1,8 @@
 title: $:/plugins/nikorion/base-fields/language/en-GB/
 
 Fields/nature/Prompt: Nature
-Fields/nature/None: —
 Fields/nature/Delete/Hint: Clear the nature field
 Fields/status/Prompt: Status
-Fields/status/None: —
 Fields/status/Delete/Hint: Clear the status field
 Fields/project/Prompt: Project
 Fields/project/Placeholder: project name

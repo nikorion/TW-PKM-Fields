@@ -22,6 +22,14 @@ tags: $:/tags/Global
 [[$:/plugins/nikorion/base-fields/vocab/icons/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]]
 \end
 
+<!--
+	Short description of a value, shown as the tooltip of its entry in the dropdown.
+	Optional: a value with no `/Hint` string simply gets no tooltip.
+-->
+\function bf-vocab-hint(field,value)
+[[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>addsuffix[/Hint]get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>addsuffix[/Hint]get[text]]
+\end
+
 <!-- Icon + label, as a single text node. The icon is display-only: it never enters the field. -->
 \procedure bf-vocab-item(field,value)
 \whitespace trim

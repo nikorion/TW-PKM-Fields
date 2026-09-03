@@ -11,7 +11,7 @@ Ajoute quatre champs du quotidien au template d'édition des tiddlers :
 |`project` |texte libre, avec un menu des valeurs déjà utilisées dans le wiki |texte libre |
 |`tools` |champ liste, édité comme les tags, sur la ligne Tags |une liste de titres |
 
-`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre piloté par la macro core `tag-picker` — les deux sélecteurs restent strictement indépendants : les deux sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. En dessous de 1000 px de largeur de fenêtre, les deux encadrés se réempilent.
+`nature`, `status` et `project` partagent la ligne ''Type'' : les quatre contrôles tiennent sur une seule ligne flex et rétrécissent à parts égales — Type compris — pour que la ligne rentre toujours dans la largeur du tiddler, en passant à la ligne plutôt qu'en débordant quand le tiddler est étroit. `tools` partage la ligne ''Tags'', sous la forme d'un second encadré du même genre — les deux sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. En dessous de 1000 px de largeur de fenêtre, les deux encadrés se réempilent.
 
 Nature, Statut et Projet portent chacun le même bouton de suppression que le core place sur Type ; il n'apparaît que si le champ a une valeur.
 
@@ -22,6 +22,8 @@ Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement �
 * les //valeurs autorisées et leur ordre// vivent dans le champ `list` de `vocab/nature` et `vocab/status`
 * les //icônes// vivent dans `vocab/icons.multids`, clé `<champ>/<valeur>`
 * les //libellés// vivent dans `language/<lang>/vocab.multids`, clé `Vocab/<champ>/<valeur>`
+
+Chaque valeur peut aussi porter une description d'une ligne, affichée en infobulle au survol dans la liste déroulante : les chaînes `Vocab/<champ>/<valeur>/Hint`, facultatives — une valeur sans description n'a simplement pas d'infobulle.
 
 Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône.
 

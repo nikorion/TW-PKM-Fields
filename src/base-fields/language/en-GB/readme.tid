@@ -11,7 +11,7 @@ Adds four everyday fields to the tiddler edit template:
 |`project` |free text, with a dropdown of the values already used in the wiki |free text |
 |`tools` |list field, edited like tags, on the Tags row |a list of titles |
 
-`nature`, `status` and `project` share the ''Type'' row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow. `tools` shares the ''Tags'' row, as a second box of the same kind driven by the core `tag-picker` macro — the two are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Below 1000px of window width the two boxes stack again.
+`nature`, `status` and `project` share the ''Type'' row: the four controls sit on one flex line and shrink evenly — Type included — so the row always fits the tiddler width, wrapping instead of overflowing when the tiddler is narrow. `tools` shares the ''Tags'' row, as a second box of the same kind — the two are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Below 1000px of window width the two boxes stack again.
 
 Nature, Status and Project each carry the same clear button the core puts on Type; it only shows when the field has a value.
 
@@ -22,6 +22,8 @@ Only the slug is ever written to the field. Icons and labels are display-only, r
 * the //allowed values and their order// live in the `list` field of `vocab/nature` and `vocab/status`
 * the //icons// live in `vocab/icons.multids`, keyed `<field>/<value>`
 * the //labels// live in `language/<lang>/vocab.multids`, keyed `Vocab/<field>/<value>`
+
+Each value can also carry a one-line description, shown as a tooltip when hovering it in the dropdown: the `Vocab/<field>/<value>/Hint` strings, optional — a value without one simply has no tooltip.
 
 Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one.
 

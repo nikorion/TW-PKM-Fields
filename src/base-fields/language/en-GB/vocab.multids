@@ -16,3 +16,20 @@ Vocab/status/archived: Archived
 Vocab/status/deprecated: Deprecated
 Vocab/status/stable: Stable
 Vocab/status/raw: Raw
+
+Vocab/nature/concept/Hint: An idea explained for its own sake, not a how-to
+Vocab/nature/ref/Hint: Reference material you come back to look things up in
+Vocab/nature/guide/Hint: Step-by-step instructions to get something done
+Vocab/nature/pattern/Hint: A reusable answer to a problem that keeps coming back
+Vocab/nature/snippet/Hint: A short piece of code or text kept to be reused as is
+Vocab/nature/template/Hint: A model to copy when creating something of the same kind
+Vocab/nature/decision/Hint: A settled choice, with its reasons and the options ruled out
+Vocab/nature/log/Hint: A dated, chronological record of what happened
+Vocab/nature/hub/Hint: An entry point that points to other tiddlers
+Vocab/nature/task/Hint: A single thing to do
+Vocab/nature/tasklist/Hint: A set of tasks tracked together
+Vocab/nature/routine/Hint: A procedure repeated on a regular basis
+Vocab/status/archived/Hint: Kept for the record, no longer maintained
+Vocab/status/deprecated/Hint: Superseded: do not rely on it, something newer exists
+Vocab/status/stable/Hint: Reviewed and reliable, safe to build on
+Vocab/status/raw/Hint: Dumped quickly, neither reviewed nor checked

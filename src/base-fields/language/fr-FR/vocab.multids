@@ -16,3 +16,20 @@ Vocab/status/archived: Archivé
 Vocab/status/deprecated: Obsolète
 Vocab/status/stable: Stable
 Vocab/status/raw: Brut
+
+Vocab/nature/concept/Hint: Une notion expliquée pour elle-même, pas un mode d'emploi
+Vocab/nature/ref/Hint: Donnée de référence que l'on revient consulter
+Vocab/nature/guide/Hint: Marche à suivre, pas à pas, pour arriver à un résultat
+Vocab/nature/pattern/Hint: Solution réutilisable à un problème qui revient sans cesse
+Vocab/nature/snippet/Hint: Court fragment de code ou de texte gardé pour être réutilisé tel quel
+Vocab/nature/template/Hint: Modèle à copier pour créer quelque chose du même genre
+Vocab/nature/decision/Hint: Choix tranché, avec ses raisons et les options écartées
+Vocab/nature/log/Hint: Suivi chronologique et daté de ce qui s'est passé
+Vocab/nature/hub/Hint: Point d'entrée qui aiguille vers d'autres tiddlers
+Vocab/nature/task/Hint: Une seule chose à faire
+Vocab/nature/tasklist/Hint: Un ensemble de tâches suivies ensemble
+Vocab/nature/routine/Hint: Procédure répétée à intervalle régulier
+Vocab/status/archived/Hint: Conservé pour mémoire, plus maintenu
+Vocab/status/deprecated/Hint: Dépassé : ne plus s'y fier, une version plus récente existe
+Vocab/status/stable/Hint: Relu et fiable, on peut construire dessus
+Vocab/status/raw/Hint: Jeté vite fait, ni relu ni vérifié
