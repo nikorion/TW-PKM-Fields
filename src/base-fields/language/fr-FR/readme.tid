@@ -28,8 +28,6 @@ Livré tel quel :
 * `nature` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
 * `status` — archived, deprecated, stable, raw
 
-`log` et `hub` sont livrés sans icône ; ajoutez la vôtre dans `vocab/icons.multids` si vous en voulez une.
-
 Deux aides sont exposées globalement pour les templates de vue et les listes : `<<bf-vocab-item champ valeur>>` rend icône + libellé, et les fonctions `bf-vocab-label` / `bf-vocab-icon` / `bf-vocab-values` en donnent les morceaux séparément.
 
 !! Fonctionnement

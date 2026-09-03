@@ -28,8 +28,6 @@ Shipped out of the box:
 * `nature` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
 * `status` — archived, deprecated, stable, raw
 
-`log` and `hub` ship without an icon; add yours to `vocab/icons.multids` if you want one.
-
 Two helpers are exposed globally for use in view templates and lists: `<<bf-vocab-item field value>>` renders icon + label, and the `bf-vocab-label` / `bf-vocab-icon` / `bf-vocab-values` functions give the pieces separately.
 
 !! How it works
