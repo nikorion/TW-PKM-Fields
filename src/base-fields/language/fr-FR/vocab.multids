@@ -1,13 +1,13 @@
 title: $:/plugins/nikorion/base-fields/language/fr-FR/
 
 Vocab/role/concept: Concept
-Vocab/role/ref: Ref
+Vocab/role/ref: Référence
 Vocab/role/guide: Guide
 Vocab/role/pattern: Motif
 Vocab/role/snippet: Extrait
 Vocab/role/template: Modèle
 Vocab/role/decision: Arbitrage
-Vocab/role/log: Log
+Vocab/role/log: Journal
 Vocab/role/hub: Hub
 Vocab/role/task: Tâche
 Vocab/role/tasklist: Liste de tâches
