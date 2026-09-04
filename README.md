@@ -6,20 +6,21 @@ A [TiddlyWiki](https://tiddlywiki.com) plugin adding four everyday fields to the
 |---|---|---|---|
 | `tools` | Tags | list field, edited like tags | a list of titles |
 | `project` | Tags | single value, typed or picked | free text |
-| `nature` | Type | controlled vocabulary, single value | a bare slug (`concept`, `guide`, …) |
-| `status` | Type | controlled vocabulary, single value | a bare slug (`stable`, `raw`, …) |
+| `role` | Type | controlled vocabulary, single value | a bare slug (`concept`, `guide`, …) |
+| `maturity` | Type | controlled vocabulary, single value | a bare slug (`stable`, `raw`, …) |
+| `status` | Type | controlled vocabulary, shown on task roles only | a bare slug (`todo`, `doing`, …) |
 
-The four controls join the core rows — Tools and Project beside the tags box, Nature and Status beside the type control — with **no core tiddler overridden**: the pairing is done in the stylesheet, by turning the container the edit-template sections share into a two-column grid. Each pair packs its blocks to the left at their natural width, and drops onto a row of its own on a narrow window.
+The controls join the core rows — Tools and Project beside the tags box, Role, Maturity and Status beside the type control — with **no core tiddler overridden**: the pairing is done in the stylesheet, by turning the container the edit-template sections share into a two-column grid. Each pair packs its blocks to the left at their natural width, and drops onto a row of its own on a narrow window.
 
 A *slug* is the short, lowercase, unpunctuated identifier that stands for a value — `snippet`, `raw`. The word comes from the printing trade: a slug was a line of text cast in a single piece of metal, and newsrooms came to call the short working name written on a story in production its slug; web publishing kept it for the identifier that stands for something in a URL, or here in a field.
 
-Only the slug is ever stored for `nature` and `status`. Icons and labels (en-GB, fr-FR) are display-only and resolved at render time, so a wiki stays readable and filterable in any language.
+Only the slug is ever stored for `role`, `maturity` and `status`. Icons and labels (en-GB, fr-FR) are display-only and resolved at render time, so a wiki stays readable and filterable in any language.
 
 ## Customising the vocabularies
 
 There is no vocabulary editor in the UI, on purpose: a value added through the interface could not carry its translations. Everything is in the source:
 
-- allowed values and their order — the `list` field of `src/base-fields/vocab/nature.tid` and `vocab/status.tid`
+- allowed values and their order — the `list` field of `src/base-fields/vocab/role.tid`, `vocab/maturity.tid` and `vocab/status.tid`
 - icons — `src/base-fields/vocab/icons.multids`, keyed `<field>/<value>`
 - labels — `src/base-fields/language/<lang>/vocab.multids`, keyed `Vocab/<field>/<value>`
 

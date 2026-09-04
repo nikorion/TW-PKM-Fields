@@ -1,6 +1,7 @@
 title: $:/config/EditTemplateFields/Visibility/
 
-nature: hide
+role: hide
+maturity: hide
 status: hide
 project: hide
 tools: hide

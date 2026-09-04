@@ -3,21 +3,24 @@ type: text/vnd.tiddlywiki
 
 !! Overview
 
-Adds four everyday fields to the tiddler edit template:
+Adds five everyday fields to the tiddler edit template:
 
 |!Field |!Row |!Control |!Stored value |
 |`tools` |Tags |list field, edited like tags |a list of titles |
 |`project` |Tags |single value, typed or picked |free text |
-|`nature` |Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
-|`status` |Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
+|`role` |Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
+|`maturity` |Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
+|`status` |Type |controlled vocabulary, single value, //shown on task roles only// |a bare slug (`todo`, `doing`, …) |
 
-The four controls join the core rows rather than adding rows of their own: ''Tools'' and ''Project'' beside the tags box, ''Nature'' and ''Status'' beside the type control. No core tiddler is overridden and no core row is touched — the pairing is done in the stylesheet (see //How it works//).
+The controls join the core rows rather than adding rows of their own: ''Tools'' and ''Project'' beside the tags box, ''Role'', ''Maturity'' and ''Status'' beside the type control. No core tiddler is overridden and no core row is touched — the pairing is done in the stylesheet (see //How it works//).
 
 A pair packs its blocks to the left at their natural width rather than spreading them across the column, so that a block's own parts stay together — the delete button sits next to the control it clears rather than at the far end of a stretched column. Below 1000px of window width the pairs drop onto rows of their own.
 
 Tools and Project carry no visible label: their placeholder says what they are for, which spares the width, and hovering either one names the field it writes to.
 
 The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered exactly like tag pills, per-value colour cascade included.
+
+''Status'' says how far along a piece of work is, so it only appears where that means something — on a tiddler whose role is `task` or `tasklist`. Which roles those are is set on the vocabulary itself, in the `visible-filter` field of `vocab/status`, so that the rule sits next to the values it governs.
 
 Each control carries the same clear button the core puts on Type, always visible. An empty Nature or Status shows a greyed hint in place of a value — a `<select>` has no placeholder attribute, so its blank first option plays that part. Hovering a label shows the field's real name.
 
@@ -29,7 +32,7 @@ A //slug// is the short, lowercase, unpunctuated identifier that stands for a va
 
 Only the slug is ever written to the field. Icons and labels are display-only, resolved at render time, so a wiki stays readable and filterable in any language:
 
-* the //allowed values and their order// live in the `list` field of `vocab/nature` and `vocab/status`
+* the //allowed values and their order// live in the `list` field of `vocab/role`, `vocab/maturity` and `vocab/status`
 * the //icons// live in `vocab/icons.multids`, keyed `<field>/<value>`
 * the //labels// live in `language/<lang>/vocab.multids`, keyed `Vocab/<field>/<value>`
 
@@ -41,21 +44,22 @@ Adding, removing or reordering a value is done in the plugin source, not through
 
 Shipped out of the box:
 
-* `nature` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
-* `status` — archived, deprecated, stable, raw
+* `role` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
+* `maturity` — archived, deprecated, stable, raw
+* `status` — considering, todo, doing, paused, done, dropped
 
 Helpers are exposed globally, for use in view templates and lists.
 
 `bf-vocab-item` (icon + label) is a //procedure//. A procedure called as `<<name arg>>` receives its arguments as literal text, so a field's value has to be passed through a transclusion rather than a macro call:
 
 ```
-<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>
+<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>
 ```
 
 `bf-vocab-values`, `bf-vocab-label`, `bf-vocab-icon` and `bf-vocab-hint` are //functions//, and give the pieces separately. Call them through the `function` operator, which does bind their parameters:
 
 ```
-<$let slug={{!!nature}}>{{{ [function[bf-vocab-label],[nature],<slug>] }}}</$let>
+<$let slug={{!!role}}>{{{ [function[bf-vocab-label],[role],<slug>] }}}</$let>
 ```
 
 !! How it works

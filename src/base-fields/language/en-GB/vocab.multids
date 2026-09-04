@@ -1,42 +1,54 @@
 title: $:/plugins/nikorion/base-fields/language/en-GB/
 
-Vocab/nature/concept: Concept
-Vocab/nature/ref: Ref
-Vocab/nature/guide: Guide
-Vocab/nature/pattern: Pattern
-Vocab/nature/snippet: Snippet
-Vocab/nature/template: Template
-Vocab/nature/decision: Decision
-Vocab/nature/log: Log
-Vocab/nature/hub: Hub
-Vocab/nature/task: Task
-Vocab/nature/tasklist: Tasklist
-Vocab/nature/routine: Routine
-Vocab/status/archived: Archived
-Vocab/status/deprecated: Deprecated
-Vocab/status/stable: Stable
-Vocab/status/raw: Raw
+Vocab/role/concept: Concept
+Vocab/role/ref: Ref
+Vocab/role/guide: Guide
+Vocab/role/pattern: Pattern
+Vocab/role/snippet: Snippet
+Vocab/role/template: Template
+Vocab/role/decision: Decision
+Vocab/role/log: Log
+Vocab/role/hub: Hub
+Vocab/role/task: Task
+Vocab/role/tasklist: Tasklist
+Vocab/role/routine: Routine
+Vocab/maturity/archived: Archived
+Vocab/maturity/deprecated: Deprecated
+Vocab/maturity/stable: Stable
+Vocab/maturity/raw: Raw
+Vocab/status/considering: Considering
+Vocab/status/todo: To do
+Vocab/status/doing: Doing
+Vocab/status/paused: Paused
+Vocab/status/done: Done
+Vocab/status/dropped: Dropped
 
-Vocab/nature/concept/Hint: Idea explained for its own sake
-Vocab/nature/ref/Hint: Facts you come back to look up
-Vocab/nature/guide/Hint: How-to, step by step
-Vocab/nature/pattern/Hint: Shape that solves a recurring problem
-Vocab/nature/snippet/Hint: Fragment to copy as is
-Vocab/nature/template/Hint: Starting point to duplicate
-Vocab/nature/decision/Hint: Settled choice, and why
-Vocab/nature/log/Hint: What happened, dated
-Vocab/nature/hub/Hint: Way in to other tiddlers
-Vocab/nature/task/Hint: One thing to do
-Vocab/nature/tasklist/Hint: Tasks tracked together
-Vocab/nature/routine/Hint: Done again and again, on a rhythm
-Vocab/status/archived/Hint: Kept for the record, unmaintained
-Vocab/status/deprecated/Hint: Superseded — do not rely on it
-Vocab/status/stable/Hint: Reviewed, reliable, safe to build on
-Vocab/status/raw/Hint: Dumped quickly, unreviewed
+Vocab/role/concept/Hint: Idea explained for its own sake
+Vocab/role/ref/Hint: Facts you come back to look up
+Vocab/role/guide/Hint: How-to, step by step
+Vocab/role/pattern/Hint: Shape that solves a recurring problem
+Vocab/role/snippet/Hint: Fragment to copy as is
+Vocab/role/template/Hint: Starting point to duplicate
+Vocab/role/decision/Hint: Settled choice, and why
+Vocab/role/log/Hint: What happened, dated
+Vocab/role/hub/Hint: Way in to other tiddlers
+Vocab/role/task/Hint: One thing to do
+Vocab/role/tasklist/Hint: Tasks tracked together
+Vocab/role/routine/Hint: Done again and again, on a rhythm
+Vocab/maturity/archived/Hint: Kept for the record, unmaintained
+Vocab/maturity/deprecated/Hint: Superseded — do not rely on it
+Vocab/maturity/stable/Hint: Reviewed, reliable, safe to build on
+Vocab/maturity/raw/Hint: Dumped quickly, unreviewed
+Vocab/status/considering/Hint: Weighed up, not taken on yet
+Vocab/status/todo/Hint: Taken on, not started
+Vocab/status/doing/Hint: Started and being worked on
+Vocab/status/paused/Hint: Started, then set aside
+Vocab/status/done/Hint: Finished
+Vocab/status/dropped/Hint: Decided against, will not happen
 
 Vocabularies/Caption: Vocabularies
-Vocabularies/Intro: The `nature` and `status` fields take their value from a fixed list. What the field holds is the //stored value//; what you read in the editor and in your lists is its label in the wiki's language. The two are kept apart on purpose, so that filters go on working whichever language the wiki is set to.
+Vocabularies/Intro: The `role`, `maturity` and `status` fields take their value from a fixed list. What the field holds is the //stored value//; what you read in the editor and in your lists is its label in the wiki's language. The two are kept apart on purpose, so that filters go on working whichever language the wiki is set to.
 Vocabularies/Column/Value: Value
 Vocabularies/Column/Stored: Stored in the field
 Vocabularies/Column/Meaning: Means
-Vocabularies/Outro: Write filters against the stored value: `[nature[guide]]`, `[status[stable]]`. To show a value to a reader, use `<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>`, which renders its icon and its label in the current language.
+Vocabularies/Outro: Write filters against the stored value: `[role[guide]]`, `[maturity[stable]]`. To show a value to a reader, use `<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>`, which renders its icon and its label in the current language.

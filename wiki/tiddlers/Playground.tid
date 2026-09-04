@@ -1,25 +1,25 @@
 title: Playground
-nature: guide
-status: raw
+role: guide
+maturity: raw
 project: TW-Base-Fields
 tools: TiddlyWiki Claude
 type: text/vnd.tiddlywiki
 
-Edit this tiddler to see the extra fields: ''Nature'', ''Status'' and ''Project'' share the Type row, ''Tools'' sits just below.
+Edit this tiddler to see the extra fields: ''Role'', ''Maturity'' and ''Status'' sit beside Type, ''Tools'' and ''Project'' beside Tags. Status only shows when the role is a task.
 
 !! Values stored on this tiddler
 
 <table><tbody>
 <tr><th>Field</th><th>Raw value</th><th>Rendered</th></tr>
-<tr><td><code>nature</code></td><td><code>{{!!nature}}</code></td><td><$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/></td></tr>
-<tr><td><code>status</code></td><td><code>{{!!status}}</code></td><td><$transclude $variable="bf-vocab-item" field="status" value={{!!status}}/></td></tr>
+<tr><td><code>role</code></td><td><code>{{!!role}}</code></td><td><$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/></td></tr>
+<tr><td><code>maturity</code></td><td><code>{{!!maturity}}</code></td><td><$transclude $variable="bf-vocab-item" field="maturity" value={{!!maturity}}/></td></tr>
 <tr><td><code>project</code></td><td><code>{{!!project}}</code></td><td></td></tr>
 <tr><td><code>tools</code></td><td><code>{{!!tools}}</code></td><td></td></tr>
 </tbody></table>
 
 !! Full vocabularies
 
-<$list filter="nature status" variable="vocabField">
+<$list filter="role maturity status" variable="vocabField">
 <h3><code><$text text=<<vocabField>>/></code></h3>
 <table><tbody>
 <$list filter="[function[bf-vocab-values],<vocabField>]" variable="slug">
@@ -34,8 +34,8 @@ Edit this tiddler to see the extra fields: ''Nature'', ''Status'' and ''Project'
 !! Helpers, as documented in the readme
 
 |!Call |!Result |
-|`<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/>` |<$transclude $variable="bf-vocab-item" field="nature" value={{!!nature}}/> |
-|`[function[bf-vocab-label],[nature],<slug>]` |<$let slug={{!!nature}}>{{{ [function[bf-vocab-label],[nature],<slug>] }}}</$let> |
-|`[function[bf-vocab-icon],[nature],<slug>]` |<$let slug={{!!nature}}>{{{ [function[bf-vocab-icon],[nature],<slug>] }}}</$let> |
-|`[function[bf-vocab-hint],[nature],<slug>]` |<$let slug={{!!nature}}>{{{ [function[bf-vocab-hint],[nature],<slug>] }}}</$let> |
-|`[function[bf-vocab-values],[status]]` |{{{ [function[bf-vocab-values],[status]] +[join[, ]] }}} |
+|`<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>` |<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/> |
+|`[function[bf-vocab-label],[role],<slug>]` |<$let slug={{!!role}}>{{{ [function[bf-vocab-label],[role],<slug>] }}}</$let> |
+|`[function[bf-vocab-icon],[role],<slug>]` |<$let slug={{!!role}}>{{{ [function[bf-vocab-icon],[role],<slug>] }}}</$let> |
+|`[function[bf-vocab-hint],[role],<slug>]` |<$let slug={{!!role}}>{{{ [function[bf-vocab-hint],[role],<slug>] }}}</$let> |
+|`[function[bf-vocab-values],[maturity]]` |{{{ [function[bf-vocab-values],[maturity]] +[join[, ]] }}} |

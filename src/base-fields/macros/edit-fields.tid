@@ -28,7 +28,7 @@ tags: $:/tags/Global
 </$let>
 \end
 
-<!-- Single value picked from a controlled vocabulary (nature, status). -->
+<!-- Single value picked from a controlled vocabulary (role, maturity, status). -->
 \procedure bf-select-field(field)
 \whitespace trim
 <$let promptKey={{{ [[Fields/]addsuffix<field>addsuffix[/Prompt]] }}}

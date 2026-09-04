@@ -1,4 +1,4 @@
 title: $:/plugins/nikorion/base-fields/language/en-GB/
 
 Configs/Caption: Base Fields
-Settings/Intro: The `nature` and `status` vocabularies are defined in the plugin source, not through this panel — see the readme. What is currently in use is listed below.
+Settings/Intro: The `role`, `maturity` and `status` vocabularies are defined in the plugin source, not through this panel — see the readme. What is currently in use is listed below.

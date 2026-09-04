@@ -1,10 +1,13 @@
 title: $:/plugins/nikorion/base-fields/language/en-GB/
 
-Fields/nature/Prompt: Nature:
-Fields/nature/Placeholder: functional role of the tiddler
-Fields/nature/Delete/Hint: Clear the nature field
+Fields/role/Prompt: Role:
+Fields/role/Placeholder: functional role of the tiddler
+Fields/role/Delete/Hint: Clear the role field
+Fields/maturity/Prompt: Maturity:
+Fields/maturity/Placeholder: tiddler maturity
+Fields/maturity/Delete/Hint: Clear the maturity field
 Fields/status/Prompt: Status:
-Fields/status/Placeholder: tiddler maturity
+Fields/status/Placeholder: how far along
 Fields/status/Delete/Hint: Clear the status field
 Fields/project/Prompt: Associated project:
 Fields/project/Placeholder: project name

@@ -2,7 +2,7 @@ title: $:/plugins/nikorion/base-fields/macros/vocab
 tags: $:/tags/Global
 
 <!--
-	Controlled vocabularies for the `nature` and `status` fields.
+	Controlled vocabularies for the `role`, `maturity` and `status` fields.
 
 	A vocabulary lives in `$:/plugins/nikorion/base-fields/vocab/<field>`: its `list`
 	field holds the allowed values, in display order. Only the raw value is ever
