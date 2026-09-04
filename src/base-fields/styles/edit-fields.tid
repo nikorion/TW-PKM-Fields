@@ -3,15 +3,14 @@ tags: $:/tags/Stylesheet
 type: text/vnd.tiddlywiki
 
 /*
-	Each pair of controls joins a core row — Nature and Status beside Type, Tools and
-	Project beside Tags — without any core tiddler being overridden.
+	Each pair of added controls joins a core row — Nature and Status beside Type,
+	Tools and Project beside Tags — without any core tiddler being overridden.
 
 	The edit template renders its sections as siblings of one container, so that
 	container becomes a two-column grid: every section spans both columns, except the
-	four that pair up, which take one each. The core sections keep column 1, sized to
-	their content; the pairs take column 2. Should the edit form's internal nesting
-	(`.tc-keyboard > .tc-keyboard`) ever change, the sections simply stack again —
-	visible at a glance rather than silently wrong.
+	two core sections that get paired (column 1, sized to their content) and the two
+	added pairs (column 2). Should the form's internal nesting ever change, the
+	sections simply stack again — visible at a glance rather than silently wrong.
 */
 
 .tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard {
@@ -35,16 +34,6 @@ type: text/vnd.tiddlywiki
 	grid-column: 2;
 }
 
-/*
-	The core sizes the type control from the longest type name
-	(`set-type-selector-min-width`), which would set the width of column 1 for the
-	whole form. Let it shrink to what it actually needs.
-*/
-.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper,
-.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
-	min-width: 0;
-}
-
 /* Too narrow for two columns: every section takes the full width again. */
 @media (max-width: 1000px) {
 	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
@@ -55,16 +44,26 @@ type: text/vnd.tiddlywiki
 }
 
 /*
-	Within a pair, blocks are packed to the left at their natural width rather than
-	spread across the column, so a block's own parts stay together: the delete button
-	sits next to the control it clears, not at the far end of a stretched column.
+	The core sizes the type control from the longest type name
+	(`set-type-selector-min-width`), which would otherwise set the width of column 1
+	for the whole form. Let it shrink to what it actually needs.
 */
+.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper,
+.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
+	min-width: 0;
+}
 
 /*
-	`nowrap` on purpose: with wrapping, a block one pixel too wide drops onto its own
-	line instead of giving way, and the pair no longer reads as one row. Below the
-	breakpoint above, the whole section takes the full width anyway.
+	A pair packs its blocks to the left at their natural width rather than spreading
+	them across the column, so a block's own parts stay together: the delete button
+	sits next to the control it clears, not at the far end of a stretched column.
+
+	`nowrap` is deliberate. With wrapping, a block one pixel too wide drops onto a
+	line of its own and the pair stops reading as one row; without it the tools box
+	gives way instead, its pills wrapping inside it. Below the breakpoint above, the
+	whole section takes the full width anyway.
 */
+
 .bf-extra-row {
 	display: flex;
 	flex-wrap: nowrap;
@@ -77,7 +76,7 @@ type: text/vnd.tiddlywiki
 	min-width: 0;
 }
 
-/* The tools box is the one that gives: its pills wrap inside it. */
+/* Of the two, the tools box is the one that gives. */
 .bf-tags-extras > .bf-tools-field {
 	flex: 1 1 12em;
 }
@@ -86,13 +85,14 @@ type: text/vnd.tiddlywiki
 	flex: 0 0 auto;
 }
 
+/* Nature and Status: a label, a select, a clear button. */
+
 .bf-edit-field {
 	display: flex;
 	align-items: center;
 }
 
-.bf-edit-field > em,
-.bf-tools-field > em {
+.bf-edit-field > em {
 	flex: 0 0 auto;
 	margin-inline-end: 8px;
 }
@@ -104,8 +104,8 @@ type: text/vnd.tiddlywiki
 
 /*
 	While the blank first option is the selected one, the select reads as a
-	placeholder rather than as a value. `:has()` is a progressive nicety: without
-	it the hint simply shows in the normal text colour.
+	placeholder rather than as a value. `:has()` is a progressive nicety: without it
+	the hint simply shows in the normal text colour.
 */
 .bf-edit-select:has(option[value=""]:checked) {
 	color: <<colour muted-foreground>>;
@@ -120,7 +120,7 @@ type: text/vnd.tiddlywiki
 	padding: 0 2px;
 }
 
-/* Project: a single value, typed or picked, so the input is sized for a name. */
+/* Project: one value, typed or picked, so the input is sized for a name. */
 
 .bf-project-control {
 	display: flex;
@@ -130,7 +130,6 @@ type: text/vnd.tiddlywiki
 
 .bf-project-control .bf-edit-input {
 	width: 12em;
-	min-width: 0;
 }
 
 /* Drop the suggestions right under the input rather than after the flex row. */
@@ -156,14 +155,10 @@ type: text/vnd.tiddlywiki
 	text-decoration: none;
 }
 
-/*
-	`baseline` lines the tools label up with the first line of text inside the box,
-	whatever that line happens to be — an existing tool pill, or the input when the
-	field is still empty. A fixed padding would only ever suit one of the two.
-*/
+/* Tools: a tags-style box, so the pills and the picker come styled by the core. */
+
 .bf-tools-field {
 	display: flex;
-	align-items: baseline;
 }
 
 .bf-tools-field .bf-tools-box {

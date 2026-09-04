@@ -13,7 +13,7 @@ caption: <<base-fields-lingo Vocabularies/Caption>>
 <h2><$text text={{{ [function[base-fields-lingo-text],<promptKey>trim[:]trim[]] }}}/><$text text=" "/><code><$text text=<<vocabField>>/></code></h2>
 </$let>
 
-<table class="bf-vocab-table">
+<table>
 <thead>
 <tr>
 <th><$transclude $variable="base-fields-lingo" title="Vocabularies/Column/Value"/></th>
