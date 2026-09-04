@@ -12,7 +12,7 @@ Fields/project/Dropdown/Hint: Choisir un projet existant
 Fields/project/Dropdown/Empty: Aucun projet utilisé pour l'instant
 Fields/project/Delete/Hint: Vider le champ projet
 Fields/tools/Prompt: Outil(s) utilisé(s) :
-Fields/tools/Placeholder: nom de l'outil utilisé
+Fields/tools/Placeholder: outil ou techno utilisé
 Fields/tools/Dropdown/Hint: Choisir un outil existant
 Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil

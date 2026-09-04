@@ -12,7 +12,7 @@ Fields/project/Dropdown/Hint: Pick an existing project
 Fields/project/Dropdown/Empty: No project used yet
 Fields/project/Delete/Hint: Clear the project field
 Fields/tools/Prompt: Tool(s) used:
-Fields/tools/Placeholder: name of a tool used
+Fields/tools/Placeholder: tool or tech used
 Fields/tools/Dropdown/Hint: Pick an existing tool
 Fields/tools/Dropdown/Empty: No tool used yet
 Fields/tools/Remove/Hint: Remove this tool
