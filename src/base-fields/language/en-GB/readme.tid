@@ -12,19 +12,19 @@ Adds five everyday fields to the tiddler edit template:
 |`maturity` |Type |controlled vocabulary, single value |a bare slug (`stable`, `raw`, …) |
 |`status` |Type |controlled vocabulary, single value, //shown on task roles only// |a bare slug (`todo`, `doing`, …) |
 
-Each group sits on a row of its own, right under the core row it extends: ''Tools'' and ''Project'' under the tags box, ''Role'', ''Maturity'' and ''Status'' under the type control. No core tiddler is overridden and no core row is touched.
+The added controls sit on rows of their own, each right under the core row it extends: ''Tools'' and ''Project'' share the row under the tags box, ''Role'', ''Maturity'' and ''Status'' the one under the type control. No core tiddler is overridden and no core row is touched.
 
 A row packs its blocks to the left at their natural width rather than spreading them out, so that a block's own parts stay together — the delete button sits next to the control it clears rather than at the far end of a stretched row. Too narrow to hold them all, a row wraps.
 
 Tools and Project carry no visible label: their placeholder says what they are for, which spares the width, and hovering either one names the field it writes to.
 
-The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered exactly like tag pills, per-value colour cascade included.
+The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered like tag pills, per-value colour cascade included, but fall back to an orange of their own rather than the palette's tag colour, so the two kinds of pill stay told apart on a tiddler carrying both. `$:/config/nikorion/base-fields/tools/Colour` holds that fallback.
 
 ''Status'' says how far along a piece of work is, so it only appears where that means something — on a tiddler whose role is `task` or `tasklist`. Which roles those are is set on the vocabulary itself, in the `visible-filter` field of `vocab/status`, so that the rule sits next to the values it governs.
 
 Each control carries the same clear button the core puts on Type, always visible. An empty Nature or Status shows a greyed hint in place of a value — a `<select>` has no placeholder attribute, so its blank first option plays that part. Hovering a label shows the field's real name.
 
-The four fields are hidden from the list of fields at the bottom of the editor, through the core's own `$:/config/EditTemplateFields/Visibility/` mechanism: editing them twice on one form would be one place too many. Setting the corresponding tiddler to `show` brings any of them back.
+The five fields are hidden from the list of fields at the bottom of the editor, through the core's own `$:/config/EditTemplateFields/Visibility/` mechanism: editing them twice on one form would be one place too many. Setting the corresponding tiddler to `show` brings any of them back.
 
 !! Controlled vocabularies
 
@@ -38,11 +38,11 @@ Only the slug is ever written to the field. Icons and labels are display-only, r
 
 A value shows the same way everywhere, dropdowns included: its icon and its label in the wiki's language — `Snippet` in English, `Extrait` in French. The slug never appears; it is an internal identifier, not something to read. Each value can also carry a one-line description, shown as a tooltip on hover, with the stored value on a second line: the `Vocab/<field>/<value>/Hint` strings, optional.
 
-The //Vocabularies// tab of this plugin — also shown in $:/ControlPanel under //Settings// — lists every value with what it means and what it stores. It is the page to point a reader at.
+The //Vocabularies// tab of this plugin is the reference list of the three fields and their values: for each one, its icon and label, the slug exactly as it is stored, and what it means. None of it is written by hand — the page is regenerated on every render from the vocabularies themselves, so it always gives the wiki's current state rather than its original one: a value added, removed or reordered shows up there at once, while this readme stays as it is. That is where to look for what a field accepts today, not here, and it is the page to point a reader at.
 
 Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one.
 
-Shipped out of the box:
+Shipped out of the box — the starting point, before anything a wiki adds or removes of its own; the //Vocabularies// tab is what says where a given wiki stands now:
 
 * `role` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
 * `maturity` — archived, deprecated, stable, raw
@@ -66,7 +66,7 @@ Helpers are exposed globally, for use in view templates and lists.
 
 Everything is an edit-template section: two tiddlers tagged `$:/tags/EditTemplate`, placed with `list-after`, plus a stylesheet, some global procedures and the vocabularies. Nothing overrides a core tiddler, so a TiddlyWiki upgrade carries no risk of silently reverting part of the editor, and nothing collides with another plugin that touches the same rows.
 
-Where each row lands is decided by the `list-after` of its section alone; the stylesheet only lays out what is inside a row. Rows therefore stay independent of one another: growing the tags box by a line pushes the row below down, and moves nothing sideways. The tools box takes the width its row has to give, so its pills flow beside its input and wrap inside it just as the core's tags do, while Project keeps its natural width at the far end of the row.
+Where each row lands is decided by the `list-after` of its section alone; the stylesheet only lays out what is inside a row. Rows therefore stay independent of one another: growing the tags box by a line pushes the row below down, and moves nothing sideways. The tools box is sized by what it holds rather than by its row, so Project follows straight after it instead of sitting at the far edge; its pills flow beside its input and wrap inside it just as the core's tags do, and Project drops to the line below once they fill the width.
 
 Two details worth knowing:
 

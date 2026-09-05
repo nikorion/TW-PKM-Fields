@@ -173,7 +173,13 @@ tags: $:/tags/Global
 \procedure bf-tool-pill(tool)
 \whitespace trim
 <$let palette={{$:/palette}}>
-<$let colour={{{ [<tool>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerColourFilter]!is[draft]get[text]] }}}
+<!--
+	Same colour cascade as a tag pill, with one difference: where a tag falls back to
+	the palette's `tag-background`, a tool falls back to a colour of its own, so the
+	two kinds of pill stay told apart at a glance on a tiddler carrying both. The
+	fallback is a configuration tiddler, not a literal, so a wiki can pick another.
+-->
+<$let colour={{{ [<tool>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerColourFilter]!is[draft]get[text]] :and[!match[]] :else[{$:/config/nikorion/base-fields/tools/Colour}] }}}
 	icon={{{ [<tool>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerIconFilter]!is[draft]get[text]] }}}
 	colourA={{{ [<palette>getindex[foreground]] }}}
 	colourB={{{ [<palette>getindex[background]] }}}

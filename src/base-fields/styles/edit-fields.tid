@@ -4,8 +4,8 @@ type: text/vnd.tiddlywiki
 
 /*
 	The added controls form rows of their own, each one right under the core row it
-	extends: Tools then Project under the tags box, Role, Maturity and Status under the
-	type control. Placement is the `list-after` of each section — the stylesheet only
+	extends: Tools and Project share the row under the tags box, Role, Maturity and
+	Status the one under the type control. Placement is the `list-after` of each section — the stylesheet only
 	lays out what is inside a row, so nothing here depends on the form's nesting and
 	no core tiddler is overridden.
 
@@ -26,17 +26,14 @@ type: text/vnd.tiddlywiki
 }
 
 /*
-	The tools box takes the whole width of its row, exactly as the tags box does above
-	it: its pills then flow on the same line as its input and wrap inside it, rather
-	than piling up above.
+	The tools box grows with its pills and stops there, so Project sits straight after
+	it rather than at the far edge of the row. The input inside it carries the minimum
+	room to type; the box still wraps its own pills internally once it runs out of
+	row, and Project then falls to the line below.
 */
 .bf-tags-extras > .bf-tools-field {
-	flex: 1 1 12em;
-}
-
-/* Project sits on the row below, label first, like the vocabulary controls. */
-.bf-project-row {
-	align-items: baseline;
+	flex: 0 1 auto;
+	max-width: 100%;
 }
 
 /* Role, Maturity and Status read as text: line up on the text, not on the boxes. */
@@ -63,11 +60,16 @@ type: text/vnd.tiddlywiki
 
 /*
 	While the blank first option is the selected one, the select reads as a
-	placeholder rather than as a value. `:has()` is a progressive nicety: without it
-	the hint simply shows in the normal text colour.
+	placeholder rather than as a value — and reads like the ones in the tools and
+	tags inputs, which the browser draws itself: the text colour of the control,
+	faded. `color-mix` reproduces that fade on the palette's own foreground, so the
+	two match in every palette; `muted-foreground` stays as the value a browser
+	without `color-mix` keeps. `:has()` is a progressive nicety: without it the hint
+	simply shows in the normal text colour.
 */
 .bf-edit-select:has(option[value=""]:checked) {
 	color: <<colour muted-foreground>>;
+	color: color-mix(in srgb, <<colour foreground>> 54%, transparent);
 }
 
 .bf-edit-select option {
@@ -121,6 +123,14 @@ type: text/vnd.tiddlywiki
 }
 
 .bf-tools-field .bf-tools-box {
-	flex: 1 1 auto;
-	min-width: 12em;
+	flex: 0 1 auto;
+}
+
+/*
+	The core sizes the tag input at `width: 50%` of the tags box — right when the box
+	spans the row, but here the box is sized by the input, so half of it would stay
+	empty and push Project away. A width of its own makes the box fit what it holds.
+*/
+.bf-tools-field .tc-add-tag-name input {
+	width: 10em;
 }
