@@ -12,9 +12,9 @@ Ajoute cinq champs du quotidien au template d'édition des tiddlers :
 |`maturity` |Type |vocabulaire contrôlé, valeur unique |un slug brut (`stable`, `raw`, …) |
 |`status` |Type |vocabulaire contrôlé, valeur unique, //affiché sur les rôles de tâche seulement// |un slug brut (`todo`, `doing`, …) |
 
-Les contrôles rejoignent les lignes du core plutôt que d'en ajouter : ''Outils'' et ''Projet'' à côté de l'encadré des tags, ''Rôle'', ''Maturité'' et ''Statut'' à côté du contrôle de type. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée — l'appariement se fait dans la feuille de style (voir //Fonctionnement//).
+Chaque groupe occupe sa propre ligne, juste sous la ligne du core qu'il prolonge : ''Outils'' et ''Projet'' sous l'encadré des tags, ''Rôle'', ''Maturité'' et ''Statut'' sous le contrôle de type. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée.
 
-Une paire cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler dans la colonne : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une colonne étirée. En dessous de 1000 px de largeur de fenêtre, les paires passent sur des lignes à elles.
+Une ligne cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une ligne étirée. Trop étroite pour les tenir tous, une ligne passe à la ligne.
 
 Outils et Projet ne portent pas de libellé visible : leur placeholder dit à quoi ils servent, ce qui épargne la largeur, et les survoler nomme le champ qu'ils écrivent.
 
@@ -66,7 +66,7 @@ Des aides sont exposées globalement, pour les templates de vue et les listes.
 
 Tout est section du template d'édition : deux tiddlers taggés `$:/tags/EditTemplate`, placés par `list-after`, plus une feuille de style, quelques procédures globales et les vocabulaires. Rien ne surcharge de tiddler core : une montée de version de TiddlyWiki ne risque donc pas d'annuler silencieusement une partie de l'éditeur, et rien n'entre en collision avec un autre plugin qui toucherait aux mêmes lignes.
 
-Partager une ligne sans la posséder est l'affaire de la feuille de style : le template d'édition rend ses sections comme frères d'un même conteneur, lequel devient une grille à deux colonnes — chaque section s'étale sur les deux colonnes, sauf l'encadré des tags, le contrôle de type et les deux paires ajoutées, qui en prennent une chacun. La contrepartie : un sélecteur qui s'appuie sur le nesting interne du formulaire (`.tc-keyboard > .tc-keyboard`) ; si celui-ci changeait un jour, les sections se réempileraient simplement — visible au premier coup d'oeil, plutôt que faux en silence.
+L'endroit où tombe chaque ligne tient au seul `list-after` de sa section ; la feuille de style ne fait que disposer ce qu'il y a à l'intérieur d'une ligne. Les lignes restent donc indépendantes les unes des autres : agrandir l'encadré des tags d'une ligne pousse la ligne suivante vers le bas, et ne décale rien latéralement. L'encadré des outils prend la largeur que sa ligne a à donner, de sorte que ses pastilles s'écoulent à côté de sa saisie et reviennent à la ligne à l'intérieur de l'encadré, comme le font les tags du core ; Projet, lui, garde sa largeur naturelle au bout de la ligne.
 
 Deux détails à connaître :
 

@@ -15,7 +15,7 @@ Vocab/role/routine: Routine
 Vocab/maturity/archived: Archivé
 Vocab/maturity/deprecated: Obsolète
 Vocab/maturity/stable: Stable
-Vocab/maturity/raw: Brut
+Vocab/maturity/raw: À peaufiner
 Vocab/status/considering: Envisagé
 Vocab/status/todo: À faire
 Vocab/status/doing: En cours

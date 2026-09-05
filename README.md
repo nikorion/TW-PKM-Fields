@@ -10,7 +10,7 @@ A [TiddlyWiki](https://tiddlywiki.com) plugin adding four everyday fields to the
 | `maturity` | Type | controlled vocabulary, single value | a bare slug (`stable`, `raw`, …) |
 | `status` | Type | controlled vocabulary, shown on task roles only | a bare slug (`todo`, `doing`, …) |
 
-The controls join the core rows — Tools and Project beside the tags box, Role, Maturity and Status beside the type control — with **no core tiddler overridden**: the pairing is done in the stylesheet, by turning the container the edit-template sections share into a two-column grid. Each pair packs its blocks to the left at their natural width, and drops onto a row of its own on a narrow window.
+Each group sits on a row of its own, right under the core row it extends — Tools and Project under the tags box, Role, Maturity and Status under the type control — with **no core tiddler overridden**. Placement is the `list-after` of each section, so the rows stay independent: growing the tags box moves the row below down and nothing sideways.
 
 A *slug* is the short, lowercase, unpunctuated identifier that stands for a value — `snippet`, `raw`. The word comes from the printing trade: a slug was a line of text cast in a single piece of metal, and newsrooms came to call the short working name written on a story in production its slug; web publishing kept it for the identifier that stands for something in a URL, or here in a field.
 

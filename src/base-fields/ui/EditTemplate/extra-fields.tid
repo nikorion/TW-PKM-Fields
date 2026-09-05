@@ -6,9 +6,9 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Tools and Project, meant to sit beside the tags box. Being a section of their
-	own they are a block the stylesheet can place in the row the tags box occupies,
-	which is how they share that row without any core tiddler being overridden.
+	Tools and Project, on a row of their own right under the tags box: `list-after`
+	puts the section there, so the two rows stay independent — the tags box can grow
+	all the lines it likes without moving anything here sideways.
 -->
 
 <div class="bf-extra-row bf-tags-extras">

@@ -1,13 +1,13 @@
 title: $:/plugins/nikorion/base-fields/language/en-GB/
 
 Fields/role/Prompt: Role:
-Fields/role/Placeholder: functional role of the tiddler
+Fields/role/Placeholder: tiddler function
 Fields/role/Delete/Hint: Clear the role field
 Fields/maturity/Prompt: Maturity:
 Fields/maturity/Placeholder: tiddler maturity
 Fields/maturity/Delete/Hint: Clear the maturity field
 Fields/status/Prompt: Status:
-Fields/status/Placeholder: how far along
+Fields/status/Placeholder: task state
 Fields/status/Delete/Hint: Clear the status field
 Fields/project/Prompt: Associated project:
 Fields/project/Placeholder: project name
@@ -15,7 +15,7 @@ Fields/project/Dropdown/Hint: Pick an existing project
 Fields/project/Dropdown/Empty: No project used yet
 Fields/project/Delete/Hint: Clear the project field
 Fields/tools/Prompt: Tool(s) used:
-Fields/tools/Placeholder: tool/tech used
+Fields/tools/Placeholder: tool/tech
 Fields/tools/Dropdown/Hint: Pick an existing tool
 Fields/tools/Dropdown/Empty: No tool used yet
 Fields/tools/Remove/Hint: Remove this tool

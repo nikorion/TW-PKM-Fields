@@ -3,80 +3,34 @@ tags: $:/tags/Stylesheet
 type: text/vnd.tiddlywiki
 
 /*
-	Each pair of added controls joins a core row — Nature and Status beside Type,
-	Tools and Project beside Tags — without any core tiddler being overridden.
+	The added controls form rows of their own, each one right under the core row it
+	extends: Tools and Project under the tags box, Role, Maturity and Status under the
+	type control. Placement is the `list-after` of each section — the stylesheet only
+	lays out what is inside a row, so nothing here depends on the form's nesting and
+	no core tiddler is overridden.
 
-	The edit template renders its sections as siblings of one container, so that
-	container becomes a two-column grid: every section spans both columns, except the
-	two core sections that get paired (column 1, sized to their content) and the two
-	added pairs (column 2). Should the form's internal nesting ever change, the
-	sections simply stack again — visible at a glance rather than silently wrong.
-*/
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard {
-	display: grid;
-	grid-template-columns: auto minmax(0, 1fr);
-	align-items: start;
-	column-gap: 16px;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > * {
-	grid-column: 1 / -1;
-	min-width: 0;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-type-selector-wrapper {
-	grid-column: 1;
-}
-
-.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-extra-row {
-	grid-column: 2;
-}
-
-/* Too narrow for two columns: every section takes the full width again. */
-@media (max-width: 1000px) {
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-tags,
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .tc-edit-type-selector-wrapper,
-	.tc-tiddler-edit-frame > .tc-keyboard > .tc-keyboard > .bf-extra-row {
-		grid-column: 1 / -1;
-	}
-}
-
-/*
-	The core sizes the type control from the longest type name
-	(`set-type-selector-min-width`), which would otherwise set the width of column 1
-	for the whole form. Let it shrink to what it actually needs.
-*/
-.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper,
-.tc-edit-type-selector-wrapper .tc-type-selector-dropdown-wrapper input.tc-edit-typeeditor {
-	min-width: 0;
-}
-
-/*
-	A pair packs its blocks to the left at their natural width rather than spreading
-	them across the column, so a block's own parts stay together: the delete button
-	sits next to the control it clears, not at the far end of a stretched column.
-
-	`nowrap` is deliberate. With wrapping, a block one pixel too wide drops onto a
-	line of its own and the pair stops reading as one row; without it the tools box
-	gives way instead, its pills wrapping inside it. Below the breakpoint above, the
-	whole section takes the full width anyway.
+	Rows being independent matters: when the tags box grows a line, the row below
+	moves down with it and nothing drifts sideways.
 */
 
 .bf-extra-row {
 	display: flex;
-	flex-wrap: nowrap;
-	align-items: baseline;
+	flex-wrap: wrap;
+	align-items: center;
 	gap: 4px 16px;
+	margin: 4px 0;
 }
 
 .bf-extra-row > * {
-	flex: 0 1 auto;
 	min-width: 0;
 }
 
-/* Of the two, the tools box is the one that gives. */
+/*
+	The tools box takes the width the row has to give, exactly as the tags box does
+	above it: its pills then flow on the same line as its input and wrap inside it,
+	rather than piling up above. Project keeps its natural width at the far end, where
+	it stays put however many tools are added.
+*/
 .bf-tags-extras > .bf-tools-field {
 	flex: 1 1 12em;
 }
@@ -85,7 +39,12 @@ type: text/vnd.tiddlywiki
 	flex: 0 0 auto;
 }
 
-/* Nature and Status: a label, a select, a clear button. */
+/* Role, Maturity and Status read as text: line up on the text, not on the boxes. */
+.bf-type-extras {
+	align-items: baseline;
+}
+
+/* Role, Maturity and Status: a label, a select, a clear button. */
 
 .bf-edit-field {
 	display: flex;
@@ -162,5 +121,6 @@ type: text/vnd.tiddlywiki
 }
 
 .bf-tools-field .bf-tools-box {
+	flex: 1 1 auto;
 	min-width: 12em;
 }

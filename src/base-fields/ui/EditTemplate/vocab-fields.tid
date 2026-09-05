@@ -6,7 +6,7 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Role, Maturity and Status, placed beside the type control by the stylesheet.
+	Role, Maturity and Status, on a row of their own right under the type control.
 
 	Status only appears on tiddlers where it means something — how far along a piece
 	of work is, on a tiddler that is a piece of work. Which roles those are is not
