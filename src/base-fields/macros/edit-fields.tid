@@ -100,8 +100,10 @@ tags: $:/tags/Global
 >
 <span class="bf-edit-field bf-edit-field-project" role="group"
 	aria-label={{{ [function[base-fields-lingo-text],[Fields/project/Prompt]trim[:]trim[]] }}}
-	title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ project]] }}}
 >
+<!-- Labelled like Role, Maturity and Status: same markup, same tooltip carrying the
+	field's real name — the placeholder inside the input says what to type. -->
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ project]] }}}><$transclude $variable="base-fields-lingo" title="Fields/project/Prompt"/></em>
 <span class="bf-project-control">
 <$transclude $variable="keyboard-driven-input"
 	tiddler=<<currentTiddler>> field="project" storeTitle=<<projectInput>>

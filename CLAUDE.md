@@ -3,13 +3,24 @@
 > **Avant toute tâche sur ce plugin, consulter d'abord le `CLAUDE.md` du workspace** (`../CLAUDE.md`) et ses `guides/` : outillage de dev commun (pnpm, `dev.cjs`/HMR, Ctrl+C, git push), pièges PowerShell/Windows, `publishFilter`, conventions de nommage/i18n, symlink. Ci-dessous : uniquement le spécifique à TW-Base-Fields.
 
 ## Ce que c'est
-Plugin TiddlyWiki (`$:/plugins/nikorion/base-fields`) qui ajoute 5 champs au template d'édition, chaque groupe sur sa propre ligne sous la ligne du core qu'il prolonge : `tools` + `project` sous l'encadré des tags, `role` + `maturity` + `status` sous le contrôle de type. Aucun JS : que du wikitext + CSS. **Aucune surcharge de tiddler core** — tout passe par des sections `$:/tags/EditTemplate` placées avec `list-after`.
+Plugin TiddlyWiki (`$:/plugins/nikorion/base-fields`) qui ajoute 5 champs au template d'édition, en lignes pleine largeur sous la ligne du core qu'elles prolongent. Aucun JS : que du wikitext + CSS. **Aucune surcharge de tiddler core** — tout passe par des sections `$:/tags/EditTemplate` placées avec `list-after`.
+
+## Les 3 lignes ajoutées
+Une ligne = un `<div class="bf-extra-row bf-…">` ; chaque contrôle = `<span class="bf-edit-field">` contenant un libellé `<em class="tc-edit tc-small-gap-right">` (transclusion de `Fields/<champ>/Prompt`, `title` = nom réel du champ), le contrôle, puis `bf-delete-field-button`. Exception : l'encadré Outils, `<span class="bf-tools-field">`, n'a pas de libellé (son placeholder en tient lieu).
+
+| Ligne (classe) | Champs | Section (`list-after`) | Macros |
+|---|---|---|---|
+| `.bf-tags-extras` | `tools` | `extra-fields.tid` (après `…/EditTemplate/tags`) | `bf-tools-field`, `bf-tool-pill` |
+| `.bf-project-row` | `project` | idem, juste après la précédente | `bf-project-field` |
+| `.bf-type-extras` | `role`, `maturity`, `status` | `vocab-fields.tid` (après `…/EditTemplate/type`) | `bf-select-field` |
+
+Où intervenir : libellé/placeholder → `language/<lang>/fields.multids` ; disposition d'une ligne → `styles/edit-fields.tid` ; ordre des lignes ou déplacement d'un champ → la section correspondante ; comportement d'un contrôle → `macros/edit-fields.tid`.
 
 ## Structure
 ```
 src/base-fields/
-  ui/EditTemplate/extra-fields.tid  ← Outils + Projet (.bf-tags-extras), list-after: .../EditTemplate/tags
-  ui/EditTemplate/vocab-fields.tid  ← Rôle + Maturité + Statut (.bf-type-extras), list-after: .../EditTemplate/type
+  ui/EditTemplate/extra-fields.tid  ← lignes Outils puis Projet
+  ui/EditTemplate/vocab-fields.tid  ← ligne Rôle + Maturité + Statut
   macros/edit-fields.tid      ← bf-select-field, bf-project-field, bf-tools-field, bf-tool-pill,
                                  bf-delete-field-button, bf-clear-empty-field
   macros/vocab.tid            ← bf-vocab-values / -label / -icon / -hint / -item
@@ -37,6 +48,7 @@ src/base-fields/
 - **Après avoir écrit un champ que la saisie affiche, poser `refreshTitle` à `yes`** (vu sur le menu Projet) : un `$edit-text` ne touche pas un élément qui a le focus, pour ne pas écraser la frappe — sans ça la saisie continue d'afficher le texte tapé alors que le champ vaut autre chose.
 - **`<$select default="">` est obligatoire** sur Nature/Statut : sans cet attribut le widget assigne `undefined` au nœud DOM quand le champ est absent, aucune option ne correspond (`selectedIndex` = -1) et le contrôle s'affiche vide au lieu de retomber sur l'option placeholder. Cette première option vide doit rester : sans elle, un tiddler sans valeur afficherait la première entrée du vocabulaire comme si elle était choisie.
 - **Les pastilles d'outils recopient `tag-body-inner`** (cascade `$:/tags/TiddlerColourFilter`, `contrastcolour`, cascade d'icône) : ces procédures sont locales à `$:/core/ui/EditTemplate/tags`, donc inatteignables de l'extérieur. À resynchroniser lors d'une montée de version TW.
-- **Le libellé Outils s'aligne en `align-items: baseline`**, pas par un `padding-top` : la première ligne de l'encadré est tantôt une pastille, tantôt la saisie (champ vide), et leurs hauteurs diffèrent de 7 px.
+- **Un libellé s'aligne sur son contrôle en `align-items: baseline`** (lignes Projet et Rôle/Maturité/Statut), jamais par un `padding-top` : les hauteurs varient d'un contrôle à l'autre — dans l'encadré Outils, la première ligne est tantôt une pastille, tantôt la saisie (champ vide), 7 px d'écart.
+- **`project` a sa propre ligne, sous Outils** — pas en bout de la ligne Outils. Il y était (`flex: 0 0 auto`, poussé à droite), mais l'encadré Outils prend toute la largeur qu'on lui donne et le libellé Projet manquait ; deux lignes distinctes se lisent mieux et laissent chacune grandir sans décaler l'autre.
 - **Le `$:/config/SyncFilter` du wiki de dev doit exclure les shadows livrés hors du namespace du plugin** (`$:/config/EditTemplateFields/Visibility/`) en plus du préfixe `$:/plugins/nikorion/base-fields/` : sinon un push HMR les fait passer pour des tiddlers modifiés, la synchro les écrit en vrais tiddlers sous `wiki/tiddlers/system/`, et ces copies figées masquent ensuite le plugin. Si ces fichiers réapparaissent : les supprimer, puis vérifier le filtre.
 - HMR : tout est `.tid`/`.multids`, donc poussé à chaud dans le navigateur **déjà ouvert** — et **uniquement là**. Un rechargement d'onglet ne montre pas la modif, il l'annule : la page repart de la version chargée au boot du serveur. **Ne jamais conseiller un rechargement d'onglet pour voir une modif** ; soit on regarde l'onglet ouvert sans y toucher, soit on redémarre TW (`touch src/base-fields/plugin.info`, nodemon reboote) avant de recharger.

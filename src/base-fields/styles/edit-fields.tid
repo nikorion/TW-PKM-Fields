@@ -4,7 +4,7 @@ type: text/vnd.tiddlywiki
 
 /*
 	The added controls form rows of their own, each one right under the core row it
-	extends: Tools and Project under the tags box, Role, Maturity and Status under the
+	extends: Tools then Project under the tags box, Role, Maturity and Status under the
 	type control. Placement is the `list-after` of each section — the stylesheet only
 	lays out what is inside a row, so nothing here depends on the form's nesting and
 	no core tiddler is overridden.
@@ -26,17 +26,17 @@ type: text/vnd.tiddlywiki
 }
 
 /*
-	The tools box takes the width the row has to give, exactly as the tags box does
-	above it: its pills then flow on the same line as its input and wrap inside it,
-	rather than piling up above. Project keeps its natural width at the far end, where
-	it stays put however many tools are added.
+	The tools box takes the whole width of its row, exactly as the tags box does above
+	it: its pills then flow on the same line as its input and wrap inside it, rather
+	than piling up above.
 */
 .bf-tags-extras > .bf-tools-field {
 	flex: 1 1 12em;
 }
 
-.bf-tags-extras > .bf-edit-field-project {
-	flex: 0 0 auto;
+/* Project sits on the row below, label first, like the vocabulary controls. */
+.bf-project-row {
+	align-items: baseline;
 }
 
 /* Role, Maturity and Status read as text: line up on the text, not on the boxes. */

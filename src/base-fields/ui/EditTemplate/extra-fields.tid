@@ -6,12 +6,16 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Tools and Project, on a row of their own right under the tags box: `list-after`
-	puts the section there, so the two rows stay independent — the tags box can grow
-	all the lines it likes without moving anything here sideways.
+	Tools then Project, each on a row of its own right under the tags box:
+	`list-after` puts the section there, so the rows stay independent — the tags box
+	can grow all the lines it likes, and the tools box too, without moving anything
+	below sideways.
 -->
 
 <div class="bf-extra-row bf-tags-extras">
 <$transclude $variable="bf-tools-field"/>
+</div>
+
+<div class="bf-extra-row bf-project-row">
 <$transclude $variable="bf-project-field"/>
 </div>
