@@ -24,7 +24,7 @@ Edit this tiddler to see the extra fields: ''Role'', ''Maturity'' and ''Status''
 <table><tbody>
 <$list filter="[function[bf-vocab-values],<vocabField>]" variable="slug">
 <tr>
-<td><$transclude $variable="bf-vocab-item" field=<<vocabField>> value=<<slug>>/></td>
+<td><<bf-vocab-item field=<<vocabField>> value=<<slug>> >></td>
 <td><code><$text text=<<slug>>/></code></td>
 </tr>
 </$list>

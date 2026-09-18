@@ -15,6 +15,6 @@ type: text/vnd.tiddlywiki
 -->
 
 <div class="bf-extra-row bf-tags-extras">
-<$transclude $variable="bf-tools-field"/>
-<$transclude $variable="bf-project-field"/>
+<<bf-tools-field>>
+<<bf-project-field>>
 </div>

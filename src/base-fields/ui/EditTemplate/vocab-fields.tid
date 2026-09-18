@@ -20,11 +20,11 @@ type: text/vnd.tiddlywiki
 -->
 
 <div class="bf-extra-row bf-type-extras">
-<$transclude $variable="bf-select-field" field="role"/>
-<$transclude $variable="bf-select-field" field="maturity"/>
+<<bf-select-field field="role">>
+<<bf-select-field field="maturity">>
 <$let statusWhen={{$:/plugins/nikorion/base-fields/vocab/status!!visible-filter}}>
 <%if [subfilter<statusWhen>] [<currentTiddler>has[status]] %>
-<$transclude $variable="bf-select-field" field="status"/>
+<<bf-select-field field="status">>
 <%endif%>
 </$let>
 </div>

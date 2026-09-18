@@ -34,7 +34,7 @@ tags: $:/tags/Global
 -->
 \procedure bf-vocab-option(field,slug)
 \whitespace trim
-<option value=<<slug>> title={{{ [function[bf-vocab-hint],<field>,<slug>] }}}><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
+<option value=<<slug>> title={{{ [function[bf-vocab-hint],<field>,<slug>] }}}><<bf-vocab-item field=<<field>> value=<<slug>> >></option>
 \end
 
 <!-- Single value picked from a controlled vocabulary (role, maturity, status). -->
@@ -44,7 +44,7 @@ tags: $:/tags/Global
 	placeholderKey={{{ [[Fields/]addsuffix<field>addsuffix[/Placeholder]] }}}
 >
 <span class="bf-edit-field">
-<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ ]addsuffix<field>] }}}><$transclude $variable="base-fields-lingo" title=<<promptKey>>/></em>
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ ]addsuffix<field>] }}}><<base-fields-lingo title=<<promptKey>> >></em>
 <!--
 	`default` is not optional: with no value the select widget assigns `undefined`
 	to the DOM node, which matches no option at all — the control would go blank
@@ -62,23 +62,23 @@ tags: $:/tags/Global
 	landing on it. Clearing is the button next to the control. The stylesheet greys
 	the control while this option is the one selected.
 -->
-<option value="" disabled="disabled" hidden="hidden"><$transclude $variable="base-fields-lingo" title=<<placeholderKey>>/></option>
+<option value="" disabled="disabled" hidden="hidden"><<base-fields-lingo title=<<placeholderKey>> >></option>
 <!--
 	Whatever no group claims comes first, then one heading per group — a vocabulary
 	that declares no group simply lists its values, as before.
 -->
 <$list filter="[function[bf-vocab-ungrouped-values],<field>]" variable="slug">
-<$transclude $variable="bf-vocab-option" field=<<field>> slug=<<slug>>/>
+<<bf-vocab-option field=<<field>> slug=<<slug>> >>
 </$list>
 <$list filter="[function[bf-vocab-groups],<field>]" variable="group">
 <optgroup label={{{ [function[bf-vocab-group-label],<field>,<group>] }}} title={{{ [function[bf-vocab-group-hint],<field>,<group>] }}}>
 <$list filter="[function[bf-vocab-group-values],<field>,<group>]" variable="slug">
-<$transclude $variable="bf-vocab-option" field=<<field>> slug=<<slug>>/>
+<<bf-vocab-option field=<<field>> slug=<<slug>> >>
 </$list>
 </optgroup>
 </$list>
 </$select>
-<$transclude $variable="bf-delete-field-button" field=<<field>>/>
+<<bf-delete-field-button field=<<field>> >>
 </span>
 </$let>
 \end
@@ -114,7 +114,7 @@ tags: $:/tags/Global
 >
 <!-- Labelled like Role, Maturity and Status: same markup, same tooltip carrying the
 	field's real name — the placeholder inside the input says what to type. -->
-<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ project]] }}}><$transclude $variable="base-fields-lingo" title="Fields/project/Prompt"/></em>
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ project]] }}}><<base-fields-lingo title="Fields/project/Prompt">></em>
 <span class="bf-project-control">
 <$transclude $variable="keyboard-driven-input"
 	tiddler=<<currentTiddler>> field="project" storeTitle=<<projectInput>>
@@ -153,7 +153,7 @@ tags: $:/tags/Global
 </$reveal>
 </div>
 </span>
-<$transclude $variable="bf-delete-field-button" field="project"/>
+<<bf-delete-field-button field="project">>
 </span>
 </$let>
 \end
@@ -262,7 +262,7 @@ tags: $:/tags/Global
 >
 <div class="tc-edit-tags bf-tools-box">
 <$list filter="[<currentTiddler>get[tools]enlist-input[]sort[]]" variable="tool" storyview="pop">
-<$transclude $variable="bf-tool-pill" tool=<<tool>>/>
+<<bf-tool-pill tool=<<tool>> >>
 </$list>
 <div class="tc-edit-add-tag">
 <div class="tc-edit-add-tag-ui">

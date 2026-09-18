@@ -16,15 +16,15 @@ caption: <<base-fields-lingo Vocabularies/Caption>>
 <table>
 <thead>
 <tr>
-<th><$transclude $variable="base-fields-lingo" title="Vocabularies/Column/Value"/></th>
-<th><$transclude $variable="base-fields-lingo" title="Vocabularies/Column/Stored"/></th>
-<th><$transclude $variable="base-fields-lingo" title="Vocabularies/Column/Meaning"/></th>
+<th><<base-fields-lingo title="Vocabularies/Column/Value">></th>
+<th><<base-fields-lingo title="Vocabularies/Column/Stored">></th>
+<th><<base-fields-lingo title="Vocabularies/Column/Meaning">></th>
 </tr>
 </thead>
 <tbody>
 <$list filter="[function[bf-vocab-values],<vocabField>]" variable="slug">
 <tr>
-<td><$transclude $variable="bf-vocab-item" field=<<vocabField>> value=<<slug>>/></td>
+<td><<bf-vocab-item field=<<vocabField>> value=<<slug>> >></td>
 <td><code><$text text=<<slug>>/></code></td>
 <td><$text text={{{ [function[bf-vocab-hint],<vocabField>,<slug>] }}}/></td>
 </tr>
