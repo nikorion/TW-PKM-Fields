@@ -14,6 +14,40 @@ tags: $:/tags/Global
 [[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>get[list]enlist-input[]]
 \end
 
+<!--
+	Values are also gathered into groups, purely for display: the dropdown shows a
+	group's name as a heading above its values. `groups` on the vocabulary lists the
+	group slugs in order, `group-<slug>` the values of one group. A vocabulary with
+	no `groups` field simply has no headings, and a value in no group is offered on
+	its own, before the first heading.
+-->
+
+\function bf-vocab-groups(field)
+[[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>get[groups]enlist-input[]]
+\end
+
+\function bf-vocab-group-values(field,group)
+[[group-]addsuffix<group>] :map:flat[[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>get<currentTiddler>enlist-input[]]
+\end
+
+\function bf-vocab-grouped-values(field)
+[function[bf-vocab-groups],<field>] :map:flat[function[bf-vocab-group-values],<field>,<currentTiddler>]
+\end
+
+<!-- Whatever no group claims, in vocabulary order — offered before the headings. -->
+\function bf-vocab-ungrouped-values(field)
+[function[bf-vocab-values],<field>] :except[function[bf-vocab-grouped-values],<field>]
+\end
+
+\function bf-vocab-group-label(field,group)
+[[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/Group/]addsuffix<group>get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/Group/]addsuffix<group>get[text]] :else[<group>]
+\end
+
+<!-- What the group gathers, shown as the tooltip of its heading. Optional. -->
+\function bf-vocab-group-hint(field,group)
+[[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/Group/]addsuffix<group>addsuffix[/Hint]get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/Group/]addsuffix<group>addsuffix[/Hint]get[text]]
+\end
+
 \function bf-vocab-label(field,value)
 [[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]] :else[<value>]
 \end

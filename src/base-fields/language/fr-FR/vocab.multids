@@ -3,7 +3,6 @@ title: $:/plugins/nikorion/base-fields/language/fr-FR/
 Vocab/role/concept: Concept
 Vocab/role/ref: Référence
 Vocab/role/guide: Guide
-Vocab/role/pattern: Motif
 Vocab/role/snippet: Extrait
 Vocab/role/template: Modèle
 Vocab/role/decision: Arbitrage
@@ -23,10 +22,21 @@ Vocab/status/paused: En pause
 Vocab/status/done: Fait
 Vocab/status/dropped: Abandonné
 
+Vocab/role/Group/knowledge: Savoir
+Vocab/role/Group/procedure: Procédure
+Vocab/role/Group/reuse: Réemploi
+Vocab/role/Group/register: Registre
+Vocab/role/Group/tracking: Suivi
+
+Vocab/role/Group/knowledge/Hint: Ce qu'on sait — vivant, à revoir
+Vocab/role/Group/procedure/Hint: Comment on s'y prend — vivant, à revoir
+Vocab/role/Group/reuse/Hint: À recopier ou à dupliquer — vivant, à revoir
+Vocab/role/Group/register/Hint: On y ajoute, on n'y retouche pas
+Vocab/role/Group/tracking/Hint: Périssable : à purger une fois retombé
+
 Vocab/role/concept/Hint: Notion expliquée pour elle-même
 Vocab/role/ref/Hint: Données qu'on vient consulter
 Vocab/role/guide/Hint: Marche à suivre, pas à pas
-Vocab/role/pattern/Hint: Forme qui résout un problème récurrent
 Vocab/role/snippet/Hint: Fragment à recopier tel quel
 Vocab/role/template/Hint: Point de départ à dupliquer
 Vocab/role/decision/Hint: Choix tranché, et pourquoi

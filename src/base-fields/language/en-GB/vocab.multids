@@ -3,7 +3,6 @@ title: $:/plugins/nikorion/base-fields/language/en-GB/
 Vocab/role/concept: Concept
 Vocab/role/ref: Ref
 Vocab/role/guide: Guide
-Vocab/role/pattern: Pattern
 Vocab/role/snippet: Snippet
 Vocab/role/template: Template
 Vocab/role/decision: Decision
@@ -23,10 +22,21 @@ Vocab/status/paused: Paused
 Vocab/status/done: Done
 Vocab/status/dropped: Dropped
 
+Vocab/role/Group/knowledge: Knowledge
+Vocab/role/Group/procedure: Procedure
+Vocab/role/Group/reuse: Reuse
+Vocab/role/Group/register: Register
+Vocab/role/Group/tracking: Tracking
+
+Vocab/role/Group/knowledge/Hint: What you know — living, worth revisiting
+Vocab/role/Group/procedure/Hint: How you go about it — living, worth revisiting
+Vocab/role/Group/reuse/Hint: To copy or duplicate — living, worth revisiting
+Vocab/role/Group/register/Hint: Added to, never rewritten
+Vocab/role/Group/tracking/Hint: Perishable — purge once it is over
+
 Vocab/role/concept/Hint: Idea explained for its own sake
 Vocab/role/ref/Hint: Facts you come back to look up
 Vocab/role/guide/Hint: How-to, step by step
-Vocab/role/pattern/Hint: Shape that solves a recurring problem
 Vocab/role/snippet/Hint: Fragment to copy as is
 Vocab/role/template/Hint: Starting point to duplicate
 Vocab/role/decision/Hint: Settled choice, and why

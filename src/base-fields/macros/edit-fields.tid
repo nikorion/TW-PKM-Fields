@@ -28,6 +28,15 @@ tags: $:/tags/Global
 </$let>
 \end
 
+<!--
+	One entry of a vocabulary dropdown: what the value looks like, and what it means
+	as the tooltip. A value shipped without a description simply gets no tooltip.
+-->
+\procedure bf-vocab-option(field,slug)
+\whitespace trim
+<option value=<<slug>> title={{{ [function[bf-vocab-hint],<field>,<slug>] }}}><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
+\end
+
 <!-- Single value picked from a controlled vocabulary (role, maturity, status). -->
 \procedure bf-select-field(field)
 \whitespace trim
@@ -45,26 +54,28 @@ tags: $:/tags/Global
 	default="" tabindex={{$:/config/EditTabIndex}} actions=<<bf-clear-empty-field>>
 >
 <!--
-	A `<select>` has no placeholder attribute, so its first option plays that part:
-	it is what an empty field shows, and without it the select would display the
-	first vocabulary value on a tiddler that has no value at all. The stylesheet
-	greys the control while this option is the one selected. Clearing is done with
-	the button next to the control.
+	A `<select>` has no placeholder attribute, so an option plays that part: it is
+	what an empty field shows, instead of the first vocabulary value on a tiddler
+	that holds no value at all. `hidden` keeps it out of the list once the list is
+	open — it stands for nothing to choose — while the browser goes on showing it in
+	the closed control, which is all it is there for; `disabled` stops the keyboard
+	landing on it. Clearing is the button next to the control. The stylesheet greys
+	the control while this option is the one selected.
 -->
-<option value=""><$transclude $variable="base-fields-lingo" title=<<placeholderKey>>/></option>
+<option value="" disabled="disabled" hidden="hidden"><$transclude $variable="base-fields-lingo" title=<<placeholderKey>>/></option>
 <!--
-	The tooltip carries the description and, on a second line, the value the field
-	will actually hold — the only place that correspondence still shows in the form,
-	now that the options read as plain labels. `charcode[10]` is how a newline gets
-	into an attribute; the `:else` covers a value shipped without a description.
+	Whatever no group claims comes first, then one heading per group — a vocabulary
+	that declares no group simply lists its values, as before.
 -->
-<$list filter="[function[bf-vocab-values],<field>]" variable="slug">
-<$let hint={{{ [function[bf-vocab-hint],<field>,<slug>] }}}
-	newline={{{ [charcode[10]] }}}
-	tip={{{ [<hint>!match[]addsuffix<newline>addsuffix<slug>] :else[<slug>] }}}
->
-<option value=<<slug>> title=<<tip>>><$transclude $variable="bf-vocab-item" field=<<field>> value=<<slug>>/></option>
-</$let>
+<$list filter="[function[bf-vocab-ungrouped-values],<field>]" variable="slug">
+<$transclude $variable="bf-vocab-option" field=<<field>> slug=<<slug>>/>
+</$list>
+<$list filter="[function[bf-vocab-groups],<field>]" variable="group">
+<optgroup label={{{ [function[bf-vocab-group-label],<field>,<group>] }}} title={{{ [function[bf-vocab-group-hint],<field>,<group>] }}}>
+<$list filter="[function[bf-vocab-group-values],<field>,<group>]" variable="slug">
+<$transclude $variable="bf-vocab-option" field=<<field>> slug=<<slug>>/>
+</$list>
+</optgroup>
 </$list>
 </$select>
 <$transclude $variable="bf-delete-field-button" field=<<field>>/>

@@ -40,11 +40,11 @@ Une valeur s'affiche partout de la même façon, listes déroulantes comprises :
 
 L'onglet //Vocabularies// de ce plugin est la liste de référence des trois champs et de leurs valeurs : pour chacune, son icône et son libellé, le slug exactement tel qu'il est stocké, et ce qu'elle signifie. Rien n'y est écrit à la main : la page est régénérée à chaque affichage en lisant les vocabulaires eux-mêmes, donc elle donne toujours l'état courant du wiki, jamais celui d'origine — une valeur ajoutée, retirée ou réordonnée y figure aussitôt, et le readme que tu lis, lui, ne bouge pas. C'est donc là, et pas ici, qu'on va chercher ce qu'un champ accepte aujourd'hui, et c'est la page à montrer à un lecteur.
 
-Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône.
+Ajouter, retirer ou réordonner une valeur se fait dans le source du plugin, pas depuis l'interface — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Pour en ajouter une, mettre son slug dans le champ `list` concerné, puis son icône et son libellé dans chaque langue. Une valeur sans libellé retombe sur son slug ; une valeur sans icône s'affiche simplement sans icône. Les valeurs de `role` sont en outre réparties en groupes, que le menu déroulant affiche en intitulés grisés au-dessus des valeurs qu'ils rassemblent : une valeur ajoutée se nomme dans un des champs `group-<slug>`, faute de quoi elle est proposée seule, avant le premier intitulé.
 
 Livré tel quel — le point de départ, avant tout ajout ou retrait propre à un wiki ; c'est l'onglet //Vocabularies// qui dit où en est un wiki donné :
 
-* `role` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
+* `role` — hub ; //Savoir// : concept, ref ; //Procédure// : guide, routine ; //Réemploi// : snippet, template ; //Registre// : decision, log ; //Suivi// : task, tasklist
 * `maturity` — archived, deprecated, stable, raw
 * `status` — considering, todo, doing, paused, done, dropped
 

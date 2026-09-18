@@ -3,7 +3,6 @@ title: $:/plugins/nikorion/base-fields/vocab/icons/
 role/concept: 🧠
 role/ref: 📚
 role/guide: 📘
-role/pattern: 🧩
 role/snippet: ✂️
 role/template: 🧱
 role/decision: ⚖️
@@ -14,11 +13,11 @@ role/tasklist: 📋
 role/routine: 🔁
 maturity/archived: 📦
 maturity/deprecated: 🕸️
-maturity/stable: ✅
+maturity/stable: ☑️
 maturity/raw: 🚧
 status/considering: 💭
 status/todo: 📥
 status/doing: 🔨
 status/paused: ⏸️
-status/done: ☑️
+status/done: ✅
 status/dropped: ❌

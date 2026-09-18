@@ -76,6 +76,17 @@ type: text/vnd.tiddlywiki
 	color: <<colour foreground>>;
 }
 
+/*
+	Group headings inside the dropdown: a name over the values it gathers, not
+	something to pick. Greyed and unemphasised so it reads as a divider rather than
+	as an entry; the rule above keeps the values themselves at full contrast.
+*/
+.bf-edit-select optgroup {
+	color: <<colour muted-foreground>>;
+	font-weight: normal;
+	font-style: italic;
+}
+
 .bf-delete-field {
 	flex: 0 0 auto;
 	padding: 0 2px;

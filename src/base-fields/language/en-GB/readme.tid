@@ -40,11 +40,11 @@ A value shows the same way everywhere, dropdowns included: its icon and its labe
 
 The //Vocabularies// tab of this plugin is the reference list of the three fields and their values: for each one, its icon and label, the slug exactly as it is stored, and what it means. None of it is written by hand — the page is regenerated on every render from the vocabularies themselves, so it always gives the wiki's current state rather than its original one: a value added, removed or reordered shows up there at once, while this readme stays as it is. That is where to look for what a field accepts today, not here, and it is the page to point a reader at.
 
-Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one.
+Adding, removing or reordering a value is done in the plugin source, not through the UI — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. To add one, append its slug to the relevant `list` field, then add its icon and its label in each language. A value with no label falls back to its own slug; a value with no icon simply renders without one. The `role` values are further split into groups, which the dropdown shows as greyed headings above the values they gather: name an added value in one of the `group-<slug>` fields, or it is offered on its own, before the first heading.
 
 Shipped out of the box — the starting point, before anything a wiki adds or removes of its own; the //Vocabularies// tab is what says where a given wiki stands now:
 
-* `role` — concept, ref, guide, pattern, snippet, template, decision, log, hub, task, tasklist, routine
+* `role` — hub; //Knowledge//: concept, ref; //Procedure//: guide, routine; //Reuse//: snippet, template; //Register//: decision, log; //Tracking//: task, tasklist
 * `maturity` — archived, deprecated, stable, raw
 * `status` — considering, todo, doing, paused, done, dropped
 
