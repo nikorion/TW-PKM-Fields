@@ -2,3 +2,4 @@ title: $:/plugins/nikorion/base-fields/language/fr-FR/history
 type: text/vnd.tiddlywiki
 
 * ''0.1.0'' -- 2026.09.03 -- Hello !
+* ''0.2.0'' -- 2026.09.21 -- Add `lifecycle` and `needs`, split `maturity` into `stub` / `rough` / `stable` (`archived` and `deprecated` move to `lifecycle`, the latter renamed `obsolete`), add the `source` role, show `status` on hubs, hide `maturity` and `needs` on register and task roles

@@ -37,7 +37,7 @@ tags: $:/tags/Global
 <option value=<<slug>> title={{{ [function[bf-vocab-hint],<field>,<slug>] }}}><<bf-vocab-item field=<<field>> value=<<slug>> >></option>
 \end
 
-<!-- Single value picked from a controlled vocabulary (role, maturity, status). -->
+<!-- Single value picked from a controlled vocabulary (role, maturity, status, lifecycle). -->
 \procedure bf-select-field(field)
 \whitespace trim
 <$let promptKey={{{ [[Fields/]addsuffix<field>addsuffix[/Prompt]] }}}
@@ -81,6 +81,28 @@ tags: $:/tags/Global
 <<bf-delete-field-button field=<<field>> >>
 </span>
 </$let>
+\end
+
+<!--
+	`needs` is a list field whose values come from a controlled vocabulary, several of
+	which can hold at once: one checkbox per value, ticked when the value is in the
+	list. Ticking adds the slug to the list and unticking removes it, leaving the
+	others alone (`listField` mode of the core checkbox widget).
+-->
+
+\procedure bf-needs-field()
+\whitespace trim
+<span class="bf-edit-field bf-needs-field">
+<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ needs]] }}}><<base-fields-lingo title="Fields/needs/Prompt">></em>
+<$list filter="[function[bf-vocab-values],[needs]]" variable="slug">
+<span class="bf-need" title={{{ [function[bf-vocab-hint],[needs],<slug>] }}}>
+<$checkbox tiddler=<<currentTiddler>> listField="needs" checked=<<slug>>>
+<<bf-vocab-item field="needs" value=<<slug>> >>
+</$checkbox>
+</span>
+</$list>
+<<bf-delete-field-button field="needs">>
+</span>
 \end
 
 <!--

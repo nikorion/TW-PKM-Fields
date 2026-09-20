@@ -6,7 +6,7 @@ caption: <<base-fields-lingo Vocabularies/Caption>>
 
 <$transclude $variable="base-fields-lingo" title="Vocabularies/Intro" $mode="block"/>
 
-<$list filter="role maturity status" variable="vocabField">
+<$list filter="role maturity status lifecycle needs" variable="vocabField">
 
 <!-- The form label carries its own punctuation ("Nature :"), which a heading does not want. -->
 <$let promptKey={{{ [[Fields/]addsuffix<vocabField>addsuffix[/Prompt]] }}}>

@@ -1,0 +1,12 @@
+title: $:/plugins/nikorion/base-fields/vocab/needs
+type: text/vnd.tiddlywiki
+list: verify refactor split
+visible-filter: [<currentTiddler>!role[log]!role[decision]!role[task]!role[tasklist]]
+
+Allowed values for the `needs` field, in display order.
+
+Unlike the other vocabularies this one is a //list//: a tiddler can wait on several kinds of work at once. The stored value is the space-separated list of slugs, and filters must treat it as a list — `[contains:needs[verify]]`, not `[needs[verify]]`, which only matches a field holding that single value.
+
+Like `maturity`, the control is hidden on `log`, `decision`, `task` and `tasklist` — unless the field already holds a value.
+
+To customise the vocabulary, edit the `list` field above (source file: `src/base-fields/vocab/needs.tid`), then add the matching entries to `vocab/icons.multids` and to `language/<lang>/vocab.multids`. A value with no translation falls back to its own slug; a value with no icon simply renders without one.

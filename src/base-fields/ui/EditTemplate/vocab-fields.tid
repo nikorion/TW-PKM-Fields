@@ -6,7 +6,8 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Role, Maturity and Status, on a row of their own right under the type control.
+	Role, Maturity, Status and Lifecycle on a row of their own right under the type control,
+	then Needs on the row below.
 
 	Status only appears on tiddlers where it means something — how far along a piece
 	of work is, on a tiddler that is a piece of work. Which roles those are is not
@@ -19,12 +20,23 @@ type: text/vnd.tiddlywiki
 	editor yet still matched by filters, and with no way to remove it.
 -->
 
+<$let maturityWhen={{$:/plugins/nikorion/base-fields/vocab/maturity!!visible-filter}}
+	statusWhen={{$:/plugins/nikorion/base-fields/vocab/status!!visible-filter}}
+	needsWhen={{$:/plugins/nikorion/base-fields/vocab/needs!!visible-filter}}
+>
 <div class="bf-extra-row bf-type-extras">
 <<bf-select-field field="role">>
+<%if [subfilter<maturityWhen>] [<currentTiddler>has[maturity]] %>
 <<bf-select-field field="maturity">>
-<$let statusWhen={{$:/plugins/nikorion/base-fields/vocab/status!!visible-filter}}>
+<%endif%>
 <%if [subfilter<statusWhen>] [<currentTiddler>has[status]] %>
 <<bf-select-field field="status">>
 <%endif%>
-</$let>
+<<bf-select-field field="lifecycle">>
 </div>
+<%if [subfilter<needsWhen>] [<currentTiddler>has[needs]] %>
+<div class="bf-extra-row bf-needs-extras">
+<<bf-needs-field>>
+</div>
+<%endif%>
+</$let>

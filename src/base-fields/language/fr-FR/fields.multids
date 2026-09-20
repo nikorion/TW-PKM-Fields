@@ -7,7 +7,7 @@ Fields/maturity/Prompt: Maturité :
 Fields/maturity/Placeholder: maturité du tiddler
 Fields/maturity/Delete/Hint: Vider le champ maturité
 Fields/status/Prompt: Statut :
-Fields/status/Placeholder: état de la tâche
+Fields/status/Placeholder: avancement
 Fields/status/Delete/Hint: Vider le champ statut
 Fields/project/Prompt: Projet :
 Fields/project/Placeholder: nom du projet
@@ -20,3 +20,8 @@ Fields/tools/Dropdown/Hint: Choisir un outil existant
 Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil
 Fields/ActualName/Hint: nom effectif du champ :
+Fields/lifecycle/Prompt: Cycle de vie :
+Fields/lifecycle/Placeholder: actif
+Fields/lifecycle/Delete/Hint: Vider le champ cycle de vie
+Fields/needs/Prompt: Besoins :
+Fields/needs/Delete/Hint: Vider le champ besoins

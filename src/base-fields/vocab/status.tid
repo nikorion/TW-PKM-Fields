@@ -1,10 +1,10 @@
 title: $:/plugins/nikorion/base-fields/vocab/status
 type: text/vnd.tiddlywiki
 list: considering todo doing paused done dropped
-visible-filter: [<currentTiddler>get[role]match[task]] [<currentTiddler>get[role]match[tasklist]]
+visible-filter: [<currentTiddler>get[role]match[task]] [<currentTiddler>get[role]match[tasklist]] [<currentTiddler>get[role]match[hub]]
 
 Allowed values for the `status` field, in display order.
 
-Unlike the other vocabularies this one is conditional: `status` says how far along a piece of work is, which only means something on a tiddler that //is// a piece of work. The `visible-filter` field above decides when the control appears — by default, when `role` is `task` or `tasklist`. Widen it there to offer the field on other roles.
+Unlike the other vocabularies this one is conditional: `status` says how far along a piece of work is, which only means something on a tiddler that //is// a piece of work. The `visible-filter` field above decides when the control appears — by default, when `role` is `task`, `tasklist` or `hub` (a hub tracks the progress of what it gathers). Widen it there to offer the field on other roles.
 
 To customise the vocabulary, edit the `list` field above (source file: `src/base-fields/vocab/status.tid`), then add the matching entries to `vocab/icons.multids` and to `language/<lang>/vocab.multids`. A value with no translation falls back to its own slug; a value with no icon simply renders without one.

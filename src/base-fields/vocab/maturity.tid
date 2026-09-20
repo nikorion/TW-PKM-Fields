@@ -1,7 +1,12 @@
 title: $:/plugins/nikorion/base-fields/vocab/maturity
 type: text/vnd.tiddlywiki
-list: archived deprecated stable raw
+list: stub rough stable
+visible-filter: [<currentTiddler>!role[log]!role[decision]!role[task]!role[tasklist]]
 
 Allowed values for the `maturity` field, in display order.
+
+`maturity` says how far along the //writing// of a tiddler is. Registers (`log`, `decision`) are dated and only ever added to, and tasks have their own `status`, so the control is hidden on those roles — unless the field already holds a value. The `visible-filter` field above decides when the control appears.
+
+Whether a tiddler is still alive is `lifecycle`, and what remains to be done on it is `needs`; neither is a level of maturity.
 
 To customise the vocabulary, edit the `list` field above (source file: `src/base-fields/vocab/maturity.tid`), then add the matching entries to `vocab/icons.multids` and to `language/<lang>/vocab.multids`. A value with no translation falls back to its own slug; a value with no icon simply renders without one.

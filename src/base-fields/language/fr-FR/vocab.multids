@@ -2,6 +2,7 @@ title: $:/plugins/nikorion/base-fields/language/fr-FR/
 
 Vocab/role/concept: Concept
 Vocab/role/ref: Référence
+Vocab/role/source: Source
 Vocab/role/guide: Guide
 Vocab/role/snippet: Extrait
 Vocab/role/template: Modèle
@@ -11,10 +12,14 @@ Vocab/role/hub: Hub
 Vocab/role/task: Tâche
 Vocab/role/tasklist: Liste de tâches
 Vocab/role/routine: Routine
-Vocab/maturity/archived: Archivé
-Vocab/maturity/deprecated: Obsolète
+Vocab/maturity/stub: Ébauche
+Vocab/maturity/rough: Dégrossi
 Vocab/maturity/stable: Stable
-Vocab/maturity/raw: À peaufiner
+Vocab/lifecycle/obsolete: Obsolète
+Vocab/lifecycle/archived: Archivé
+Vocab/needs/verify: À vérifier
+Vocab/needs/refactor: À factoriser
+Vocab/needs/split: À découper
 Vocab/status/considering: Envisagé
 Vocab/status/todo: À faire
 Vocab/status/doing: En cours
@@ -36,6 +41,7 @@ Vocab/role/Group/tracking/Hint: Périssable : à purger une fois retombé
 
 Vocab/role/concept/Hint: Notion expliquée pour elle-même
 Vocab/role/ref/Hint: Données qu'on vient consulter
+Vocab/role/source/Hint: Œuvre extérieure consultée — livre, article, vidéo
 Vocab/role/guide/Hint: Marche à suivre, pas à pas
 Vocab/role/snippet/Hint: Fragment à recopier tel quel
 Vocab/role/template/Hint: Point de départ à dupliquer
@@ -45,10 +51,14 @@ Vocab/role/hub/Hint: Porte d'entrée vers d'autres tiddlers
 Vocab/role/task/Hint: Chose à faire, une seule
 Vocab/role/tasklist/Hint: Tâches suivies ensemble
 Vocab/role/routine/Hint: Procédure qui revient régulièrement
-Vocab/maturity/archived/Hint: Gardé pour mémoire, plus maintenu
-Vocab/maturity/deprecated/Hint: Dépassé : ne plus s'y fier
+Vocab/maturity/stub/Hint: Trop mince pour servir — manque de matière
+Vocab/maturity/rough/Hint: Toute la matière est là, la rédaction reste à finir
 Vocab/maturity/stable/Hint: Relu, fiable, on peut s'y appuyer
-Vocab/maturity/raw/Hint: Jeté vite fait, non relu
+Vocab/lifecycle/obsolete/Hint: Dépassé : ne plus s'y fier
+Vocab/lifecycle/archived/Hint: Gardé pour mémoire, plus maintenu
+Vocab/needs/verify/Hint: Exactitude douteuse — à contrôler avant de s'y fier
+Vocab/needs/refactor/Hint: Recoupe d'autres tiddlers — fusionner les doublons ou extraire ce qu'ils partagent
+Vocab/needs/split/Hint: Trop long ou trop mêlé — à éclater en tiddlers atomiques
 Vocab/status/considering/Hint: Envisagé, pas encore engagé
 Vocab/status/todo/Hint: Engagé, pas commencé
 Vocab/status/doing/Hint: Commencé, activement suivi
@@ -57,8 +67,8 @@ Vocab/status/done/Hint: Terminé
 Vocab/status/dropped/Hint: Écarté, on ne le fera pas
 
 Vocabularies/Caption: Vocabulaires
-Vocabularies/Intro: Les champs `role`, `maturity` et `status` prennent leur valeur dans une liste fixe. Ce que contient le champ est la //valeur stockée// ; ce que vous lisez dans l'éditeur et dans vos listes est son libellé dans la langue du wiki. Les deux sont volontairement dissociés, pour que vos filtres continuent de fonctionner quelle que soit la langue du wiki.
+Vocabularies/Intro: Les champs `role`, `maturity`, `status`, `lifecycle` et `needs` prennent leur valeur dans une liste fixe (`needs` dans une liste de valeurs : plusieurs peuvent s'appliquer à la fois). Ce que contient le champ est la //valeur stockée// ; ce que vous lisez dans l'éditeur et dans vos listes est son libellé dans la langue du wiki. Les deux sont volontairement dissociés, pour que vos filtres continuent de fonctionner quelle que soit la langue du wiki.
 Vocabularies/Column/Value: Valeur
 Vocabularies/Column/Stored: Stocké dans le champ
 Vocabularies/Column/Meaning: Signifie
-Vocabularies/Outro: Écrivez vos filtres sur la valeur stockée : `[role[guide]]`, `[maturity[stable]]`. Pour montrer une valeur à un lecteur, utilisez `<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>`, qui rend son icône et son libellé dans la langue courante.
+Vocabularies/Outro: Écrivez vos filtres sur la valeur stockée : `[role[guide]]`, `[maturity[stable]]`, `[contains:needs[verify]]` pour le champ liste. Pour montrer une valeur à un lecteur, utilisez `<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>`, qui rend son icône et son libellé dans la langue courante.

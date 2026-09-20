@@ -2,6 +2,7 @@ title: $:/plugins/nikorion/base-fields/vocab/icons/
 
 role/concept: 🧠
 role/ref: 📚
+role/source: 📖
 role/guide: 📘
 role/snippet: ✂️
 role/template: 🧱
@@ -11,10 +12,14 @@ role/hub: 🧭
 role/task: 📌
 role/tasklist: 📋
 role/routine: 🔁
-maturity/archived: 📦
-maturity/deprecated: 🕸️
+maturity/stub: 🌱
+maturity/rough: ✏️
 maturity/stable: ☑️
-maturity/raw: 🚧
+lifecycle/obsolete: 🕸️
+lifecycle/archived: 📦
+needs/verify: 🔍
+needs/refactor: ♻️
+needs/split: 🧩
 status/considering: 💭
 status/todo: 📥
 status/doing: 🔨

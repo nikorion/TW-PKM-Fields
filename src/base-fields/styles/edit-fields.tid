@@ -4,8 +4,8 @@ type: text/vnd.tiddlywiki
 
 /*
 	The added controls form rows of their own, each one right under the core row it
-	extends: Tools and Project share the row under the tags box, Role, Maturity and
-	Status the one under the type control. Placement is the `list-after` of each section — the stylesheet only
+	extends: Tools and Project share the row under the tags box, Role, Maturity, Status and
+	Lifecycle the one under the type control, Needs the one below that. Placement is the `list-after` of each section — the stylesheet only
 	lays out what is inside a row, so nothing here depends on the form's nesting and
 	no core tiddler is overridden.
 
@@ -144,4 +144,17 @@ type: text/vnd.tiddlywiki
 */
 .bf-tools-field .tc-add-tag-name input {
 	width: 10em;
+}
+
+/*
+	Needs: a label, one checkbox per value, a clear button, all on one line that
+	wraps once the row runs out of width.
+*/
+.bf-needs-field {
+	flex-wrap: wrap;
+	gap: 4px 12px;
+}
+
+.bf-needs-field .bf-need {
+	white-space: nowrap;
 }
