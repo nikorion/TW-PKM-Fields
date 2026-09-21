@@ -26,19 +26,36 @@ type: text/vnd.tiddlywiki
 }
 
 /*
-	The tools box grows with its pills and stops there, so Project sits straight after
-	it rather than at the far edge of the row. The input inside it carries the minimum
-	room to type; the box still wraps its own pills internally once it runs out of
-	row, and Project then falls to the line below.
+	The tools box takes the full width of its row; Project sits on the line below. The
+	input inside it carries the minimum room to type, and the box wraps its own pills
+	internally once it runs out of row.
 */
 .bf-tags-extras > .bf-tools-field {
-	flex: 0 1 auto;
+	align-self: stretch;
 	max-width: 100%;
 }
 
-/* Role, Maturity and Status read as text: line up on the text, not on the boxes. */
+/* Role, Maturity, Status and Lifecycle: one select per line, stacked under the type control. */
+.bf-type-extras,
+.bf-tags-extras {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+/* The lines of the type and needs rows touch, like the rows of the core field table: no gap, more padding instead. */
 .bf-type-extras {
-	align-items: baseline;
+	row-gap: 0;
+	margin-bottom: 0;
+}
+
+/* A little air between the last custom line and the first core field row (instead of the core table's 1em). */
+.bf-type-extras + .tc-edit-fields > table.tc-edit-fields {
+	margin-top: 10px;
+}
+
+/* Role, the plain first line, keeps some air above the first band. */
+.bf-type-extras > .bf-edit-field:first-child {
+	margin-bottom: 10px;
 }
 
 /* Role, Maturity and Status: a label, a select, a clear button. */
@@ -48,9 +65,37 @@ type: text/vnd.tiddlywiki
 	align-items: center;
 }
 
+/*
+	Every line of the type and needs rows below Role spans the whole row and alternates
+	its background like the field rows of the core editor below (odd / even colours, in
+	order of appearance). Role, the first line, stays plain like the Type control above.
+	Vertical padding is larger than the core's 4px; a red frame (3px, drawn inwards)
+	takes 3px of it so the content does not move when it appears, and the frame lands
+	on the edge of the band.
+*/
+.bf-type-extras > .bf-edit-field:nth-child(n+2) {
+	align-self: stretch;
+	box-sizing: border-box;
+	padding: 6px 4px;
+	background-color: <<colour tiddler-editor-fields-odd>>;
+}
+
+.bf-type-extras > .bf-edit-field:nth-child(n+3):nth-child(odd) {
+	background-color: <<colour tiddler-editor-fields-even>>;
+}
+
+.bf-type-extras > .bf-edit-field.bf-stale:nth-child(n+2) {
+	padding: 3px 1px;
+}
+
 .bf-edit-field > em {
 	flex: 0 0 auto;
 	margin-inline-end: 8px;
+}
+
+/* Labels read like the names of the core field rows below (plain text colour, not the muted one of `em.tc-edit`). */
+.tc-tiddler-edit-frame .bf-edit-field > em.tc-edit {
+	color: <<colour foreground>>;
 }
 
 .bf-edit-select {
@@ -87,9 +132,47 @@ type: text/vnd.tiddlywiki
 	font-style: italic;
 }
 
+/* Maturity and Lifecycle: radio buttons side by side, wrapping when the row is short. */
+.bf-radio-group {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 2px 14px;
+}
+
+.bf-radio-group .tc-radio {
+	white-space: nowrap;
+}
+
+/* The "none" value (empty field) reads as an absence of value. */
+.bf-vocab-none {
+	font-style: italic;
+}
+
+/* A space between the radio button or checkbox and the icon that starts the value. */
+.bf-radio-group .tc-radio > span,
+.bf-needs-field .tc-checkbox > span {
+	margin-inline-start: 0.4em;
+}
+
 .bf-delete-field {
 	flex: 0 0 auto;
 	padding: 0 2px;
+}
+
+/* After radios or checkboxes the clear button is set well apart from the last choice. */
+.bf-edit-field:has(.bf-radio-group) > .bf-delete-field,
+.bf-needs-field > .bf-delete-field {
+	margin-inline-start: 24px;
+}
+
+/* After a dropdown a smaller gap is enough. */
+.bf-edit-field:has(.bf-edit-select) > .bf-delete-field {
+	margin-inline-start: 6px;
+}
+
+.bf-project-control + .bf-delete-field {
+	margin-inline-start: 6px;
 }
 
 /* Project: one value, typed or picked, so the input is sized for a name. */
@@ -102,6 +185,11 @@ type: text/vnd.tiddlywiki
 
 .bf-project-control .bf-edit-input {
 	width: 12em;
+}
+
+/* The dropdown arrow sits apart from the input rather than against it. */
+.bf-project-control .tc-btn-dropdown {
+	margin-inline-start: 8px;
 }
 
 /* Drop the suggestions right under the input rather than after the flex row. */
@@ -134,7 +222,7 @@ type: text/vnd.tiddlywiki
 }
 
 .bf-tools-field .bf-tools-box {
-	flex: 0 1 auto;
+	flex: 1 1 auto;
 }
 
 /*
@@ -143,21 +231,17 @@ type: text/vnd.tiddlywiki
 	empty and push Project away. A width of its own makes the box fit what it holds.
 */
 .bf-tools-field .tc-add-tag-name input {
-	width: 10em;
+	width: 17em;
 }
 
 /*
 	A control shown only because its field still holds a value the role no longer
-	accounts for: framed in red, label included, to say the value should go.
+	accounts for: framed in red to say the value should go.
 */
 .bf-edit-field.bf-stale {
-	border: 1px solid <<colour alert-highlight>>;
-	border-radius: 4px;
-	padding: 2px 6px;
-}
-
-.bf-edit-field.bf-stale > em {
-	color: <<colour alert-highlight>>;
+	border: 3px solid <<colour alert-highlight>>;
+	border-color: color-mix(in srgb, <<colour alert-highlight>> 45%, transparent);
+	padding: 0 4px;
 }
 
 /*

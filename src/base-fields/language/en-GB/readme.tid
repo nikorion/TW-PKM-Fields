@@ -10,7 +10,7 @@ Adds seven everyday fields to the tiddler edit template:
 |`project` |Tags |single value, typed or picked |free text |
 |`role` |Type |controlled vocabulary, single value |a bare slug (`concept`, `guide`, …) |
 |`maturity` |Type |controlled vocabulary, single value, //hidden on register and task roles// |a bare slug (`stub`, `stable`, …) |
-|`status` |Type |controlled vocabulary, single value, //shown on task, tasklist, hub and routine roles only// |a bare slug (`todo`, `doing`, …) |
+|`status` |Type |controlled vocabulary, single value, //shown on task, tasklist and routine roles, or when there is no role// |a bare slug (`todo`, `doing`, …) |
 |`lifecycle` |Type |controlled vocabulary, single value, empty means active |a bare slug (`obsolete`, `archived`) |
 |`needs` |Below Type |controlled vocabulary, //list// (one checkbox per value), hidden on register and task roles |a list of bare slugs (`verify refactor`) |
 
@@ -22,7 +22,7 @@ Tools and Project carry no visible label: their placeholder says what they are f
 
 The tools and tags pickers are strictly independent: the tools dropdown offers the values already used in `tools`, never the wiki's tags, and vice versa. Tool pills are rendered like tag pills, per-value colour cascade included, but fall back to an orange of their own rather than the palette's tag colour, so the two kinds of pill stay told apart on a tiddler carrying both. `$:/config/nikorion/base-fields/tools/Colour` holds that fallback.
 
-''Status'' says how far along a piece of work is, so it only appears where that means something — on a tiddler whose role is `task`, `tasklist`, `hub` or `routine`. Which roles those are is set on the vocabulary itself, in the `visible-filter` field of `vocab/status`, so that the rule sits next to the values it governs.
+''Status'' says how far along a piece of work is, so it only appears where that means something — on a tiddler whose role is `task`, `tasklist` or `routine`, or none at all. Which roles those are is set on the vocabulary itself, in the `visible-filter` field of `vocab/status`, so that the rule sits next to the values it governs.
 
 A control that is only there because its field still holds a value the role no longer accounts for (say `needs` after the role changed to `task`) is framed in red, and its tooltip names the role and says to clear the field (//The tasks do not use this field — clear it//).
 

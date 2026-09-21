@@ -1,10 +1,12 @@
 title: $:/plugins/nikorion/base-fields/vocab/lifecycle
 type: text/vnd.tiddlywiki
-list: obsolete archived
+list: active obsolete archived
+radio: yes
+blank-value: active
 
 Allowed values for the `lifecycle` field, in display order.
 
-`lifecycle` says whether a tiddler is still alive. An empty field means //active//, so it is only ever filled on the few tiddlers that have left circulation: list the live ones with `[!has[lifecycle]]`.
+`lifecycle` says whether a tiddler is still alive. It is edited with radio buttons (`radio: yes`). `active` is the default and stands for an empty field (`blank-value: active`): choosing it clears the field, so the field is only ever filled on the few tiddlers that have left circulation: list the live ones with `[!has[lifecycle]]`.
 
 It is independent of `maturity`: a stable tiddler can become obsolete or be archived, and keeps its maturity when it does.
 

@@ -9,12 +9,15 @@ role/template: 🧱
 role/decision: ⚖️
 role/log: 📓
 role/hub: 🧭
+role/project: 🚀
+role/tool: 🛠️
 role/task: 📌
 role/tasklist: 📋
 role/routine: 🔁
 maturity/stub: 🌱
 maturity/rough: ✏️
 maturity/stable: ☑️
+lifecycle/active: 🟢
 lifecycle/obsolete: 🕸️
 lifecycle/archived: 📦
 needs/verify: 🔍

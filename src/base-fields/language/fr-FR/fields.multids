@@ -2,29 +2,29 @@ title: $:/plugins/nikorion/base-fields/language/fr-FR/
 
 Fields/role/Prompt: Rôle :
 Fields/role/Placeholder: fonction du tiddler
-Fields/role/Delete/Hint: Vider le champ rôle
+Fields/role/Delete/Hint: Vider le champ « rôle »
 Fields/maturity/Prompt: Maturité :
 Fields/maturity/Placeholder: maturité du tiddler
-Fields/maturity/Delete/Hint: Vider le champ maturité
+Fields/maturity/Delete/Hint: Vider le champ « maturité »
 Fields/status/Prompt: Statut :
 Fields/status/Placeholder: avancement
-Fields/status/Delete/Hint: Vider le champ statut
+Fields/status/Delete/Hint: Vider le champ « statut »
 Fields/project/Prompt: Projet :
-Fields/project/Placeholder: nom du projet
+Fields/project/Placeholder: projet d'appartenance
 Fields/project/Dropdown/Hint: Choisir un projet existant
 Fields/project/Dropdown/Empty: Aucun projet utilisé pour l'instant
-Fields/project/Delete/Hint: Vider le champ projet
+Fields/project/Delete/Hint: Vider le champ « projet »
 Fields/tools/Prompt: Outil(s) utilisé(s) :
-Fields/tools/Placeholder: outil/techno
+Fields/tools/Placeholder: outil(s) / techno(s) impliqué(s)
 Fields/tools/Dropdown/Hint: Choisir un outil existant
 Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil
-Fields/status/Stale/Hint: Champ réservé aux tâches, listes de tâches, hubs et routines — videz-le
-Fields/status/Stale/NoRole/Hint: Champ réservé aux tâches, listes de tâches, hubs et routines — donnez un de ces rôles au tiddler ou videz le champ
+Fields/status/Stale/Hint: Champ réservé aux tâches, listes de tâches et routines — videz-le
+Fields/status/Stale/NoRole/Hint: Champ réservé aux tâches, listes de tâches et routines — donnez un de ces rôles au tiddler ou videz le champ
 Fields/Stale/Prefix: Les
 Fields/Stale/Suffix: n'utilisent pas ce champ — videz-le
 Fields/lifecycle/Prompt: Cycle de vie :
 Fields/lifecycle/Placeholder: actif
-Fields/lifecycle/Delete/Hint: Vider le champ cycle de vie
+Fields/lifecycle/Delete/Hint: Vider le champ « cycle de vie »
 Fields/needs/Prompt: Besoins :
-Fields/needs/Delete/Hint: Vider le champ besoins
+Fields/needs/Delete/Hint: Vider le champ « besoins »

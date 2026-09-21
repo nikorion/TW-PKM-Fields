@@ -11,6 +11,27 @@ tags: $:/tags/Global
 \end
 
 <!--
+	The tiddler's `icon` follows its role: the vocabulary icon (already a tiddler, whose
+	text is the emoji) becomes the value of `icon`, and clearing the role removes it.
+	An icon that is not one of ours was set by hand and is left alone.
+-->
+\procedure bf-sync-role-icon()
+<%if [<field>match[role]] %>
+<%if [<currentTiddler>get[icon]!match[]!prefix[$:/plugins/nikorion/base-fields/vocab/icons/]] %>
+<%elseif [<currentTiddler>get[role]addprefix[$:/plugins/nikorion/base-fields/vocab/icons/role/]get[text]!match[]] %>
+<$action-setfield $field="icon" $value={{{ [<currentTiddler>get[role]addprefix[$:/plugins/nikorion/base-fields/vocab/icons/role/]] }}}/>
+<%else%>
+<$action-deletefield $field="icon"/>
+<%endif%>
+<%endif%>
+\end
+
+\procedure bf-field-changed()
+<<bf-clear-empty-field>>
+<<bf-sync-role-icon>>
+\end
+
+<!--
 	The same clear button the core offers on Type, for the fields added here —
 	always shown, like the core one, so the row keeps a stable shape whether or not
 	the field holds a value.
@@ -24,6 +45,7 @@ tags: $:/tags/Global
 >
 {{$:/core/images/delete-button}}
 <$action-deletefield $field=<<field>>/>
+<<bf-sync-role-icon>>
 </$button>
 </$let>
 \end
@@ -73,8 +95,34 @@ tags: $:/tags/Global
 	to the DOM node, which matches no option at all — the control would go blank
 	instead of falling back to the placeholder option below.
 -->
+<%if [[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>get[radio]match[yes]] %>
+<!--
+	A vocabulary flagged `radio: yes` is edited with radio buttons instead of a dropdown.
+	`default` is the value shown checked while the field is empty; `blank-value` is the one
+	that stands for an empty field itself (choosing it clears the field).
+-->
+<$let vocab={{{ [[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>] }}}
+	blank={{{ [<vocab>get[blank-value]] }}}
+	radioDefault={{{ [<vocab>get[default]] }}}
+>
+<span class="bf-radio-group" role="radiogroup">
+<$list filter="[function[bf-vocab-values],<field>]" variable="slug">
+<$radio tiddler=<<currentTiddler>> field=<<field>> value={{{ [<slug>!match<blank>] }}} default=<<radioDefault>>
+	class="bf-radio" tabindex={{$:/config/EditTabIndex}} actions=<<bf-field-changed>>
+>
+<!-- In a red frame the whole control shows the frame's own tooltip: an inner `title`, even an empty one, would hide it. -->
+<%if [<stale>match[yes]] %>
+<span class={{{ [<slug>match[none]then[bf-vocab-none]] }}}><<bf-vocab-item field=<<field>> value=<<slug>> >></span>
+<%else%>
+<span class={{{ [<slug>match[none]then[bf-vocab-none]] }}} title={{{ [function[bf-vocab-hint],<field>,<slug>] }}}><<bf-vocab-item field=<<field>> value=<<slug>> >></span>
+<%endif%>
+</$radio>
+</$list>
+</span>
+</$let>
+<%else%>
 <$select tiddler=<<currentTiddler>> field=<<field>> class="tc-edit-texteditor bf-edit-select"
-	default="" tabindex={{$:/config/EditTabIndex}} actions=<<bf-clear-empty-field>>
+	default="" tabindex={{$:/config/EditTabIndex}} actions=<<bf-field-changed>>
 >
 <!--
 	A `<select>` has no placeholder attribute, so an option plays that part: it is
@@ -101,6 +149,7 @@ tags: $:/tags/Global
 </optgroup>
 </$list>
 </$select>
+<%endif%>
 <<bf-delete-field-button field=<<field>> >>
 </span>
 </$let>
@@ -122,11 +171,19 @@ tags: $:/tags/Global
 <span class={{{ [[bf-edit-field bf-needs-field]] [<stale>match[yes]then[bf-stale]] +[join[ ]] }}} title=<<staleHint>>>
 <em class="tc-edit tc-small-gap-right"><<base-fields-lingo title="Fields/needs/Prompt">></em>
 <$list filter="[function[bf-vocab-values],[needs]]" variable="slug">
-<span class="bf-need" title={{{ [<staleHint>!match[]] :else[function[bf-vocab-hint],[needs],<slug>] }}}>
+<%if [<stale>match[yes]] %>
+<span class="bf-need">
 <$checkbox tiddler=<<currentTiddler>> listField="needs" checked=<<slug>>>
 <<bf-vocab-item field="needs" value=<<slug>> >>
 </$checkbox>
 </span>
+<%else%>
+<span class="bf-need" title={{{ [function[bf-vocab-hint],[needs],<slug>] }}}>
+<$checkbox tiddler=<<currentTiddler>> listField="needs" checked=<<slug>>>
+<<bf-vocab-item field="needs" value=<<slug>> >>
+</$checkbox>
+</span>
+<%endif%>
 </$list>
 <<bf-delete-field-button field="needs">>
 </span>

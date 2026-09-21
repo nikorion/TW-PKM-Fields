@@ -1,6 +1,6 @@
 title: $:/plugins/nikorion/base-fields/vocab/role
 type: text/vnd.tiddlywiki
-list: hub concept ref source guide routine snippet template decision log task tasklist
+list: hub project tool concept ref source guide routine snippet template decision log task tasklist
 groups: knowledge procedure reuse register tracking
 group-knowledge: concept ref source
 group-procedure: guide routine
@@ -10,6 +10,6 @@ group-tracking: task tasklist
 
 Allowed values for the `role` field, in display order.
 
-The values are also gathered into named groups, which the dropdown shows as headings above the values they hold: `groups` lists the group slugs in display order, and `group-<slug>` lists the values of one group. A value named in no group — `hub` here — is offered on its own, above the first group. Grouping is display only: what a group is called is translated in `language/<lang>/vocab.multids` (`Vocab/role/Group/<slug>`, plus an optional `…/Hint`), and the field still holds the bare value.
+The values are also gathered into named groups, which the dropdown shows as headings above the values they hold: `groups` lists the group slugs in display order, and `group-<slug>` lists the values of one group. A value named in no group — `hub`, `project` and `tool` here — is offered on its own, above the first group. Grouping is display only: what a group is called is translated in `language/<lang>/vocab.multids` (`Vocab/role/Group/<slug>`, plus an optional `…/Hint`), and the field still holds the bare value.
 
 To customise the vocabulary, edit the `list` field above (source file: `src/base-fields/vocab/role.tid`), then add the matching entries to `vocab/icons.multids` and to `language/<lang>/vocab.multids`, and name the value in one of the `group-<slug>` fields. A value with no translation falls back to its own slug; a value with no icon simply renders without one.

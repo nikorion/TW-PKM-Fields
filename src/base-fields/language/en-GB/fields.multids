@@ -2,29 +2,29 @@ title: $:/plugins/nikorion/base-fields/language/en-GB/
 
 Fields/role/Prompt: Role:
 Fields/role/Placeholder: tiddler function
-Fields/role/Delete/Hint: Clear the role field
+Fields/role/Delete/Hint: Clear the ‘role’ field
 Fields/maturity/Prompt: Maturity:
 Fields/maturity/Placeholder: tiddler maturity
-Fields/maturity/Delete/Hint: Clear the maturity field
+Fields/maturity/Delete/Hint: Clear the ‘maturity’ field
 Fields/status/Prompt: Status:
 Fields/status/Placeholder: progress
-Fields/status/Delete/Hint: Clear the status field
+Fields/status/Delete/Hint: Clear the ‘status’ field
 Fields/project/Prompt: Project:
-Fields/project/Placeholder: project name
+Fields/project/Placeholder: project it belongs to
 Fields/project/Dropdown/Hint: Pick an existing project
 Fields/project/Dropdown/Empty: No project used yet
-Fields/project/Delete/Hint: Clear the project field
+Fields/project/Delete/Hint: Clear the ‘project’ field
 Fields/tools/Prompt: Tool(s) used:
-Fields/tools/Placeholder: tool/tech
+Fields/tools/Placeholder: tool(s) / technology(ies) involved
 Fields/tools/Dropdown/Hint: Pick an existing tool
 Fields/tools/Dropdown/Empty: No tool used yet
 Fields/tools/Remove/Hint: Remove this tool
-Fields/status/Stale/Hint: Field reserved for tasks, tasklists, hubs and routines — clear it
-Fields/status/Stale/NoRole/Hint: Field reserved for tasks, tasklists, hubs and routines — give the tiddler one of these roles or clear the field
+Fields/status/Stale/Hint: Field reserved for tasks, tasklists and routines — clear it
+Fields/status/Stale/NoRole/Hint: Field reserved for tasks, tasklists and routines — give the tiddler one of these roles or clear the field
 Fields/Stale/Prefix: The
 Fields/Stale/Suffix: do not use this field — clear it
 Fields/lifecycle/Prompt: Lifecycle:
 Fields/lifecycle/Placeholder: active
-Fields/lifecycle/Delete/Hint: Clear the lifecycle field
+Fields/lifecycle/Delete/Hint: Clear the ‘lifecycle’ field
 Fields/needs/Prompt: Needs:
-Fields/needs/Delete/Hint: Clear the needs field
+Fields/needs/Delete/Hint: Clear the ‘needs’ field

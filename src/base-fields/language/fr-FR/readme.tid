@@ -10,7 +10,7 @@ Ajoute sept champs du quotidien au template d'édition des tiddlers :
 |`project` |Tags |valeur unique, saisie ou choisie |texte libre |
 |`role` |Type |vocabulaire contrôlé, valeur unique |un slug brut (`concept`, `guide`, …) |
 |`maturity` |Type |vocabulaire contrôlé, valeur unique, //masqué sur les rôles de registre et de tâche// |un slug brut (`stub`, `stable`, …) |
-|`status` |Type |vocabulaire contrôlé, valeur unique, //affiché sur les rôles de tâche, de hub et de routine seulement// |un slug brut (`todo`, `doing`, …) |
+|`status` |Type |vocabulaire contrôlé, valeur unique, //affiché sur les rôles de tâche, de liste de tâches et de routine, ou quand il n'y a aucun rôle// |un slug brut (`todo`, `doing`, …) |
 |`lifecycle` |Type |vocabulaire contrôlé, valeur unique, vide = actif |un slug brut (`obsolete`, `archived`) |
 |`needs` |Sous Type |vocabulaire contrôlé, //liste// (une case à cocher par valeur), masqué sur les rôles de registre et de tâche |une liste de slugs bruts (`verify refactor`) |
 
@@ -22,7 +22,7 @@ Outils et Projet ne portent pas de libellé visible : leur placeholder dit à qu
 
 Les sélecteurs d'outils et de tags sont strictement indépendants : le menu des outils propose les valeurs déjà utilisées dans `tools`, jamais les tags du wiki, et réciproquement. Les pastilles d'outils sont rendues comme celles des tags, cascade de couleur par valeur comprise, mais retombent sur un orange qui leur est propre plutôt que sur la couleur de tag de la palette : les deux sortes de pastilles restent distinguables sur un tiddler qui porte les deux. Ce repli se règle dans `$:/config/nikorion/base-fields/tools/Colour`.
 
-''Statut'' dit où en est un travail : il n'apparaît donc que là où cela veut dire quelque chose — sur un tiddler dont le rôle est `task`, `tasklist`, `hub` ou `routine`. Quels rôles exactement se règle sur le vocabulaire lui-même, dans le champ `visible-filter` de `vocab/status`, pour que la règle vive à côté des valeurs qu'elle gouverne.
+''Statut'' dit où en est un travail : il n'apparaît donc que là où cela veut dire quelque chose — sur un tiddler dont le rôle est `task`, `tasklist` ou `routine`, ou aucun. Quels rôles exactement se règle sur le vocabulaire lui-même, dans le champ `visible-filter` de `vocab/status`, pour que la règle vive à côté des valeurs qu'elle gouverne.
 
 Un contrôle qui n'est là que parce que son champ porte encore une valeur que le rôle n'explique plus (par exemple `needs` après passage du rôle à `task`) est entouré de rouge, et son infobulle nomme le rôle et dit de vider le champ (//Les tâches n'utilisent pas ce champ — videz-le//).
 

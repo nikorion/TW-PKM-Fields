@@ -6,8 +6,7 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Role, Maturity, Status and Lifecycle on a row of their own right under the type control,
-	then Needs on the row below.
+	Role, Maturity, Lifecycle, Needs and Status, one line each, right under the type control.
 
 	Status only appears on tiddlers where it means something — how far along a piece
 	of work is, on a tiddler that is a piece of work. Which roles those are is not
@@ -33,20 +32,16 @@ type: text/vnd.tiddlywiki
 <%elseif [<currentTiddler>has[maturity]] %>
 <<bf-select-field field="maturity" stale="yes">>
 <%endif%>
+<<bf-select-field field="lifecycle">>
+<%if [subfilter<needsWhen>] %>
+<<bf-needs-field>>
+<%elseif [<currentTiddler>has[needs]] %>
+<<bf-needs-field stale="yes">>
+<%endif%>
 <%if [subfilter<statusWhen>] %>
 <<bf-select-field field="status">>
 <%elseif [<currentTiddler>has[status]] %>
 <<bf-select-field field="status" stale="yes">>
 <%endif%>
-<<bf-select-field field="lifecycle">>
 </div>
-<%if [subfilter<needsWhen>] %>
-<div class="bf-extra-row bf-needs-extras">
-<<bf-needs-field>>
-</div>
-<%elseif [<currentTiddler>has[needs]] %>
-<div class="bf-extra-row bf-needs-extras">
-<<bf-needs-field stale="yes">>
-</div>
-<%endif%>
 </$let>
