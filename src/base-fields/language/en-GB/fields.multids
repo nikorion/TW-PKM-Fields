@@ -20,6 +20,7 @@ Fields/tools/Dropdown/Hint: Pick an existing tool
 Fields/tools/Dropdown/Empty: No tool used yet
 Fields/tools/Remove/Hint: Remove this tool
 Fields/status/Stale/Hint: Field reserved for tasks, tasklists, hubs and routines — clear it
+Fields/status/Stale/NoRole/Hint: Field reserved for tasks, tasklists, hubs and routines — give the tiddler one of these roles or clear the field
 Fields/Stale/Prefix: The
 Fields/Stale/Suffix: do not use this field — clear it
 Fields/lifecycle/Prompt: Lifecycle:

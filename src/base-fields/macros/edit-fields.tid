@@ -40,7 +40,8 @@ tags: $:/tags/Global
 <!--
 	Why a control is flagged: the role the tiddler now has does not use this field, and
 	the tooltip says so by name (a field may carry its own sentence, `Fields/<field>/Stale/Hint`,
-	when a list of roles reads better than the current one — `status` does) — "Tasks do not use this field — clear it". The role's
+	when a list of roles reads better than the current one — `status` does — and
+	`Fields/<field>/Stale/NoRole/Hint` for a tiddler that has no role at all) — "Tasks do not use this field — clear it". The role's
 	plural comes from the vocabulary strings. A control is only ever flagged on a tiddler
 	that has a role, so there is always one to name.
 -->
@@ -60,7 +61,9 @@ tags: $:/tags/Global
 	plural={{{ [<currentTiddler>get[role]!match[]] :map[function[bf-vocab-plural],<currentTiddler>] }}}
 	specificKey={{{ [[Fields/]addsuffix<field>addsuffix[/Stale/Hint]] }}}
 	specific={{{ [function[base-fields-lingo-text],<specificKey>] }}}
-	hint={{{ [<specific>!match<specificKey>] :else[function[bf-stale-with-role],<plural>] }}}
+	noRoleKey={{{ [[Fields/]addsuffix<field>addsuffix[/Stale/NoRole/Hint]] }}}
+	noRole={{{ [function[base-fields-lingo-text],<noRoleKey>] }}}
+	hint={{{ [<plural>match[]then<noRole>!match<noRoleKey>] :else[<specific>!match<specificKey>] :else[function[bf-stale-with-role],<plural>] }}}
 	staleHint={{{ [<stale>match[yes]] :map[<hint>] }}}
 >
 <span class={{{ [[bf-edit-field]] [<stale>match[yes]then[bf-stale]] +[join[ ]] }}} title=<<staleHint>>>

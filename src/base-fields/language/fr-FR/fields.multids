@@ -20,6 +20,7 @@ Fields/tools/Dropdown/Hint: Choisir un outil existant
 Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil
 Fields/status/Stale/Hint: Champ réservé aux tâches, listes de tâches, hubs et routines — videz-le
+Fields/status/Stale/NoRole/Hint: Champ réservé aux tâches, listes de tâches, hubs et routines — donnez un de ces rôles au tiddler ou videz le champ
 Fields/Stale/Prefix: Les
 Fields/Stale/Suffix: n'utilisent pas ce champ — videz-le
 Fields/lifecycle/Prompt: Cycle de vie :
