@@ -14,7 +14,9 @@ type: text/vnd.tiddlywiki
 	decided here but on the vocabulary itself, in its `visible-filter` field, so that
 	the rule sits next to the values it governs.
 
-	It also appears whenever the field already holds a value, whatever the role. A
+	It also appears whenever the field already holds a value, whatever the role —
+	including none, e.g. once the role has been cleared — framed in red, since the role
+	no longer accounts for it. A
 	tiddler that was a task and became something else keeps its `status` until
 	someone clears it; hiding the control would leave that value invisible in the
 	editor yet still matched by filters, and with no way to remove it.
@@ -26,17 +28,25 @@ type: text/vnd.tiddlywiki
 >
 <div class="bf-extra-row bf-type-extras">
 <<bf-select-field field="role">>
-<%if [subfilter<maturityWhen>] [<currentTiddler>has[maturity]] %>
+<%if [subfilter<maturityWhen>] %>
 <<bf-select-field field="maturity">>
+<%elseif [<currentTiddler>has[maturity]] %>
+<<bf-select-field field="maturity" stale="yes">>
 <%endif%>
-<%if [subfilter<statusWhen>] [<currentTiddler>has[status]] %>
+<%if [subfilter<statusWhen>] %>
 <<bf-select-field field="status">>
+<%elseif [<currentTiddler>has[status]] %>
+<<bf-select-field field="status" stale="yes">>
 <%endif%>
 <<bf-select-field field="lifecycle">>
 </div>
-<%if [subfilter<needsWhen>] [<currentTiddler>has[needs]] %>
+<%if [subfilter<needsWhen>] %>
 <div class="bf-extra-row bf-needs-extras">
 <<bf-needs-field>>
+</div>
+<%elseif [<currentTiddler>has[needs]] %>
+<div class="bf-extra-row bf-needs-extras">
+<<bf-needs-field stale="yes">>
 </div>
 <%endif%>
 </$let>

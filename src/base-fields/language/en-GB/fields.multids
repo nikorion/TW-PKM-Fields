@@ -19,7 +19,9 @@ Fields/tools/Placeholder: tool/tech
 Fields/tools/Dropdown/Hint: Pick an existing tool
 Fields/tools/Dropdown/Empty: No tool used yet
 Fields/tools/Remove/Hint: Remove this tool
-Fields/ActualName/Hint: actual field name:
+Fields/status/Stale/Hint: Field reserved for tasks, tasklists, hubs and routines — clear it
+Fields/Stale/Prefix: The
+Fields/Stale/Suffix: do not use this field — clear it
 Fields/lifecycle/Prompt: Lifecycle:
 Fields/lifecycle/Placeholder: active
 Fields/lifecycle/Delete/Hint: Clear the lifecycle field

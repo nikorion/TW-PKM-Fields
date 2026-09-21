@@ -52,6 +52,10 @@ tags: $:/tags/Global
 [[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]] :else[<value>]
 \end
 
+\function bf-vocab-plural(value)
+[[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/base-fields/language/]addsuffix[/Vocab/role/]addsuffix<value>addsuffix[/Plural]get[text]] :else[[$:/plugins/nikorion/base-fields/language/en-GB/Vocab/role/]addsuffix<value>addsuffix[/Plural]get[text]] :else[<value>]
+\end
+
 \function bf-vocab-icon(field,value)
 [[$:/plugins/nikorion/base-fields/vocab/icons/]addsuffix<field>addsuffix[/]addsuffix<value>get[text]]
 \end

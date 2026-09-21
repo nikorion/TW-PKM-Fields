@@ -27,6 +27,19 @@ Vocab/status/paused: En pause
 Vocab/status/done: Fait
 Vocab/status/dropped: Abandonné
 
+Vocab/role/hub/Plural: hubs
+Vocab/role/concept/Plural: concepts
+Vocab/role/ref/Plural: références
+Vocab/role/source/Plural: sources
+Vocab/role/guide/Plural: guides
+Vocab/role/routine/Plural: routines
+Vocab/role/snippet/Plural: extraits
+Vocab/role/template/Plural: modèles
+Vocab/role/decision/Plural: arbitrages
+Vocab/role/log/Plural: journaux
+Vocab/role/task/Plural: tâches
+Vocab/role/tasklist/Plural: listes de tâches
+
 Vocab/role/Group/knowledge: Savoir
 Vocab/role/Group/procedure: Procédure
 Vocab/role/Group/reuse: Réemploi

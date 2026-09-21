@@ -19,7 +19,9 @@ Fields/tools/Placeholder: outil/techno
 Fields/tools/Dropdown/Hint: Choisir un outil existant
 Fields/tools/Dropdown/Empty: Aucun outil utilisé pour l'instant
 Fields/tools/Remove/Hint: Retirer cet outil
-Fields/ActualName/Hint: nom effectif du champ :
+Fields/status/Stale/Hint: Champ réservé aux tâches, listes de tâches, hubs et routines — videz-le
+Fields/Stale/Prefix: Les
+Fields/Stale/Suffix: n'utilisent pas ce champ — videz-le
 Fields/lifecycle/Prompt: Cycle de vie :
 Fields/lifecycle/Placeholder: actif
 Fields/lifecycle/Delete/Hint: Vider le champ cycle de vie

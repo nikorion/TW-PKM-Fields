@@ -147,6 +147,20 @@ type: text/vnd.tiddlywiki
 }
 
 /*
+	A control shown only because its field still holds a value the role no longer
+	accounts for: framed in red, label included, to say the value should go.
+*/
+.bf-edit-field.bf-stale {
+	border: 1px solid <<colour alert-highlight>>;
+	border-radius: 4px;
+	padding: 2px 6px;
+}
+
+.bf-edit-field.bf-stale > em {
+	color: <<colour alert-highlight>>;
+}
+
+/*
 	Needs: a label, one checkbox per value, a clear button, all on one line that
 	wraps once the row runs out of width.
 */

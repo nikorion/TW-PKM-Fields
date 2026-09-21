@@ -27,6 +27,19 @@ Vocab/status/paused: Paused
 Vocab/status/done: Done
 Vocab/status/dropped: Dropped
 
+Vocab/role/hub/Plural: hubs
+Vocab/role/concept/Plural: concepts
+Vocab/role/ref/Plural: refs
+Vocab/role/source/Plural: sources
+Vocab/role/guide/Plural: guides
+Vocab/role/routine/Plural: routines
+Vocab/role/snippet/Plural: snippets
+Vocab/role/template/Plural: templates
+Vocab/role/decision/Plural: decisions
+Vocab/role/log/Plural: logs
+Vocab/role/task/Plural: tasks
+Vocab/role/tasklist/Plural: tasklists
+
 Vocab/role/Group/knowledge: Knowledge
 Vocab/role/Group/procedure: Procedure
 Vocab/role/Group/reuse: Reuse

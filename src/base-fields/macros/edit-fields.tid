@@ -37,14 +37,34 @@ tags: $:/tags/Global
 <option value=<<slug>> title={{{ [function[bf-vocab-hint],<field>,<slug>] }}}><<bf-vocab-item field=<<field>> value=<<slug>> >></option>
 \end
 
-<!-- Single value picked from a controlled vocabulary (role, maturity, status, lifecycle). -->
-\procedure bf-select-field(field)
+<!--
+	Why a control is flagged: the role the tiddler now has does not use this field, and
+	the tooltip says so by name (a field may carry its own sentence, `Fields/<field>/Stale/Hint`,
+	when a list of roles reads better than the current one — `status` does) — "Tasks do not use this field — clear it". The role's
+	plural comes from the vocabulary strings. A control is only ever flagged on a tiddler
+	that has a role, so there is always one to name.
+-->
+\function bf-stale-with-role(plural)
+[function[base-fields-lingo-text],[Fields/Stale/Prefix]] [<plural>] [function[base-fields-lingo-text],[Fields/Stale/Suffix]] +[join[ ]]
+\end
+
+<!--
+	Single value picked from a controlled vocabulary (role, maturity, status, lifecycle).
+	`stale="yes"` marks a control shown only because its field still holds a value the
+	tiddler's role no longer accounts for: it gets a red frame and an explanatory tooltip.
+-->
+\procedure bf-select-field(field,stale)
 \whitespace trim
 <$let promptKey={{{ [[Fields/]addsuffix<field>addsuffix[/Prompt]] }}}
 	placeholderKey={{{ [[Fields/]addsuffix<field>addsuffix[/Placeholder]] }}}
+	plural={{{ [<currentTiddler>get[role]!match[]] :map[function[bf-vocab-plural],<currentTiddler>] }}}
+	specificKey={{{ [[Fields/]addsuffix<field>addsuffix[/Stale/Hint]] }}}
+	specific={{{ [function[base-fields-lingo-text],<specificKey>] }}}
+	hint={{{ [<specific>!match<specificKey>] :else[function[bf-stale-with-role],<plural>] }}}
+	staleHint={{{ [<stale>match[yes]] :map[<hint>] }}}
 >
-<span class="bf-edit-field">
-<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ ]addsuffix<field>] }}}><<base-fields-lingo title=<<promptKey>> >></em>
+<span class={{{ [[bf-edit-field]] [<stale>match[yes]then[bf-stale]] +[join[ ]] }}} title=<<staleHint>>>
+<em class="tc-edit tc-small-gap-right"><<base-fields-lingo title=<<promptKey>> >></em>
 <!--
 	`default` is not optional: with no value the select widget assigns `undefined`
 	to the DOM node, which matches no option at all — the control would go blank
@@ -90,12 +110,16 @@ tags: $:/tags/Global
 	others alone (`listField` mode of the core checkbox widget).
 -->
 
-\procedure bf-needs-field()
+\procedure bf-needs-field(stale)
 \whitespace trim
-<span class="bf-edit-field bf-needs-field">
-<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ needs]] }}}><<base-fields-lingo title="Fields/needs/Prompt">></em>
+<$let plural={{{ [<currentTiddler>get[role]!match[]] :map[function[bf-vocab-plural],<currentTiddler>] }}}
+	hint={{{ [function[bf-stale-with-role],<plural>] }}}
+	staleHint={{{ [<stale>match[yes]] :map[<hint>] }}}
+>
+<span class={{{ [[bf-edit-field bf-needs-field]] [<stale>match[yes]then[bf-stale]] +[join[ ]] }}} title=<<staleHint>>>
+<em class="tc-edit tc-small-gap-right"><<base-fields-lingo title="Fields/needs/Prompt">></em>
 <$list filter="[function[bf-vocab-values],[needs]]" variable="slug">
-<span class="bf-need" title={{{ [function[bf-vocab-hint],[needs],<slug>] }}}>
+<span class="bf-need" title={{{ [<staleHint>!match[]] :else[function[bf-vocab-hint],[needs],<slug>] }}}>
 <$checkbox tiddler=<<currentTiddler>> listField="needs" checked=<<slug>>>
 <<bf-vocab-item field="needs" value=<<slug>> >>
 </$checkbox>
@@ -103,6 +127,7 @@ tags: $:/tags/Global
 </$list>
 <<bf-delete-field-button field="needs">>
 </span>
+</$let>
 \end
 
 <!--
@@ -134,9 +159,9 @@ tags: $:/tags/Global
 <span class="bf-edit-field bf-edit-field-project" role="group"
 	aria-label={{{ [function[base-fields-lingo-text],[Fields/project/Prompt]trim[:]trim[]] }}}
 >
-<!-- Labelled like Role, Maturity and Status: same markup, same tooltip carrying the
-	field's real name — the placeholder inside the input says what to type. -->
-<em class="tc-edit tc-small-gap-right" title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ project]] }}}><<base-fields-lingo title="Fields/project/Prompt">></em>
+<!-- Labelled like Role, Maturity and Status: same markup — the placeholder inside
+	the input says what to type. -->
+<em class="tc-edit tc-small-gap-right"><<base-fields-lingo title="Fields/project/Prompt">></em>
 <span class="bf-project-control">
 <$transclude $variable="keyboard-driven-input"
 	tiddler=<<currentTiddler>> field="project" storeTitle=<<projectInput>>
@@ -276,11 +301,10 @@ tags: $:/tags/Global
 <!--
 	No visible label: the placeholder says what the control is for, and the row has
 	only so much width to give. `role`/`aria-label` keep the control named for a
-	screen reader, `title` keeps the field's real name one hover away.
+	screen reader.
 -->
 <span class="bf-tools-field" role="group"
 	aria-label={{{ [function[base-fields-lingo-text],[Fields/tools/Prompt]trim[:]trim[]] }}}
-	title={{{ [function[base-fields-lingo-text],[Fields/ActualName/Hint]addsuffix[ tools]] }}}
 >
 <div class="tc-edit-tags bf-tools-box">
 <$list filter="[<currentTiddler>get[tools]enlist-input[]sort[]]" variable="tool" storyview="pop">
