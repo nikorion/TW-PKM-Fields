@@ -1,8 +1,11 @@
 title: $:/plugins/nikorion/base-fields/search-filters
 type: text/vnd.tiddlywiki
 project-search-filter: [all[tiddlers]!has[draft.of]has[project]get[project]each:value[]sort[]search:title<userInput>]
-tools-search-filter: [all[tiddlers]!has[draft.of]has[tools]each:list-item[tools]sort[]search:title<userInput>]
+epistemology-search-filter: [all[tiddlers]!has[draft.of]has[epistemology]get[epistemology]each:value[]sort[]search:title<userInput>]
+technology-search-filter: [all[tiddlers]!has[draft.of]has[technology]each:list-item[technology]sort[]search:title<userInput>]
+equipment-search-filter: [all[tiddlers]!has[draft.of]has[equipment]each:list-item[equipment]sort[]search:title<userInput>]
+disciplines-search-filter: [all[tiddlers]!has[draft.of]has[disciplines]each:list-item[disciplines]sort[]search:title<userInput>]
 
-Completion filters for the `project` and `tools` inputs: each lists the values already used in that field elsewhere in the wiki, narrowed by what has been typed.
+Completion filters for the `project`, `epistemology`, `technology`, `equipment` and `disciplines` inputs: each lists the values already used in that field elsewhere in the wiki, narrowed by what has been typed.
 
 They live on fields rather than inline because `keyboard-driven-input` reads them from a tiddler, named by its `configTiddlerFilter` parameter and the field named by `firstSearchFilterField`.

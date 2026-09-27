@@ -1,0 +1,13 @@
+title: $:/nikorion/language/fr-FR/Playground/
+
+Intro: Modifie ce tiddler pour voir les champs supplémentaires. Sur la ligne sous Type : ''Rôle'', ''Maturité'', ''Cycle de vie'', ''Besoins'' et ''Statut''. Au-dessus des Tags : ''Projet'', ''Épistémologie'' et ''Disciplines'' ; sous les Tags : ''Techno mobilisée'' et ''Matériel mobilisé''. Statut n'apparaît que pour les tâches, listes de tâches et routines, ou sur un tiddler sans rôle ; Maturité et Besoins sont masqués sur les journaux, arbitrages, tâches et listes de tâches. Dans tous les cas, un champ déjà renseigné reste affiché, encadré de rouge.
+ValuesHeading: ! Valeurs stockées sur ce tiddler
+ValuesNote: Un champ de vocabulaire vide est rendu par sa valeur à vide. ''Maturité'', ''Cycle de vie'' et ''Statut'' ont chacun une //valeur à vide// — //Ébauche//, //Actif// et //Aucun// : cette valeur //est// le champ vide, jamais stockée, et la choisir vide le champ. Filtrer avec `[!has[maturity]]`, pas `[maturity[stub]]`. Change une valeur dans l'éditeur et regarde ce tableau suivre.
+Empty: (vide)
+Table1/Field: Champ
+Table1/RawValue: Valeur brute
+Table1/Rendered: Rendu
+VocabulariesHeading: ! Vocabulaires complets
+HelpersHeading: ! Fonctions d'aide, documentées dans le readme
+Table2/Call: Appel
+Table2/Result: Résultat

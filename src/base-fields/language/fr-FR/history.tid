@@ -1,5 +1,6 @@
 title: $:/plugins/nikorion/base-fields/language/fr-FR/history
 type: text/vnd.tiddlywiki
 
-* ''0.1.0'' -- 2026.09.03 -- Hello !
-* ''0.2.0'' -- 2026.09.21 -- Add `lifecycle` and `needs`, split `maturity` into `stub` / `rough` / `stable` (`archived` and `deprecated` move to `lifecycle`, the latter renamed `obsolete`), add the `source` role, show `status` on hubs and routines, hide `maturity` and `needs` on register and task roles
+* ''0.1.0'' -- 2026.09.03 -- Bonjour !
+* ''0.2.0'' -- 2026.09.21 -- Ajout de `lifecycle` et `needs`, `maturity` scindé en `stub` / `rough` / `stable` (`archived` et `deprecated` passent dans `lifecycle`, le second renommé `obsolete`), ajout du rôle `source`, `status` affiché sur les hubs et les routines, `maturity` et `needs` masqués sur les rôles de registre et de tâche
+* ''0.3.0'' -- 2026.09.26 -- `tools` remplacé par les champs liste `technology` et `equipment`, ajout de `epistemology` (valeur unique, saisie ou choisie, comme `project`) et du champ liste `disciplines`, ajout des rôles `project` et `tool`, valeurs de `role` groupées sous des intitulés, `maturity`, `lifecycle` et `status` édités par boutons radio, `maturity` vide vaut désormais `stub` (comme `lifecycle` vide vaut `active`), `status` affiché sur les tâches, listes de tâches et routines ou en l'absence de rôle, cadre rouge autour d'un champ que le rôle actuel n'utilise pas, couleur de repli propre à chaque champ liste, adaptée au thème clair ou sombre de la palette, `bf-list-pill` peut s'afficher sans son bouton de retrait (`readonly="yes"`, utilisé par les colonnes liste de TW-Dynamic-Table)

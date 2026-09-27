@@ -1,0 +1,13 @@
+title: $:/nikorion/language/en-GB/Playground/
+
+Intro: Edit this tiddler to see the extra fields. On the line under Type: ''Role'', ''Maturity'', ''Lifecycle'', ''Needs'' and ''Status''. Above Tags: ''Project'', ''Epistemology'' and ''Disciplines''; below Tags: ''Technology mobilised'' and ''Equipment mobilised''. Status only shows for tasks, task lists and routines, or on a tiddler with no role; Maturity and Needs are hidden on logs, decisions, tasks and task lists. Either way, a field that already holds a value stays shown, framed in red.
+ValuesHeading: ! Values stored on this tiddler
+ValuesNote: An empty vocabulary field is rendered as its blank value. ''Maturity'', ''Lifecycle'' and ''Status'' each have a //blank value// — //Stub//, //Active// and //None//: that value //is// the empty field, never stored, and picking it clears the field. Filter on it with `[!has[maturity]]`, not `[maturity[stub]]`. Change a value in the editor and watch this table follow.
+Empty: (empty)
+Table1/Field: Field
+Table1/RawValue: Raw value
+Table1/Rendered: Rendered
+VocabulariesHeading: ! Full vocabularies
+HelpersHeading: ! Helpers, as documented in the readme
+Table2/Call: Call
+Table2/Result: Result

@@ -14,11 +14,27 @@ Fields/project/Placeholder: project it belongs to
 Fields/project/Dropdown/Hint: Pick an existing project
 Fields/project/Dropdown/Empty: No project used yet
 Fields/project/Delete/Hint: Clear the ‘project’ field
-Fields/tools/Prompt: Tool(s) used:
-Fields/tools/Placeholder: tool(s) / technology(ies) involved
-Fields/tools/Dropdown/Hint: Pick an existing tool
-Fields/tools/Dropdown/Empty: No tool used yet
-Fields/tools/Remove/Hint: Remove this tool
+Fields/epistemology/Prompt: Epistemology:
+Fields/epistemology/Prompt/Hint: Epistemology: how knowledge is produced and validated. Here, the tiddler's methodological family — for example philosophy, formal sciences, human and social sciences, interpretive knowledge…
+Fields/epistemology/Placeholder: epistemological domain or method
+Fields/epistemology/Dropdown/Hint: Pick an existing epistemology
+Fields/epistemology/Dropdown/Empty: No epistemology used yet
+Fields/epistemology/Delete/Hint: Clear the ‘epistemology’ field
+Fields/technology/Prompt: Technology mobilised:
+Fields/technology/Placeholder: technology mobilised
+Fields/technology/Dropdown/Hint: Pick an existing technology
+Fields/technology/Dropdown/Empty: No technology used yet
+Fields/technology/Remove/Hint: Remove this technology
+Fields/equipment/Prompt: Equipment mobilised:
+Fields/equipment/Placeholder: equipment mobilised
+Fields/equipment/Dropdown/Hint: Pick an existing piece of equipment
+Fields/equipment/Dropdown/Empty: No equipment used yet
+Fields/equipment/Remove/Hint: Remove this equipment
+Fields/disciplines/Prompt: Disciplines:
+Fields/disciplines/Placeholder: discipline
+Fields/disciplines/Dropdown/Hint: Pick an existing discipline
+Fields/disciplines/Dropdown/Empty: No discipline used yet
+Fields/disciplines/Remove/Hint: Remove this discipline
 Fields/status/Stale/Hint: Field reserved for tasks, tasklists and routines — clear it
 Fields/status/Stale/NoRole/Hint: Field reserved for tasks, tasklists and routines — give the tiddler one of these roles or clear the field
 Fields/Stale/Prefix: The

@@ -2,12 +2,12 @@ title: $:/plugins/nikorion/base-fields/vocab/maturity
 type: text/vnd.tiddlywiki
 list: stub rough stable
 radio: yes
-default: stub
+blank-value: stub
 visible-filter: [<currentTiddler>!role[log]!role[decision]!role[task]!role[tasklist]]
 
 Allowed values for the `maturity` field, in display order.
 
-It is edited with radio buttons (`radio: yes`). `stub` is the default (`default: stub`): it is the one shown checked while the field is empty, and choosing it stores `stub`.
+It is edited with radio buttons (`radio: yes`). `stub` stands for an empty field (`blank-value: stub`): it is the one checked while the field is empty, and choosing it clears the field. A tiddler with no maturity is therefore a stub, and filters treat it as one: list the stubs with `[!has[maturity]]`, not `[maturity[stub]]`.
 
 `maturity` says how far along the //writing// of a tiddler is. Registers (`log`, `decision`) are dated and only ever added to, and tasks have their own `status`, so the control is hidden on those roles — unless the field already holds a value. The `visible-filter` field above decides when the control appears.
 

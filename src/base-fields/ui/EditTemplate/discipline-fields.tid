@@ -1,0 +1,20 @@
+title: $:/plugins/nikorion/base-fields/ui/EditTemplate/discipline-fields
+tags: $:/tags/EditTemplate
+list-before: $:/core/ui/EditTemplate/tags
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<!--
+	Project, Epistemology then Disciplines, sharing one row right above the tags
+	box: `list-before` puts the section there. Project is the tiddler's
+	organisational home; Disciplines (hermeneutics, sociology, biology…) and
+	Epistemology (which family or method) sit one level of abstraction above the
+	subject itself, so they follow Project rather than the tags below.
+-->
+
+<div class="bf-extra-row bf-pre-tags-extras">
+<<bf-single-value-field field="project">>
+<<bf-single-value-field field="epistemology">>
+<<bf-list-value-field field="disciplines">>
+</div>

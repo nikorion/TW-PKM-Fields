@@ -3,11 +3,13 @@ tags: $:/tags/Stylesheet
 type: text/vnd.tiddlywiki
 
 /*
-	The added controls form rows of their own, each one right under the core row it
-	extends: Tools and Project share the row under the tags box, Role, Maturity, Status and
-	Lifecycle the one under the type control, Needs the one below that. Placement is the `list-after` of each section — the stylesheet only
-	lays out what is inside a row, so nothing here depends on the form's nesting and
-	no core tiddler is overridden.
+	The added controls form rows of their own, each placed relative to the core row
+	it neighbours: Project, Epistemology and Disciplines share the row right above
+	the tags box (`list-before`), Technology and Equipment the row right after it
+	(`list-after`), Role, Maturity, Lifecycle, Needs and Status the one under the
+	type control. Placement is the `list-before`/`list-after`
+	of each section — the stylesheet only lays out what is inside a row, so nothing
+	here depends on the form's nesting and no core tiddler is overridden.
 
 	Rows being independent matters: when the tags box grows a line, the row below
 	moves down with it and nothing drifts sideways.
@@ -26,18 +28,20 @@ type: text/vnd.tiddlywiki
 }
 
 /*
-	The tools box takes the full width of its row; Project sits on the line below. The
-	input inside it carries the minimum room to type, and the box wraps its own pills
-	internally once it runs out of row.
+	Each list field takes the full width of its row; the next control sits on the
+	line below. The input inside it carries the minimum room to type, and the box
+	wraps its own pills internally once it runs out of row.
 */
-.bf-tags-extras > .bf-tools-field {
+.bf-pre-tags-extras > .bf-list-field,
+.bf-post-tags-extras > .bf-list-field {
 	align-self: stretch;
 	max-width: 100%;
 }
 
 /* Role, Maturity, Status and Lifecycle: one select per line, stacked under the type control. */
 .bf-type-extras,
-.bf-tags-extras {
+.bf-pre-tags-extras,
+.bf-post-tags-extras {
 	flex-direction: column;
 	align-items: flex-start;
 }
@@ -171,29 +175,41 @@ type: text/vnd.tiddlywiki
 	margin-inline-start: 6px;
 }
 
-.bf-project-control + .bf-delete-field {
+.bf-single-control + .bf-delete-field {
 	margin-inline-start: 6px;
 }
 
-/* Project: one value, typed or picked, so the input is sized for a name. */
+/* Project, Epistemology: one value, typed or picked, so the input is sized for a name. */
 
-.bf-project-control {
+.bf-single-control {
 	display: flex;
 	align-items: center;
 	position: relative;
 }
 
-.bf-project-control .bf-edit-input {
-	width: 12em;
+/*
+	Inputs are as wide as their placeholder (`--bf-input-chars`, set by the macro from
+	the current language's string), so it always reads in full.
+*/
+.bf-single-control .bf-edit-input,
+.bf-list-field .tc-add-tag-name input {
+	width: calc(var(--bf-input-chars, 12) * 1ch + 1.5em);
+	max-width: 100%;
+}
+
+/* A label with an explanation to give: shown as a tooltip, flagged by the cursor. */
+.bf-edit-field > em[title]:not([title=""]) {
+	cursor: help;
+	text-decoration: underline dotted;
 }
 
 /* The dropdown arrow sits apart from the input rather than against it. */
-.bf-project-control .tc-btn-dropdown {
+.bf-single-control .tc-btn-dropdown {
 	margin-inline-start: 8px;
 }
 
 /* Drop the suggestions right under the input rather than after the flex row. */
-.bf-project-control .tc-block-dropdown-wrapper {
+.bf-single-control .tc-block-dropdown-wrapper {
 	position: absolute;
 	top: 100%;
 	left: 0;
@@ -215,24 +231,22 @@ type: text/vnd.tiddlywiki
 	text-decoration: none;
 }
 
-/* Tools: a tags-style box, so the pills and the picker come styled by the core. */
+/* Technology, Equipment, Disciplines: a tags-style box, so the pills and the picker come styled by the core. */
 
-.bf-tools-field {
+.bf-list-field {
 	display: flex;
 }
 
-.bf-tools-field .bf-tools-box {
+.bf-list-field .bf-list-box {
 	flex: 1 1 auto;
 }
 
 /*
 	The core sizes the tag input at `width: 50%` of the tags box — right when the box
 	spans the row, but here the box is sized by the input, so half of it would stay
-	empty and push Project away. A width of its own makes the box fit what it holds.
+	empty and push the next control away. The input gets a width of its own instead
+	(see the single-value inputs above).
 */
-.bf-tools-field .tc-add-tag-name input {
-	width: 17em;
-}
 
 /*
 	A control shown only because its field still holds a value the role no longer

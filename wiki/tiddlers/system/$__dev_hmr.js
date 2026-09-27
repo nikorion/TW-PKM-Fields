@@ -1,7 +1,3 @@
-title: $:/dev/hmr
-type: application/javascript
-module-type: startup
-
 (function () {
 "use strict";
 exports.name = "dev-hmr";

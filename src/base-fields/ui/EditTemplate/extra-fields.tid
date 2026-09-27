@@ -6,15 +6,15 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Tools then Project, sharing one row right under the tags box: `list-after` puts
-	the section there, so the row stays independent — the tags box above can grow all
-	the lines it likes without moving anything here sideways. The tools box is sized
-	by its pills rather than by the row, so Project follows straight after it instead
-	of being pushed to the far edge; when the pills fill the width, Project wraps to
-	the line below.
+	Technology then Equipment, sharing one row right under the tags box:
+	`list-after` puts the section there, so the row stays independent — the tags box
+	above can grow all the lines it likes without moving anything here sideways.
+	Each is sized by its pills rather than by the row, so the next control follows
+	straight after instead of being pushed to the far edge; when the pills fill the
+	width, it wraps to the line below.
 -->
 
-<div class="bf-extra-row bf-tags-extras">
-<<bf-tools-field>>
-<<bf-project-field>>
+<div class="bf-extra-row bf-post-tags-extras">
+<<bf-list-value-field field="technology">>
+<<bf-list-value-field field="equipment">>
 </div>
