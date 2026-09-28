@@ -1,0 +1,19 @@
+tags: $:/tags/nk-dyntable/BodyTemplate
+nk-dyntable-column-filter: [[$:/plugins/nikorion/pkm-schema/fields/]addsuffix<currentColumn>get[kind]match[vocab-list]]
+title: $:/plugins/nikorion/pkm-fields/dyntable/body/vocab-list
+type: text/vnd.tiddlywiki
+
+<!-- Any field of the pkm schema whose kind is `vocab-list` (needs…): see dyntable/procedures. -->
+
+\procedure show-cell() <<nk-pkm-vocab-cell>>
+\procedure show-cell-locked() <span class="nk-dyntable-locked-cell"><<nk-pkm-vocab-cell>></span>
+
+<td class={{{ [[nk-dyntable-cell-left]] [function[nk-pkm-stale-class]] +[join[ ]] }}} title={{{ [function[nk-pkm-stale-hint]] }}}>
+<%if [<tempTableEdit>is[missing]] :or[<tempTableEdit>getindex[mode]!match[edit]] %>
+	<<show-cell>>
+<%elseif [<tempTableSort>getindex[sortIndex]match<currentColumn>] %><!-- the column the table is sorted on stays locked -->
+	<<show-cell-locked>>
+<%else%>
+	<<nk-pkm-checkboxes>>
+<%endif%>
+</td>

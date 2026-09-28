@@ -1,0 +1,10 @@
+title: $:/plugins/nikorion/pkm-fields/language/fr-FR/
+
+Readme/Column/Field: Champ
+Readme/Column/Control: Contrôle
+Readme/Control/vocab: une liste déroulante des valeurs du vocabulaire
+Readme/Control/vocab-radio: des boutons radio, un par valeur du vocabulaire
+Readme/Control/vocab-list: une case à cocher par valeur du vocabulaire
+Readme/Control/value: une valeur, saisie ou choisie parmi celles déjà utilisées
+Readme/Control/list: des pastilles et une saisie, éditées comme les tags
+Readme/Control/date: un sélecteur de date

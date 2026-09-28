@@ -1,0 +1,15 @@
+title: $:/plugins/nikorion/pkm-fields/language/lingo
+tags: $:/tags/Global
+
+\procedure pkm-fields-lingo(title)
+\whitespace trim
+<$let _lang={{{ [[$:/language]get[text]get[name]else[en-GB]] }}}>
+<$transclude $tiddler={{{ [[$:/plugins/nikorion/pkm-fields/language/]addsuffix<_lang>addsuffix[/]addsuffix<title>] }}}>
+<$transclude $tiddler={{{ [[$:/plugins/nikorion/pkm-fields/language/en-GB/]addsuffix<title>] }}}/>
+</$transclude>
+</$let>
+\end
+
+\function pkm-fields-lingo-text(title)
+[[$:/language]get[text]get[name]else[en-GB]addprefix[$:/plugins/nikorion/pkm-fields/language/]addsuffix[/]addsuffix<title>get[text]] :else[[$:/plugins/nikorion/pkm-fields/language/en-GB/]addsuffix<title>get[text]] :else[<title>]
+\end

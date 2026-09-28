@@ -1,5 +1,5 @@
 {
-  "name": "tw-base-fields",
+  "name": "tw-pkm-fields",
   "version": "0.1.0",
   "description": "TiddlyWiki plugin adding nature / status / project / tools fields to the tiddler edit template",
   "private": true,

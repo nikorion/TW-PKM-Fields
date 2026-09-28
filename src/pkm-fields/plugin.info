@@ -1,0 +1,13 @@
+{
+  "title": "$:/plugins/nikorion/pkm-fields",
+  "name": "PKM Fields",
+  "description": "Puts the fields of the pkm schema in the tiddler edit template, and in Dynamic Table's columns when it is installed: dropdowns, radio buttons, checkboxes and pickers, drawn from each field's definition",
+  "author": "nikorion",
+  "source": "https://github.com/nikorion/TW-PKM-Fields",
+  "dependents": "$:/plugins/nikorion/pkm-schema",
+  "list": "readme license history",
+  "version": "0.6.0",
+  "core-version": ">=5.3.0",
+  "type": "application/json",
+  "plugin-type": "plugin"
+}

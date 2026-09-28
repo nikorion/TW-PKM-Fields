@@ -1,8 +1,8 @@
 title: $:/nikorion/language/en-GB/Playground/
 
-Intro: Edit this tiddler to see the fields of the kms ontology in the editor. On the line under Type: ''Role'', ''Maturity'', ''Lifecycle'', ''Needs'' and ''Status''. Above Tags: ''Project'', ''Epistemology'' and ''Disciplines''; below Tags: ''Technology mobilised'' and ''Equipment mobilised''. A field only shows where it applies (Status only for tasks, task lists and routines, or on a tiddler with no role; Maturity and Needs not on logs, decisions, tasks and task lists) — unless it already holds a value: it then stays shown, framed in red. Hover a label to read what the field says.
+Intro: Edit this tiddler to see the fields of the pkm schema in the editor. On the line under Type: ''Role'', ''Maturity'', ''Lifecycle'', ''Needs'' and ''Status''. Above Tags: ''Project'', ''Epistemology'' and ''Disciplines''; below Tags: ''Technology mobilised'' and ''Equipment mobilised''. A field only shows where it applies (Status only for tasks, task lists and routines, or on a tiddler with no role; Maturity and Needs not on logs, decisions, tasks and task lists) — unless it already holds a value: it then stays shown, framed in red. Hover a label to read what the field says.
 ValuesHeading: ! Values stored on this tiddler
-ValuesNote: Every field of the ontology, with the value this tiddler holds and how it is shown. An empty ''Maturity'', ''Lifecycle'' or ''Status'' is shown as its //blank value// — //Stub//, //Active//, //None// — which //is// the empty field, never stored. Change a value in the editor and watch this table follow.
+ValuesNote: Every field of the schema, with the value this tiddler holds and how it is shown. An empty ''Maturity'', ''Lifecycle'' or ''Status'' is shown as its //blank value// — //Stub//, //Active//, //None// — which //is// the empty field, never stored. Change a value in the editor and watch this table follow.
 Empty: (empty)
 Table1/Field: Field
 Table1/RawValue: Raw value

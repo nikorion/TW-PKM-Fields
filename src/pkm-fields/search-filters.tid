@@ -1,0 +1,10 @@
+title: $:/plugins/nikorion/pkm-fields/search-filters
+type: text/vnd.tiddlywiki
+value-search-filter: [all[tiddlers]!has[draft.of]has<pfField>get<pfField>each:value[]sort[]search:title<userInput>]
+list-search-filter: [all[tiddlers]!has[draft.of]has<pfField>each:list-item<pfField>sort[]search:title<userInput>]
+
+Completion filters of the free fields' inputs: each lists the values already used in that field elsewhere in the wiki, narrowed by what has been typed — `value-search-filter` for a field holding one value, `list-search-filter` for a list field.
+
+They live on fields rather than inline because `keyboard-driven-input` reads them from a tiddler, named by its `configTiddlerFilter` parameter and the field named by `firstSearchFilterField`. They name the field through the `pfField` variable, set by the control: `keyboard-driven-input` has a `field` parameter of its own, which shadows the control's.
+
+Both deduplicate explicitly (`each:value[]`, `each:list-item`): a filter run does not deduplicate its own results, so without it a value would be offered once per tiddler using it.

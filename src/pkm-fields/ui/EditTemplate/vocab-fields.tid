@@ -1,0 +1,22 @@
+title: $:/plugins/nikorion/pkm-fields/ui/EditTemplate/vocab-fields
+tags: $:/tags/EditTemplate
+list-after: $:/core/ui/EditTemplate/type
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<!--
+	The row right under the type control, one line per field: the fields of
+	`$:/config/nikorion/pkm-fields/row/type` — Role, Maturity, Lifecycle, Needs and
+	Status out of the box — then any vocabulary field of the schema that no row names.
+
+	Which tiddlers a field applies to is not decided here but by the schema
+	(`applies-filter` of the field's definition): `nk-field` leaves the field out where it
+	does not apply, unless it holds a value — then it is shown framed in red.
+-->
+
+<div class="nk-extra-row nk-type-extras">
+<$list filter="[function[nk-row-fields],[type]] [function[nk-unplaced-vocab-fields]]" variable="field">
+<<nk-field field=<<field>> >>
+</$list>
+</div>

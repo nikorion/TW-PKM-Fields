@@ -1,0 +1,22 @@
+tags: $:/tags/Stylesheet
+title: $:/plugins/nikorion/pkm-fields/dyntable/styles
+type: text/vnd.tiddlywiki
+
+/* vocabulary-list cell in edit mode (e.g. `needs`): one checkbox per value, kept whole */
+.nk-pkm-check {
+	white-space: nowrap;
+	margin-right: 0.5em;
+}
+
+/* a value stays on one line in a cell, in view and edit mode: a vocabulary value (icon + label), a free
+  single value; a list's values wrap between each other only */
+.nk-pkm-value,
+.nk-pkm-nowrap {
+	white-space: nowrap;
+}
+
+/* a cell whose field does not apply to its record yet holds a value: framed in red, as the editor frames the control */
+td.nk-pkm-stale {
+	box-shadow: inset 0 0 0 2px <<colour alert-highlight>>;
+	box-shadow: inset 0 0 0 2px color-mix(in srgb, <<colour alert-highlight>> 45%, transparent);
+}

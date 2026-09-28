@@ -1,0 +1,16 @@
+tags: $:/tags/nk-dyntable/BodyTemplate
+nk-dyntable-column-filter: [[$:/plugins/nikorion/pkm-schema/fields/]addsuffix<currentColumn>get[kind]match[value]]
+title: $:/plugins/nikorion/pkm-fields/dyntable/body/value
+type: text/vnd.tiddlywiki
+
+<!-- Any field of the pkm schema whose kind is `value` (project…): Dynamic Table's own view cell, the value kept on one line; in edit mode the editor's control (see dyntable/procedures). -->
+
+<td class={{{ [[nk-pkm-nowrap]] [function[nk-pkm-stale-class]] +[join[ ]] }}} title={{{ [function[nk-pkm-stale-hint]] }}}>
+<%if [<tempTableEdit>is[missing]] :or[<tempTableEdit>getindex[mode]!match[edit]] %>
+	<<show-cell>>
+<%elseif [<tempTableSort>getindex[sortIndex]match<currentColumn>] %><!-- the column the table is sorted on stays locked -->
+	<<show-cell-locked>>
+<%else%>
+	<<nk-pkm-value-edit>>
+<%endif%>
+</td>

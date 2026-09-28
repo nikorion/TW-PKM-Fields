@@ -1,0 +1,22 @@
+title: $:/plugins/nikorion/pkm-fields/ui/EditTemplate/extra-fields
+tags: $:/tags/EditTemplate
+list-after: $:/core/ui/EditTemplate/tags
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<!--
+	The row right under the tags box (`list-after` puts the section there, so the row
+	stays independent: the tags box above can grow all the lines it likes without moving
+	anything here sideways): the fields of `$:/config/nikorion/pkm-fields/row/post-tags`
+	— Technology and Equipment out of the box — then any free field of the schema that
+	no row names.
+-->
+
+<%if [function[nk-row-fields],[post-tags]] :else[function[nk-unplaced-free-fields]] %>
+<div class="nk-extra-row nk-post-tags-extras">
+<$list filter="[function[nk-row-fields],[post-tags]] [function[nk-unplaced-free-fields]]" variable="field">
+<<nk-field field=<<field>> >>
+</$list>
+</div>
+<%endif%>

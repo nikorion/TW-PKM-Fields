@@ -1,0 +1,5 @@
+tags: $:/tags/nk-dyntable/ColumnLabelFilter
+title: $:/plugins/nikorion/pkm-fields/dyntable/column-label
+type: text/vnd.tiddlywiki
+
+[<currentColumn>] :filter[[$:/plugins/nikorion/pkm-schema/fields/]addsuffix<currentTiddler>get[kind]] :map[function[pkm-field-label],<currentTiddler>]

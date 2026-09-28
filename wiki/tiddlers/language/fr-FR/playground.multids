@@ -1,8 +1,8 @@
 title: $:/nikorion/language/fr-FR/Playground/
 
-Intro: Modifie ce tiddler pour voir les champs de l'ontologie kms dans l'éditeur. Sur la ligne sous Type : ''Rôle'', ''Maturité'', ''Cycle de vie'', ''Besoins'' et ''Statut''. Au-dessus des Tags : ''Projet'', ''Épistémologie'' et ''Disciplines'' ; sous les Tags : ''Techno mobilisée'' et ''Matériel mobilisé''. Un champ n'apparaît que là où il s'applique (Statut seulement pour les tâches, listes de tâches et routines, ou sur un tiddler sans rôle ; Maturité et Besoins ni sur les journaux, arbitrages, tâches et listes de tâches) — sauf s'il porte déjà une valeur : il reste alors affiché, encadré de rouge. Survole un libellé pour lire ce que dit le champ.
+Intro: Modifie ce tiddler pour voir les champs du schéma pkm dans l'éditeur. Sur la ligne sous Type : ''Rôle'', ''Maturité'', ''Cycle de vie'', ''Besoins'' et ''Statut''. Au-dessus des Tags : ''Projet'', ''Épistémologie'' et ''Disciplines'' ; sous les Tags : ''Techno mobilisée'' et ''Matériel mobilisé''. Un champ n'apparaît que là où il s'applique (Statut seulement pour les tâches, listes de tâches et routines, ou sur un tiddler sans rôle ; Maturité et Besoins ni sur les journaux, arbitrages, tâches et listes de tâches) — sauf s'il porte déjà une valeur : il reste alors affiché, encadré de rouge. Survole un libellé pour lire ce que dit le champ.
 ValuesHeading: ! Valeurs stockées sur ce tiddler
-ValuesNote: Chaque champ de l'ontologie, avec la valeur que porte ce tiddler et son rendu. Une ''Maturité'', un ''Cycle de vie'' ou un ''Statut'' vide s'affiche par sa //valeur vide// — //Ébauche//, //Actif//, //Aucun// — qui //est// le champ vide, jamais stockée. Change une valeur dans l'éditeur et regarde ce tableau suivre.
+ValuesNote: Chaque champ du schéma, avec la valeur que porte ce tiddler et son rendu. Une ''Maturité'', un ''Cycle de vie'' ou un ''Statut'' vide s'affiche par sa //valeur vide// — //Ébauche//, //Actif//, //Aucun// — qui //est// le champ vide, jamais stockée. Change une valeur dans l'éditeur et regarde ce tableau suivre.
 Empty: (vide)
 Table1/Field: Champ
 Table1/RawValue: Valeur brute

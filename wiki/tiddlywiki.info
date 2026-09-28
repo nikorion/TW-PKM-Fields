@@ -1,10 +1,10 @@
 {
-  "description": "TW-Base-Fields development wiki",
+  "description": "TW-PKM-Fields development wiki",
   "plugins": [
     "tiddlywiki/filesystem",
     "tiddlywiki/tiddlyweb",
-    "nikorion/kms-ontology",
-    "nikorion/base-fields",
+    "nikorion/pkm-schema",
+    "nikorion/pkm-fields",
     "nikorion/detect-language"
   ],
   "themes": [
@@ -20,11 +20,11 @@
   "build": {
     "plugin-json": [
       "--output", "dist",
-      "--render", "$:/core/templates/exporters/JsonFile", "TW-Base-Fields-Plugin.json", "text/plain", "", "exportFilter", "[[$:/plugins/nikorion/base-fields]]"
+      "--render", "$:/core/templates/exporters/JsonFile", "TW-PKM-Fields-Plugin.json", "text/plain", "", "exportFilter", "[[$:/plugins/nikorion/pkm-fields]]"
     ],
     "html": [
       "--output", "docs",
-      "--rendertiddler", "$:/core/save/all", "TW-Base-Fields-Wiki.html", "text/plain", "",
+      "--rendertiddler", "$:/core/save/all", "TW-PKM-Fields-Wiki.html", "text/plain", "",
       "publishFilter", "-[[$:/dev/hmr]] -[[$:/config/dev/hmr-port]] -[[$:/config/SyncFilter]] -[[$:/config/FileSystemPaths]] -[[$:/config/OriginalTiddlerPaths]]"
     ]
   }

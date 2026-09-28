@@ -1,0 +1,552 @@
+title: $:/plugins/nikorion/pkm-fields/macros/edit-fields
+tags: $:/tags/Global
+
+<!--
+	The editor controls for the fields of the pkm schema (PKM Schema plugin).
+	Nothing here knows a field by name: `nk-field` reads the field's `kind` from the
+	schema and draws the matching control —
+
+	  kind         control
+	  vocab        a dropdown, or radio buttons (`$:/config/nikorion/pkm-fields/control/<field>: radio`)
+	  vocab-list   one checkbox per value
+	  value        an input completing on the values already used, with a dropdown of them
+	  list         pills plus an input, edited like the tags
+	  date         the browser's date input
+
+	Labels, descriptions, vocabularies and icons all come from the schema API
+	(`pkm-*` functions); only the editor's own strings (placeholders, button tooltips…)
+	live in this plugin's language files, per field when the wording needs it, else
+	generic (`nk-field-text`).
+-->
+
+<!-- Row layout: which fields a row shows, in order (`$:/config/nikorion/pkm-fields/row/<row>`). -->
+\function nk-row-fields(row)
+[[$:/config/nikorion/pkm-fields/row/]addsuffix<row>get[text]enlist-input[]] :intersection[function[pkm-all-fields]]
+\end
+
+\function nk-placed-fields()
+[[$:/config/nikorion/pkm-fields/row/pre-tags]get[text]enlist-input[]] [[$:/config/nikorion/pkm-fields/row/post-tags]get[text]enlist-input[]] [[$:/config/nikorion/pkm-fields/row/type]get[text]enlist-input[]]
+\end
+
+<!--
+	A field of the schema that no row names still gets a control: a vocabulary field
+	at the end of the type row, a free one at the end of the row under the tags.
+-->
+\function nk-unplaced-vocab-fields()
+[function[pkm-all-fields]] -[function[nk-placed-fields]] :filter[function[pkm-field-kind],<currentTiddler>prefix[vocab]]
+\end
+
+\function nk-unplaced-free-fields()
+[function[pkm-all-fields]] -[function[nk-placed-fields]] :filter[function[pkm-field-kind],<currentTiddler>!prefix[vocab]]
+\end
+
+<!--
+	An editor string for one field: `Fields/<field>/<key>` when the field has its own
+	wording, else the generic `Fields/<key>`. Both cascade lang → en-GB. The cascades are
+	two functions of their own because a filter run cannot be grouped: an `:else` run
+	followed by `+[…]` runs would apply those to the first cascade's result too.
+-->
+\function nk-field-text-own(field,key)
+[[$:/language]get[text]get[name]else[en-GB]] [[en-GB]]
++[addprefix[$:/plugins/nikorion/pkm-fields/language/]] +[addsuffix[/Fields/]]
++[addsuffix<field>] +[addsuffix[/]] +[addsuffix<key>]
++[get[text]] +[limit[1]]
+\end
+
+\function nk-field-text-generic(key)
+[[$:/language]get[text]get[name]else[en-GB]] [[en-GB]]
++[addprefix[$:/plugins/nikorion/pkm-fields/language/]] +[addsuffix[/Fields/]]
++[addsuffix<key>]
++[get[text]] +[limit[1]]
+\end
+
+\function nk-field-text(field,key)
+[function[nk-field-text-own],<field>,<key>] :else[function[nk-field-text-generic],<key>]
+\end
+
+<!-- The placeholder of an input: the field's own, else its label in lower case. -->
+\function nk-placeholder(field)
+[function[nk-field-text-own],<field>,[Placeholder]] :else[function[pkm-field-label],<field>lowercase[]]
+\end
+
+<!-- The label before a control, "Role:": the schema's label (`label`, set by the caller) in the language's prompt format. -->
+\function nk-prompt()
+[function[nk-field-text-generic],[Prompt]search-replace[$label$],<label>]
+\end
+
+<!-- Choosing the empty option clears the field instead of storing an empty string. -->
+\procedure nk-clear-empty-field()
+<$list filter="[<currentTiddler>!has<field>]" variable="ignore">
+<$action-deletefield $field=<<field>>/>
+</$list>
+\end
+
+<!--
+	The tiddler's `icon` follows its role: the icon tiddler of the role's value becomes
+	the value of `icon`, and a role with no icon (or no role) removes it. An icon that
+	is not one of ours was set by hand and is left alone.
+-->
+\procedure nk-sync-role-icon()
+<%if [<field>match[role]] %>
+<$let role={{{ [<currentTiddler>get[role]] }}} iconTiddler={{{ [function[pkm-vocab-icon-tiddler],[role],<role>] }}}>
+<%if [<currentTiddler>get[icon]!match[]!prefix[$:/plugins/nikorion/pkm-schema/icons/]] %>
+<%elseif [<iconTiddler>!match[]] %>
+<$action-setfield $field="icon" $value=<<iconTiddler>>/>
+<%else%>
+<$action-deletefield $field="icon"/>
+<%endif%>
+</$let>
+<%endif%>
+\end
+
+\procedure nk-field-changed()
+<<nk-clear-empty-field>>
+<<nk-sync-role-icon>>
+\end
+
+<!--
+	The same clear button the core offers on Type — always shown, like the core one,
+	so the row keeps a stable shape whether or not the field holds a value.
+-->
+\procedure nk-delete-field-button(field)
+\whitespace trim
+<$let label={{{ [function[pkm-field-label],<field>lowercase[]] }}}
+	hint={{{ [function[nk-field-text-generic],[Delete/Hint]search-replace[$label$],<label>] }}}
+>
+<$button class="tc-btn-invisible tc-btn-icon nk-delete-field" tooltip=<<hint>> aria-label=<<hint>>>
+{{$:/core/images/delete-button}}
+<$action-deletefield $field=<<field>>/>
+<<nk-sync-role-icon>>
+</$button>
+</$let>
+\end
+
+<!--
+	Why a control is flagged: the field does not apply to the tiddler (its role changed
+	since), yet still holds a value. The tooltip names the role — "The tasks do not use
+	this field — clear it" — from the role's plural in the schema; a field may carry
+	its own sentence instead (`Fields/<field>/Stale/Hint`, which `status` does, and
+	`…/Stale/NoRole/Hint` for a tiddler with no role at all).
+-->
+\function nk-stale-with-role(plural)
+[function[nk-field-text-generic],[Stale/Prefix]] [<plural>] [function[nk-field-text-generic],[Stale/Suffix]] +[join[ ]]
+\end
+
+<!--
+	The tooltip of a stale field (`pkm-is-stale`): the field's own sentence for a tiddler
+	with no role, else its own sentence, else the generic one naming the role. Shared by the
+	editor and the table cells (dyntable/), so both say the same.
+-->
+\function nk-stale-hint-norole(field,tiddler) [<tiddler>!has[role]] :then[function[nk-field-text-own],<field>,[Stale/NoRole/Hint]]
+\function nk-stale-hint-role(tiddler) [<tiddler>get[role]] :map[function[pkm-vocab-plural],[role],<currentTiddler>] :map[function[nk-stale-with-role],<currentTiddler>]
+\function nk-stale-hint(field,tiddler)
+[function[nk-stale-hint-norole],<field>,<tiddler>] :else[function[nk-field-text-own],<field>,[Stale/Hint]] :else[function[nk-stale-hint-role],<tiddler>]
+\end
+
+
+<!--
+	One field of the schema, drawn according to its kind. A field that does not apply
+	to the tiddler (`applies-filter` of its definition) is left out — unless it holds a
+	value: it is then shown `stale`, framed in red, so the value can be seen and cleared
+	rather than lurk unseen yet still matched by filters.
+-->
+\procedure nk-field(field)
+\whitespace trim
+<$let kind={{{ [function[pkm-field-kind],<field>] }}}
+	appliesFilter={{{ [function[pkm-field-applies-filter],<field>] }}}
+	applies={{{ [<appliesFilter>is[blank]then[yes]] :else[subfilter<appliesFilter>then[yes]] }}}
+>
+<%if [<applies>match[yes]] %>
+<<nk-field-control field=<<field>> kind=<<kind>> >>
+<%elseif [<currentTiddler>has<field>] %>
+<$let staleHint={{{ [function[nk-stale-hint],<field>,<currentTiddler>] }}}>
+<<nk-field-control field=<<field>> kind=<<kind>> stale="yes" staleHint=<<staleHint>> >>
+</$let>
+<%endif%>
+</$let>
+\end
+
+\procedure nk-field-control(field,kind,stale,staleHint)
+\whitespace trim
+<%if [<kind>match[vocab]] %>
+<<nk-select-field field=<<field>> stale=<<stale>> staleHint=<<staleHint>> >>
+<%elseif [<kind>match[vocab-list]] %>
+<<nk-checkbox-field field=<<field>> stale=<<stale>> staleHint=<<staleHint>> >>
+<%elseif [<kind>match[value]] %>
+<<nk-single-value-field field=<<field>> stale=<<stale>> staleHint=<<staleHint>> >>
+<%elseif [<kind>match[list]] %>
+<<nk-list-value-field field=<<field>> stale=<<stale>> staleHint=<<staleHint>> >>
+<%elseif [<kind>match[date]] %>
+<<nk-date-field field=<<field>> stale=<<stale>> staleHint=<<staleHint>> >>
+<%endif%>
+\end
+
+<!--
+	The label of a labelled control, with the field's description (from the schema)
+	as its tooltip. Not in a red frame: the frame's own tooltip must show there, and an
+	inner `title`, even an empty one, would hide it.
+-->
+\procedure nk-field-label(field,stale)
+\whitespace trim
+<$let label={{{ [function[pkm-field-label],<field>] }}} description={{{ [function[pkm-field-description],<field>] }}}>
+<%if [<stale>match[yes]] :else[<description>is[blank]then[yes]] %>
+<em class="tc-edit tc-small-gap-right"><$text text={{{ [function[nk-prompt]] }}}/></em>
+<%else%>
+<em class="tc-edit tc-small-gap-right" title=<<description>>><$text text={{{ [function[nk-prompt]] }}}/></em>
+<%endif%>
+</$let>
+\end
+
+<!--
+	One entry of a vocabulary dropdown: what the value looks like, and what it means
+	as the tooltip. A value shipped without a description simply gets no tooltip.
+-->
+\procedure nk-vocab-option(field,slug)
+\whitespace trim
+<option value=<<slug>> title={{{ [function[pkm-vocab-tooltip],<field>,<slug>] }}}><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></option>
+\end
+
+<!-- `vocab` kind: one value from the vocabulary, as a dropdown or as radio buttons. -->
+\procedure nk-select-field(field,stale,staleHint)
+\whitespace trim
+<span class={{{ [[nk-edit-field]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>>>
+<<nk-field-label field=<<field>> stale=<<stale>> >>
+<%if [[$:/config/nikorion/pkm-fields/control/]addsuffix<field>get[text]match[radio]] %>
+<!--
+	Radio buttons. The vocabulary's blank value, if any, stands for the empty field: its
+	button carries the value "" — checked while the field is empty, and choosing it
+	clears the field. A blank value without an icon reads as an absence (italics).
+-->
+<$let blank={{{ [function[pkm-vocab-blank],<field>] }}}>
+<span class="nk-radio-group" role="radiogroup">
+<$list filter="[function[pkm-vocab-values],<field>]" variable="slug">
+<$let icon={{{ [function[pkm-vocab-icon],<field>,<slug>] }}}
+	itemClass={{{ [<icon>is[blank]then<slug>match<blank>then[nk-vocab-none]] }}}
+>
+<$radio tiddler=<<currentTiddler>> field=<<field>> value={{{ [<slug>!match<blank>] }}} default=""
+	class="nk-radio" tabindex={{$:/config/EditTabIndex}} actions=<<nk-field-changed>>
+>
+<%if [<stale>match[yes]] %>
+<span class=<<itemClass>>><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></span>
+<%else%>
+<span class=<<itemClass>> title={{{ [function[pkm-vocab-tooltip],<field>,<slug>] }}}><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></span>
+<%endif%>
+</$radio>
+</$let>
+</$list>
+</span>
+</$let>
+<%else%>
+<!--
+	`default` is not optional: with no value the select widget assigns `undefined` to the
+	DOM node, which matches no option at all — the control would go blank instead of
+	falling back to the placeholder option below.
+
+	A `<select>` has no placeholder attribute, so an option plays that part: it is what
+	an empty field shows, instead of the first vocabulary value. `hidden` keeps it out of
+	the open list — it stands for nothing to choose — while the browser goes on showing
+	it in the closed control; `disabled` stops the keyboard landing on it. Clearing is
+	the button next to the control. The stylesheet greys the control while this option
+	is the selected one.
+-->
+<$select tiddler=<<currentTiddler>> field=<<field>> class="tc-edit-texteditor nk-edit-select"
+	default="" tabindex={{$:/config/EditTabIndex}} actions=<<nk-field-changed>>
+>
+<option value="" disabled="disabled" hidden="hidden"><$text text={{{ [function[nk-placeholder],<field>] }}}/></option>
+<!-- Whatever no group claims comes first, then one heading per group. -->
+<$list filter="[function[pkm-vocab-ungrouped-values],<field>]" variable="slug">
+<<nk-vocab-option field=<<field>> slug=<<slug>> >>
+</$list>
+<$list filter="[function[pkm-vocab-groups],<field>]" variable="group">
+<optgroup label={{{ [function[pkm-vocab-group-label],<field>,<group>] }}} title={{{ [function[pkm-vocab-group-hint],<field>,<group>] }}}>
+<$list filter="[function[pkm-vocab-group-values],<field>,<group>]" variable="slug">
+<<nk-vocab-option field=<<field>> slug=<<slug>> >>
+</$list>
+</optgroup>
+</$list>
+</$select>
+<%endif%>
+<<nk-delete-field-button field=<<field>> >>
+</span>
+\end
+
+<!--
+	`vocab-list` kind: several values from the vocabulary, one checkbox each, ticked
+	when the value is in the list. Ticking adds the slug to the list and unticking
+	removes it, leaving the others alone (`listField` mode of the core checkbox).
+	No `tooltip` on the checkbox widget: the value's hint is a `title` on a wrapper.
+-->
+\procedure nk-checkbox-field(field,stale,staleHint)
+\whitespace trim
+<span class={{{ [[nk-edit-field nk-checkbox-field]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>>>
+<<nk-field-label field=<<field>> stale=<<stale>> >>
+<$list filter="[function[pkm-vocab-values],<field>]" variable="slug">
+<%if [<stale>match[yes]] %>
+<span class="nk-check">
+<$checkbox tiddler=<<currentTiddler>> listField=<<field>> checked=<<slug>>>
+<$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/>
+</$checkbox>
+</span>
+<%else%>
+<span class="nk-check" title={{{ [function[pkm-vocab-tooltip],<field>,<slug>] }}}>
+<$checkbox tiddler=<<currentTiddler>> listField=<<field>> checked=<<slug>>>
+<$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/>
+</$checkbox>
+</span>
+<%endif%>
+</$list>
+<<nk-delete-field-button field=<<field>> >>
+</span>
+\end
+
+<!--
+	`date` kind: one date, through the browser's own date input, which writes `YYYY-MM-DD`.
+	Emptied, it leaves an empty string: the field is deleted instead.
+-->
+\procedure nk-date-field(field,stale,staleHint)
+\whitespace trim
+<span class={{{ [[nk-edit-field]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>>>
+<<nk-field-label field=<<field>> stale=<<stale>> >>
+<$edit-text tiddler=<<currentTiddler>> field=<<field>> tag="input" type="date" default=""
+	class="tc-edit-texteditor nk-edit-date" tabindex={{$:/config/EditTabIndex}} inputActions=<<nk-clear-empty-field>>
+/>
+<<nk-delete-field-button field=<<field>> >>
+</span>
+\end
+
+<!--
+	A free value as the suggestion menus show it: the `caption` of its tiddler when it has one
+	(wikitext, so it can be translated), else the value itself — as its pill shows it
+	(`pkm-pill`). Picking it still writes the value.
+-->
+\procedure nk-value-caption(value)
+<%if [<value>has[caption]] %><$transclude tiddler=<<value>> field="caption"/><%else%><$text text=<<value>>/><%endif%>
+\end
+
+<!--
+	`value` kind: a single free value, typed or picked from the values already used in
+	the wiki — the same machinery as a list field's input and as the core Type control,
+	except that the input writes straight into the field instead of feeding a list.
+-->
+
+\procedure nk-clear-single-state()
+<$action-deletetiddler $filter="[<fieldInput>] [<fieldSelection>] [<fieldRefresh>] [<fieldPopup>]"/>
+\end
+
+\procedure nk-cancel-single-actions()
+<%if [<fieldInput>has[text]] %>
+<<nk-clear-single-state>>
+<%else%>
+<<cancel-delete-tiddler-actions "cancel">>
+<%endif%>
+\end
+
+<!--
+	The completion filters of `search-filters` name the field through `pfField`, not
+	`field`: `keyboard-driven-input` has a `field` parameter of its own (the field of the
+	input tiddler), which shadows ours where the filters are evaluated.
+-->
+\procedure nk-single-value-field(field,stale,staleHint,inCell:"no")
+\whitespace trim
+<$let saveTiddler=<<currentTiddler>>
+	pfField=<<field>>
+	statePrefix={{{ [[$:/temp/]addsuffix<field>] }}}
+	inputPath={{{ [<statePrefix>addsuffix[/input]] }}}
+	selectionPath={{{ [<statePrefix>addsuffix[/selected-item]] }}}
+	refreshPath={{{ [<statePrefix>addsuffix[/refresh]] }}}
+	popupPath={{{ [[$:/state/popup/nk-]addsuffix<field>addsuffix[-dropdown]] }}}
+	ariaLabel={{{ [function[pkm-field-label],<field>] }}}
+	placeholderText={{{ [function[nk-placeholder],<field>] }}}
+	dropdownHint={{{ [function[nk-field-text],<field>,[Dropdown/Hint]] }}}
+	dropdownEmpty={{{ [function[nk-field-text],<field>,[Dropdown/Empty]] }}}
+	inputWidth={{{ [<placeholderText>length[]] [[12]] +[maxall[]addprefix[--nk-input-chars: ]] }}}
+>
+<$qualify name="fieldInput" title=<<inputPath>>>
+<$qualify name="fieldSelection" title=<<selectionPath>>>
+<$qualify name="fieldRefresh" title=<<refreshPath>>>
+<$qualify name="fieldPopup" title=<<popupPath>>>
+<span class={{{ [[nk-edit-field nk-edit-field-single]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>> role="group" aria-label=<<ariaLabel>>>
+<%if [<inCell>!match[yes]] %><<nk-field-label field=<<field>> stale=<<stale>> >><%endif%>
+<span class="nk-single-control" style=<<inputWidth>>>
+<$transclude $variable="keyboard-driven-input"
+	tiddler=<<currentTiddler>> field=<<field>> storeTitle=<<fieldInput>>
+	refreshTitle=<<fieldRefresh>> selectionStateTitle=<<fieldSelection>>
+	tag="input" default="" class="tc-edit-texteditor tc-popup-handle nk-edit-input"
+	placeholder=<<placeholderText>>
+	focusPopup=<<fieldPopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	configTiddlerFilter="[[$:/plugins/nikorion/pkm-fields/search-filters]]"
+	firstSearchFilterField="value-search-filter"
+	inputCancelActions=<<nk-cancel-single-actions>>
+/>
+<$button popup=<<fieldPopup>> class="tc-btn-invisible tc-btn-dropdown" tooltip=<<dropdownHint>> aria-label=<<dropdownHint>>>
+{{$:/core/images/down-arrow}}
+</$button>
+<div class="tc-block-dropdown-wrapper">
+<$reveal state=<<fieldPopup>> type="nomatch" text="" default="">
+<$let userInput={{{ [<fieldInput>get[text]] }}}>
+<div class="tc-block-dropdown nk-single-dropdown">
+<$list filter="[all[tiddlers]!has[draft.of]has<field>get<field>each:value[]sort[]search:title<userInput>]" variable="val"
+	emptyMessage="""<div class="tc-dropdown-item"><$text text=<<dropdownEmpty>>/></div>"""
+>
+<$button tag="a" class={{{ [<val>addsuffix[-primaryList]] :except[<fieldSelection>get[text]] :and[then[tc-btn-invisible nk-dropdown-item]else[tc-btn-invisible nk-dropdown-item tc-tag-button-selected]] }}}>
+<$action-setfield $tiddler=<<saveTiddler>> $field=<<field>> $value=<<val>>/>
+<$action-deletetiddler $filter="[<fieldInput>] [<fieldSelection>] [<fieldPopup>]"/>
+<!-- The input keeps showing what was typed unless it is told to re-read the field:
+	an edit-text widget leaves a focused element alone so as not to clobber typing. -->
+<$action-setfield $tiddler=<<fieldRefresh>> text="yes"/>
+<<nk-value-caption value=<<val>> >>
+</$button>
+</$list>
+</div>
+</$let>
+</$reveal>
+</div>
+</span>
+<%if [<inCell>!match[yes]] %><<nk-delete-field-button field=<<field>> >><%endif%>
+</span>
+</$qualify>
+</$qualify>
+</$qualify>
+</$qualify>
+</$let>
+\end
+
+<!--
+	`list` kind: a list of free values, edited like tags — pills plus an input completing
+	on the values already used in that field elsewhere in the wiki.
+
+	It deliberately does //not// call the core `tag-picker` macro. That macro hardcodes
+	the tags placeholder (`$:/language/EditTemplate/Tags/Add/Placeholder`) and reuses the
+	tag input state the edit template defines once for the whole form, so the pickers
+	would fight over a single input — and a half-typed value would be added as a //tag//
+	by the save-tiddler shortcut. Driving `keyboard-driven-input` directly — the very
+	macro `tag-picker` and the core Type control are built on — keeps the same keyboard
+	behaviour (Enter to add, up/down through the suggestions, Escape to clear) while
+	owning the placeholder and the state tiddlers.
+-->
+
+<!--
+	Text a list field's input is sized to (drawn, hidden, in the same grid cell as the
+	input, so the width is the text's real one in every browser and language): in the
+	editor, the longest placeholder among the list fields, so their inputs line up; in a
+	table cell (`ownWidth`), the field's own placeholder, as a column has no neighbour to
+	line up with.
+-->
+\function nk-list-longest-placeholder()
+[function[pkm-all-fields]] :filter[function[pkm-field-kind],<currentTiddler>match[list]] :map[function[nk-placeholder],<currentTiddler>] :sort:number:reverse[length[]] +[first[]]
+\end
+
+\procedure nk-clear-list-state()
+<$action-deletetiddler $filter="[<newValueTiddler>] [<newValueInput>] [<newValueSelection>] [<newValueRefresh>] [<newValuePopup>]"/>
+\end
+
+<!-- `variable` is mandatory on the guard list: without it the list rebinds
+	currentTiddler to the new value, and listops would target that tiddler
+	instead of the one being edited. -->
+\procedure nk-add-list-actions()
+<$let value={{{ [<newValueTiddler>get[text]trim[]] }}}>
+<$list filter="[<value>!match[]]" variable="ignore">
+<$action-listops $tiddler=<<saveTiddler>> $field=<<field>> $subfilter="[<value>]"/>
+</$list>
+<<nk-clear-list-state>>
+</$let>
+\end
+
+\procedure nk-cancel-list-actions()
+<%if [<newValueTiddler>has[text]] :else[<newValueInput>has[text]] %>
+<<nk-clear-list-state>>
+<%else%>
+<<cancel-delete-tiddler-actions "cancel">>
+<%endif%>
+\end
+
+\procedure nk-list-value-field(field,stale,staleHint,ownWidth:"no")
+\whitespace trim
+<$let saveTiddler=<<currentTiddler>>
+	pfField=<<field>>
+	statePrefix={{{ [[$:/temp/New]addsuffix<field>addsuffix[Value]] }}}
+	inputPath={{{ [<statePrefix>addsuffix[/input]] }}}
+	selectionPath={{{ [<statePrefix>addsuffix[/selected-item]] }}}
+	refreshPath={{{ [<statePrefix>addsuffix[/refresh]] }}}
+	popupPath={{{ [[$:/state/popup/nk-]addsuffix<field>addsuffix[-dropdown]] }}}
+	ariaLabel={{{ [function[pkm-field-label],<field>] }}}
+	placeholderText={{{ [function[nk-placeholder],<field>] }}}
+	dropdownHint={{{ [function[nk-field-text],<field>,[Dropdown/Hint]] }}}
+	dropdownEmpty={{{ [function[nk-field-text],<field>,[Dropdown/Empty]] }}}
+	removeHint={{{ [function[nk-field-text],<field>,[Remove/Hint]] }}}
+	sizerText={{{ [<ownWidth>match[yes]then<placeholderText>] :else[function[nk-list-longest-placeholder]] }}}
+>
+<$qualify name="newValueTiddler" title=<<statePrefix>>>
+<$qualify name="newValueInput" title=<<inputPath>>>
+<$qualify name="newValueSelection" title=<<selectionPath>>>
+<$qualify name="newValueRefresh" title=<<refreshPath>>>
+<$qualify name="newValuePopup" title=<<popupPath>>>
+<!--
+	No visible label: the placeholder says what the control is for, and the row has
+	only so much width to give. `role`/`aria-label` keep the control named for a
+	screen reader.
+-->
+<span class={{{ [[nk-list-field]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>> role="group" aria-label=<<ariaLabel>>>
+<div class="tc-edit-tags nk-list-box">
+<$list filter="[<currentTiddler>get<field>enlist-input[]sort[]]" variable="value" storyview="pop">
+<$transclude $variable="pkm-pill" field=<<field>> value=<<value>> tooltip={{{ [<stale>match[yes]then[no]else[yes]] }}}>
+<$fill $name="pkm-pill-after">
+<$button class="tc-btn-invisible tc-remove-tag-button" style.fill=<<foregroundColor>> tooltip=<<removeHint>> aria-label=<<removeHint>>>
+<$action-listops $tiddler=<<saveTiddler>> $field=<<field>> $subfilter="-[<value>]"/>
+{{$:/core/images/close-button}}
+</$button>
+</$fill>
+</$transclude>
+</$list>
+<div class="tc-edit-add-tag">
+<div class="tc-edit-add-tag-ui">
+<span class="tc-add-tag-name tc-small-gap-right">
+<span class="tc-edit-texteditor nk-input-sizer" aria-hidden="true"><$text text=<<sizerText>>/></span>
+<$transclude $variable="keyboard-driven-input"
+	tiddler=<<newValueTiddler>> field="text" storeTitle=<<newValueInput>>
+	refreshTitle=<<newValueRefresh>> selectionStateTitle=<<newValueSelection>>
+	tag="input" default="" class="tc-edit-texteditor tc-popup-handle"
+	placeholder=<<placeholderText>>
+	focusPopup=<<newValuePopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	configTiddlerFilter="[[$:/plugins/nikorion/pkm-fields/search-filters]]"
+	firstSearchFilterField="list-search-filter"
+	inputAcceptActions=<<nk-add-list-actions>>
+	inputCancelActions=<<nk-cancel-list-actions>>
+/>
+</span>
+<$button popup=<<newValuePopup>> class="tc-btn-invisible tc-btn-dropdown" tooltip=<<dropdownHint>> aria-label=<<dropdownHint>>>
+{{$:/core/images/down-arrow}}
+</$button>
+<span class="tc-add-tag-button tc-small-gap-left">
+<$button actions=<<nk-add-list-actions>>>
+{{$:/language/EditTemplate/Tags/Add/Button}}
+</$button>
+</span>
+</div>
+<div class="tc-block-dropdown-wrapper">
+<$reveal state=<<newValuePopup>> type="nomatch" text="" default="">
+<$let userInput={{{ [<newValueInput>get[text]] }}}>
+<div class="tc-block-dropdown nk-list-dropdown">
+<$list filter="[all[tiddlers]!has[draft.of]has<field>each:list-item<field>sort[]search:title<userInput>]" variable="value"
+	emptyMessage="""<div class="tc-dropdown-item"><$text text=<<dropdownEmpty>>/></div>"""
+>
+<$button tag="a" class={{{ [<value>addsuffix[-primaryList]] :except[<newValueSelection>get[text]] :and[then[tc-btn-invisible nk-dropdown-item]else[tc-btn-invisible nk-dropdown-item tc-tag-button-selected]] }}}>
+<$action-listops $tiddler=<<saveTiddler>> $field=<<field>> $subfilter="[<value>]"/>
+<<nk-clear-list-state>>
+<<nk-value-caption value=<<value>> >>
+</$button>
+</$list>
+</div>
+</$let>
+</$reveal>
+</div>
+</div>
+</div>
+</span>
+</$qualify>
+</$qualify>
+</$qualify>
+</$qualify>
+</$qualify>
+</$let>
+\end

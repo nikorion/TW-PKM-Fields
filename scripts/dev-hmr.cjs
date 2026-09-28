@@ -41,7 +41,7 @@ const path = require("path");
 // ../../guides/hmr-tiddlywiki.md §6 for the "wiki/tiddlers" addendum). The
 // wiki/tiddlers root is the same relative path on every nikorion plugin, so
 // unlike WATCH_DIR it needs no per-plugin adaptation when porting this file.
-const WATCH_DIRS = [path.resolve("src/base-fields"), path.resolve("wiki/tiddlers")];
+const WATCH_DIRS = [path.resolve("src/pkm-fields"), path.resolve("wiki/tiddlers")];
 // Transient/generated wiki tiddlers (see .gitignore): excluded from
 // $:/config/SyncFilter so they shouldn't normally reappear on disk, but skip
 // them defensively — they carry no content worth pushing.

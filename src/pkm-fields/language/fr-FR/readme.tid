@@ -1,0 +1,42 @@
+title: $:/plugins/nikorion/pkm-fields/language/fr-FR/readme
+type: text/vnd.tiddlywiki
+
+!! Aperçu
+
+Place les champs de la suite //pkm// dans l'éditeur de tiddler. Les champs eux-mêmes — ce que chacun signifie, les valeurs qu'il permet et leur sens — sont définis par [[PKM Schema|https://github.com/nikorion/TW-PKM-Schema]] : voir son readme et son onglet //Champs//. Ce plugin décide de la façon dont chacun s'édite :
+
+{{$:/plugins/nikorion/pkm-fields/readme/controls}}
+
+Les contrôles occupent leurs propres lignes, chacune juste à côté de la ligne du core qu'elle voisine : ''Projet'', ''Épistémologie'', ''Régime fermé'', ''Dévoiement'' et ''Disciplines'' partagent la ligne juste au-dessus de l'encadré des tags, ''Techno'' et ''Matériel'' la ligne juste après, et ''Rôle'', ''Maturité'', ''Cycle de vie'', ''Besoins'', ''Statut'', ''Priorité'' et ''Échéance'' celle sous le contrôle de type. Un champ que le schéma gagnerait plus tard reçoit lui aussi un contrôle, sans rien changer ici : un champ à vocabulaire en fin de ligne du type, un champ libre en fin de ligne sous les tags. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée.
+
+Une ligne cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une ligne étirée. Trop étroite pour les tenir tous, une ligne passe à la ligne.
+
+Un libellé donne la description du champ en infobulle. Les champs liste (Techno, Matériel, Disciplines) n'ont pas de libellé visible : leur texte indicatif dit à quoi ils servent, ce qui épargne la largeur.
+
+Le sélecteur de chaque champ liste est strictement indépendant des autres et des tags du wiki : la liste déroulante de Techno ne propose que les valeurs déjà utilisées dans `technology`, jamais celles d'`equipment` ni les tags, et ainsi de suite. Les pastilles se dessinent comme celles des tags, couleur par valeur comprise, mais retombent sur une couleur propre à leur champ plutôt que sur la couleur des tags de la palette : les pastilles de champs différents restent distinctes.
+
+Un champ n'apparaît que là où le schéma dit qu'il s'applique : ''Statut'', par exemple, seulement sur les tâches, listes de tâches et routines, ou sur un tiddler sans rôle. Un champ qui ne s'applique pas mais porte encore une valeur (par exemple `needs` après passage du rôle à `task`) est tout de même affiché, entouré de rouge, et son infobulle nomme le rôle et dit de vider le champ (//Les tâches n'utilisent pas ce champ — videz-le//).
+
+Chaque contrôle porte le même bouton de suppression que le core place sur Type, toujours visible. Un Rôle vide affiche une indication grisée en guise de valeur. Maturité, Cycle de vie et Statut sont des boutons radio, chacun doté d'une //valeur vide// (Ébauche, Actif, Aucun) qui représente le champ vide : c'est elle qui est cochée quand le champ est vide, et la choisir vide le champ. Priorité est aussi en boutons radio, aucun n'étant coché tant qu'aucune priorité n'est choisie. Échéance est le sélecteur de date du navigateur.
+
+Les champs sont masqués de la liste des champs en bas de l'éditeur, via le mécanisme propre au core `$:/config/EditTemplateFields/Visibility/` : les éditer deux fois sur le même formulaire serait un endroit de trop. Passer le tiddler correspondant à `show` en fait réapparaître un.
+
+!! Dans les tableaux
+
+Avec [[Dynamic Table|https://github.com/nikorion/TW-Dynamic-Table]] installé, les mêmes champs reçoivent des colonnes de tableau dessinées de la même façon : le libellé du champ en en-tête, chaque valeur avec son icône et son libellé, des pastilles pour les listes — et, en mode édition, les mêmes contrôles que cet éditeur (liste déroulante pour un vocabulaire, une case par valeur, le sélecteur de liste, un sélecteur de date). Une ligne dont les valeurs donnent un ton se lit en conséquence : une tâche au statut //Fait// s'écrit en vert pâle, une tâche //Abandonnée// en gris — mais seulement là où le champ s'applique : un statut égaré sur une référence ne colore rien. Sans Dynamic Table, rien de tout cela ne se charge.
+
+!! Prérequis
+
+TiddlyWiki >= 5.3.0 et [[PKM Schema|https://github.com/nikorion/TW-PKM-Schema]].
+
+---
+
+!! Crédits
+
+Développé avec l'aide d'Anthropic Claude pour le code, la relecture et la documentation.
+
+---
+
+!! Licence
+
+MIT — voir `LICENSE`.

@@ -1,0 +1,21 @@
+title: $:/plugins/nikorion/pkm-fields/ui/EditTemplate/discipline-fields
+tags: $:/tags/EditTemplate
+list-before: $:/core/ui/EditTemplate/tags
+type: text/vnd.tiddlywiki
+
+\whitespace trim
+
+<!--
+	The row right above the tags box (`list-before` puts the section there): the fields
+	of `$:/config/nikorion/pkm-fields/row/pre-tags` — Project, Epistemology and
+	Disciplines out of the box, a tiddler's organisational home and the field(s) of study
+	one level of abstraction above the subject that the tags give below.
+-->
+
+<%if [function[nk-row-fields],[pre-tags]] %>
+<div class="nk-extra-row nk-pre-tags-extras">
+<$list filter="[function[nk-row-fields],[pre-tags]]" variable="field">
+<<nk-field field=<<field>> >>
+</$list>
+</div>
+<%endif%>

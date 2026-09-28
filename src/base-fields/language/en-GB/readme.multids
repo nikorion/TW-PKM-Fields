@@ -1,9 +1,0 @@
-title: $:/plugins/nikorion/base-fields/language/en-GB/
-
-Readme/Column/Field: Field
-Readme/Column/Control: Control
-Readme/Control/vocab: a dropdown of the vocabulary's values
-Readme/Control/vocab-radio: radio buttons, one per value of the vocabulary
-Readme/Control/vocab-list: one checkbox per value of the vocabulary
-Readme/Control/value: one value, typed or picked among those already used
-Readme/Control/list: pills plus an input, edited like the tags

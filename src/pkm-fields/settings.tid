@@ -1,0 +1,10 @@
+title: $:/plugins/nikorion/pkm-fields/settings
+tags: $:/tags/ControlPanel/SettingsTab
+caption: <<pkm-fields-lingo Configs/Caption>>
+type: text/vnd.tiddlywiki
+
+<!--
+	Nothing to set from here yet: a Settings tab is where a reader looks for controls,
+	not for reference (the fields' reference is the PKM Schema's Fields tab). It stays
+	registered, empty, for the real settings to come.
+-->

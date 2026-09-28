@@ -2,7 +2,7 @@ disciplines: [[computer science]]
 epistemology: applied sciences
 equipment: laptop
 needs: verify
-project: TW-Base-Fields
+project: TW-PKM-Fields
 role: guide
 technology: TiddlyWiki Claude
 title: Playground
@@ -14,13 +14,13 @@ type: text/vnd.tiddlywiki
 
 \procedure pg-rendered(field, kind, value)
 <%if [<kind>match[vocab]] %>
-<$let shown={{{ [<value>!match[]] :else[function[kms-vocab-blank],<field>] }}}>
-<%if [<shown>!match[]] %><$transclude $variable="kms-vocab-item" field=<<field>> value=<<shown>>/><%endif%>
+<$let shown={{{ [<value>!match[]] :else[function[pkm-vocab-blank],<field>] }}}>
+<%if [<shown>!match[]] %><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<shown>>/><%endif%>
 </$let>
 <%elseif [<kind>match[vocab-list]] %>
-<$list filter="[enlist<value>]" variable="slug" join=", "><$transclude $variable="kms-vocab-item" field=<<field>> value=<<slug>>/></$list>
+<$list filter="[enlist<value>]" variable="slug" join=", "><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></$list>
 <%elseif [<kind>match[list]] %>
-<$list filter="[enlist<value>]" variable="item"><$transclude $variable="kms-pill" field=<<field>> value=<<item>>/></$list>
+<$list filter="[enlist<value>]" variable="item"><$transclude $variable="pkm-pill" field=<<field>> value=<<item>>/></$list>
 <%else%>
 <$text text=<<value>>/>
 <%endif%>
@@ -34,10 +34,10 @@ type: text/vnd.tiddlywiki
 
 <table><tbody>
 <tr><th><<detect-language-lingo "Playground/Table1/Field">></th><th><<detect-language-lingo "Playground/Table1/RawValue">></th><th><<detect-language-lingo "Playground/Table1/Rendered">></th></tr>
-<$list filter="[function[kms-fields]]" variable="field">
-<$let kind={{{ [function[kms-field-kind],<field>] }}} value={{{ [<currentTiddler>get<field>] }}}>
+<$list filter="[function[pkm-all-fields]]" variable="field">
+<$let kind={{{ [function[pkm-field-kind],<field>] }}} value={{{ [<currentTiddler>get<field>] }}}>
 <tr>
-<td><$text text={{{ [function[kms-field-label],<field>] }}}/> <code><$text text=<<field>>/></code></td>
+<td><$text text={{{ [function[pkm-field-label],<field>] }}}/> <code><$text text=<<field>>/></code></td>
 <td><<pg-raw value=<<value>> >></td>
 <td><<pg-rendered field=<<field>> kind=<<kind>> value=<<value>> >></td>
 </tr>

@@ -1,0 +1,5 @@
+tags: $:/tags/nk-dyntable/RowClassFilter
+title: $:/plugins/nikorion/pkm-fields/dyntable/row-tones
+type: text/vnd.tiddlywiki
+
+[function[pkm-tones],<currentRecord>addprefix[nk-dyntable-row-]]
