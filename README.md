@@ -1,8 +1,8 @@
 # TW-Base-Fields
 
-Source of the [TiddlyWiki](https://tiddlywiki.com) plugin `$:/plugins/nikorion/base-fields`, which adds ten fields to the tiddler edit template: `role`, `maturity`, `lifecycle`, `needs`, `status`, `project`, `epistemology`, `disciplines`, `technology`, `equipment`. Pure wikitext and CSS, no JavaScript, no core tiddler overridden.
+Source of the [TiddlyWiki](https://tiddlywiki.com) plugin `$:/plugins/nikorion/base-fields`, the editor of the *kms* suite: it puts the fields defined by [TW-KMS-Ontology](https://github.com/nikorion/TW-KMS-Ontology) in the tiddler edit template. Pure wikitext and CSS, no JavaScript, no core tiddler overridden.
 
-This README is for whoever wants to change the plugin. What the fields are for and how to use them is the plugin's own readme, shown in the wiki (`src/base-fields/language/<lang>/readme.tid`); the demo wiki `docs/TW-Base-Fields-Wiki.html` has it all, with a Playground.
+This README is for whoever wants to change the plugin. How the editor behaves for a wiki user is the plugin's own readme (`src/base-fields/language/<lang>/readme.tid`); what the fields mean, and their vocabularies, belong to the ontology. The demo wiki `docs/TW-Base-Fields-Wiki.html` has it all, with a Playground.
 
 ## Getting started
 
@@ -12,45 +12,39 @@ pnpm dev     # dev wiki (wiki/) + hot reload; the URL (random free port) is prin
 pnpm build   # dist/TW-Base-Fields-Plugin.json + docs/TW-Base-Fields-Wiki.html
 ```
 
-`pnpm dev` pushes any edit under `src/base-fields` or `wiki/tiddlers` straight into the browser tab already open; only `plugin.info` restarts the server. **Do not reload the tab to see a change**: the page would come back as the server loaded it at boot, losing what was pushed since. Stop with Ctrl+C twice.
+`pnpm dev` pushes any edit under `src/base-fields` or `wiki/tiddlers` straight into the browser tab already open; only `plugin.info` restarts the server. **Do not reload the tab to see a change**: the page would come back as the server loaded it at boot, losing what was pushed since. Stop with Ctrl+C twice. An edit to the ontology is not pushed by this wiki: restart it, or work in the suite's integration wiki (`../KMS`), which watches every plugin of the suite.
 
-To load the plugin in another Node.js wiki, symlink `src/base-fields` as `$TIDDLYWIKI_PLUGIN_PATH/nikorion/base-fields` and list `"nikorion/base-fields"` in that wiki's `tiddlywiki.info`. Requires TiddlyWiki ≥ 5.3.0.
+To load the plugin in another Node.js wiki, symlink `src/base-fields` as `$TIDDLYWIKI_PLUGIN_PATH/nikorion/base-fields` (and the ontology as `…/nikorion/kms-ontology`) and list both in that wiki's `tiddlywiki.info`. Requires TiddlyWiki ≥ 5.3.0 and TW-KMS-Ontology.
 
 ## Source layout
 
 | Path (under `src/base-fields/`) | Role |
 |---|---|
-| `ui/EditTemplate/discipline-fields.tid` | row above the tags: `project`, `epistemology`, `disciplines` (`list-before` the core tags) |
-| `ui/EditTemplate/extra-fields.tid` | row below the tags: `technology`, `equipment` (`list-after` the core tags) |
-| `ui/EditTemplate/vocab-fields.tid` | row below the type: `role`, `maturity`, `lifecycle`, `needs`, `status` |
-| `macros/edit-fields.tid` | the controls: `bf-select-field`, `bf-needs-field`, `bf-single-value-field`, `bf-list-value-field`, `bf-list-pill`, delete button |
-| `macros/vocab.tid` | global `bf-vocab-*` helpers (values, groups, label, icon, hint) |
-| `vocab/<field>.tid` | a vocabulary: `list` (values, in order), `groups`/`group-<slug>` (`role`), `radio`, `blank-value`, `visible-filter` |
-| `vocab/icons.multids` | one emoji per `<field>/<value>` |
-| `language/<lang>/fields.multids` | prompts, placeholders, tooltips of the controls |
-| `language/<lang>/vocab.multids` | value labels `Vocab/<field>/<value>`, optional `…/Hint`, role plurals `…/Plural` |
-| `search-filters.tid` | `<field>-search-filter`: completion of each free field |
-| `<field>-colour.tid` | fallback pill colour of each list field (text: light palette, `dark` field: dark palette) |
-| `default-config.multids` | hides the ten fields from the core field list |
+| `ui/EditTemplate/discipline-fields.tid` | row above the tags (`list-before` the core tags) |
+| `ui/EditTemplate/extra-fields.tid` | row below the tags (`list-after` the core tags), then the free fields no row names |
+| `ui/EditTemplate/vocab-fields.tid` | row below the type, then the vocabulary fields no row names |
+| `rows.multids` | which fields each row shows, in order (`$:/config/nikorion/base-fields/row/<row>`) |
+| `controls.multids` | vocabulary fields drawn as radio buttons instead of a dropdown (`…/control/<field>: radio`) |
+| `macros/edit-fields.tid` | `bf-field` (draws a field according to its `kind`) and one control per kind: `bf-select-field`, `bf-checkbox-field`, `bf-single-value-field`, `bf-list-value-field`; delete button, editor strings (`bf-field-text`) |
+| `search-filters.tid` | completion filters of the free fields (`value-search-filter`, `list-search-filter`) |
+| `language/<lang>/fields.multids` | the editor's own strings: generic (`Fields/<key>`) and per field when the wording needs it (`Fields/<field>/<key>`) |
+| `readme/controls.tid` | the readme's table of controls, generated |
+| `default-config.multids` | hides the fields from the core field list |
+| `compat/` | deprecated: `bf-vocab-*` aliases and the icon titles of 0.3, kept so existing wikitext and `icon` fields go on working |
 | `styles/edit-fields.tid` | layout inside each row |
 
 ## How it works
 
+- **The ontology decides, the editor draws.** Nothing here knows a field by name: `bf-field` reads the field's `kind` (`vocab`, `vocab-list`, `value`, `list`), its label, description, vocabulary and `applies-filter` through the ontology API (`kms-*` functions), and draws the matching control. A field added to the ontology gets a control with no change here.
 - **No core override.** Each row is a section tagged `$:/tags/EditTemplate`, placed only by its `list-before`/`list-after`. The stylesheet lays out what is inside a row, never pairs rows with the core ones: rows stay independent, so growing the tags box pushes the next row down and moves nothing sideways. A copied core tiddler would freeze its old version on a TiddlyWiki upgrade and collide with any other plugin touching the same row.
-- **Only the slug is stored.** Icons and labels are resolved at render time by the `bf-vocab-*` helpers; never let them into a field value.
-- **Generic procedures.** `bf-list-value-field(field)` and `bf-single-value-field(field)` derive everything (state tiddlers, language keys, completion filter) from the field name.
 - **No `tag-picker`.** The free fields drive the core `keyboard-driven-input` macro directly: `tag-picker` hardcodes the tags placeholder and shares the form's single tag input, so the save shortcut would add a half-typed value as a *tag*.
-- **Visibility.** A vocabulary's `visible-filter` decides on which roles its control shows; a field holding a value always shows, framed in red when the role does not use it.
+- **Visibility.** A field shows where its `applies-filter` accepts the tiddler; one that does not apply but holds a value shows all the same, framed in red.
 
 ## Extending
 
-- **A vocabulary value**: its slug in the `list` of `vocab/<field>.tid` (and in a `group-<slug>` for `role`, or it is offered before the first heading), its icon in `vocab/icons.multids`, its label (and optional hint) in each `language/<lang>/vocab.multids`. A new role also needs its `/Plural` in each language. Without a label a value shows its slug; without an icon, no icon.
-- **A list or single-value field**: one call to `bf-list-value-field`/`bf-single-value-field` in the row's section, its strings in `language/<lang>/fields.multids`, its `<field>-search-filter`, its line in `default-config.multids`; a list field also needs a `<field>-colour.tid` and a place in `bf-list-placeholder-chars`.
-- **Anything used by [TW-Dynamic-Table](https://github.com/nikorion/TW-Dynamic-Table)** (`bf-vocab-*`, `bf-list-pill` and its `readonly`, `bf-list-value-field`, a vocabulary's `blank-value`): its column templates (`src/dyntable/templates/body/`) call them; change them in step, and give a new field its column there (plus its `Tables/Column/<field>` label in each language).
-
-## On a TiddlyWiki upgrade
-
-`bf-list-pill` copies the core's `tag-body-inner` (colour and icon cascades, `contrastcolour`), a procedure local to `$:/core/ui/EditTemplate/tags` and so unreachable from outside: diff it against the new core and resync.
+- **A field or a vocabulary value** is added to the ontology (see its README), not here. A new field lands at the end of the type row (vocabulary) or of the row under the tags (free) until `rows.multids` places it; give it a line in `default-config.multids` so the core field list does not show it twice, and, if the generic editor strings read badly for it, its own `Fields/<field>/…` strings.
+- **A new kind** needs a control procedure in `macros/edit-fields.tid` and a branch in `bf-field-control`, plus its line in `language/<lang>/readme.multids` (`Readme/Control/<kind>`).
+- **Anything [TW-Dynamic-Table](https://github.com/nikorion/TW-Dynamic-Table) calls** — `bf-list-value-field(field)`, used to edit its list columns: change its signature in step with `src/dyntable/procedures/dt-kms.tid`.
 
 ## License
 

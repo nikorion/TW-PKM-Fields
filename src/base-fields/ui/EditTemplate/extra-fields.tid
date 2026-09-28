@@ -6,15 +6,17 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Technology then Equipment, sharing one row right under the tags box:
-	`list-after` puts the section there, so the row stays independent — the tags box
-	above can grow all the lines it likes without moving anything here sideways.
-	Each is sized by its pills rather than by the row, so the next control follows
-	straight after instead of being pushed to the far edge; when the pills fill the
-	width, it wraps to the line below.
+	The row right under the tags box (`list-after` puts the section there, so the row
+	stays independent: the tags box above can grow all the lines it likes without moving
+	anything here sideways): the fields of `$:/config/nikorion/base-fields/row/post-tags`
+	— Technology and Equipment out of the box — then any free field of the ontology that
+	no row names.
 -->
 
+<%if [function[bf-row-fields],[post-tags]] :else[function[bf-unplaced-free-fields]] %>
 <div class="bf-extra-row bf-post-tags-extras">
-<<bf-list-value-field field="technology">>
-<<bf-list-value-field field="equipment">>
+<$list filter="[function[bf-row-fields],[post-tags]] [function[bf-unplaced-free-fields]]" variable="field">
+<<bf-field field=<<field>> >>
+</$list>
 </div>
+<%endif%>

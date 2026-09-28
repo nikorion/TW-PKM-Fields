@@ -4,8 +4,7 @@ caption: <<base-fields-lingo Configs/Caption>>
 type: text/vnd.tiddlywiki
 
 <!--
-	Nothing to set from here yet. The tab used to transclude the Vocabularies page,
-	which the plugin tiddler already lists as a tab of its own — a Settings tab is
-	where a reader looks for controls, not for reference. It stays registered, empty,
-	for the real settings to come.
+	Nothing to set from here yet: a Settings tab is where a reader looks for controls,
+	not for reference (the fields' reference is the KMS Ontology's Fields tab). It stays
+	registered, empty, for the real settings to come.
 -->

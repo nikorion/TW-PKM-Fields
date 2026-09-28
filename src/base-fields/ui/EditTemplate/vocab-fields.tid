@@ -6,42 +6,17 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Role, Maturity, Lifecycle, Needs and Status, one line each, right under the type control.
+	The row right under the type control, one line per field: the fields of
+	`$:/config/nikorion/base-fields/row/type` — Role, Maturity, Lifecycle, Needs and
+	Status out of the box — then any vocabulary field of the ontology that no row names.
 
-	Status only appears on tiddlers where it means something — how far along a piece
-	of work is, on a tiddler that is a piece of work. Which roles those are is not
-	decided here but on the vocabulary itself, in its `visible-filter` field, so that
-	the rule sits next to the values it governs.
-
-	It also appears whenever the field already holds a value, whatever the role —
-	including none, e.g. once the role has been cleared — framed in red, since the role
-	no longer accounts for it. A
-	tiddler that was a task and became something else keeps its `status` until
-	someone clears it; hiding the control would leave that value invisible in the
-	editor yet still matched by filters, and with no way to remove it.
+	Which tiddlers a field applies to is not decided here but by the ontology
+	(`applies-filter` of the field's definition): `bf-field` leaves the field out where it
+	does not apply, unless it holds a value — then it is shown framed in red.
 -->
 
-<$let maturityWhen={{$:/plugins/nikorion/base-fields/vocab/maturity!!visible-filter}}
-	statusWhen={{$:/plugins/nikorion/base-fields/vocab/status!!visible-filter}}
-	needsWhen={{$:/plugins/nikorion/base-fields/vocab/needs!!visible-filter}}
->
 <div class="bf-extra-row bf-type-extras">
-<<bf-select-field field="role">>
-<%if [subfilter<maturityWhen>] %>
-<<bf-select-field field="maturity">>
-<%elseif [<currentTiddler>has[maturity]] %>
-<<bf-select-field field="maturity" stale="yes">>
-<%endif%>
-<<bf-select-field field="lifecycle">>
-<%if [subfilter<needsWhen>] %>
-<<bf-needs-field>>
-<%elseif [<currentTiddler>has[needs]] %>
-<<bf-needs-field stale="yes">>
-<%endif%>
-<%if [subfilter<statusWhen>] %>
-<<bf-select-field field="status">>
-<%elseif [<currentTiddler>has[status]] %>
-<<bf-select-field field="status" stale="yes">>
-<%endif%>
+<$list filter="[function[bf-row-fields],[type]] [function[bf-unplaced-vocab-fields]]" variable="field">
+<<bf-field field=<<field>> >>
+</$list>
 </div>
-</$let>

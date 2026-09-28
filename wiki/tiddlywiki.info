@@ -3,6 +3,7 @@
   "plugins": [
     "tiddlywiki/filesystem",
     "tiddlywiki/tiddlyweb",
+    "nikorion/kms-ontology",
     "nikorion/base-fields",
     "nikorion/detect-language"
   ],

@@ -3,114 +3,29 @@ type: text/vnd.tiddlywiki
 
 !! Aperçu
 
-Ajoute dix champs du quotidien au template d'édition des tiddlers :
+Place les champs de la suite //kms// dans l'éditeur de tiddler. Les champs eux-mêmes — ce que chacun signifie, les valeurs qu'il permet et leur sens — sont définis par [[KMS Ontology|https://github.com/nikorion/TW-KMS-Ontology]] : voir son readme et son onglet //Champs//. Ce plugin décide de la façon dont chacun s'édite :
 
-|!Champ |!Slug |!Contrôle |!Par défaut |!Valeur stockée |
-|Projet |`project` |valeur unique, saisie ou choisie |— |texte libre |
-|Épistémologie |`epistemology` |valeur unique, saisie ou choisie |— |texte libre |
-|Disciplines |`disciplines` |champ liste, édité comme les tags |— |une liste de titres |
-|Techno mobilisée |`technology` |champ liste, édité comme les tags |— |une liste de titres |
-|Matériel mobilisé |`equipment` |champ liste, édité comme les tags |— |une liste de titres |
-|Rôle |`role` |vocabulaire contrôlé, valeur unique |— |un slug brut (`concept`, `guide`, …) |
-|Maturité |`maturity` |vocabulaire contrôlé, valeur unique, //masqué sur les rôles de registre et de tâche// |Ébauche (champ laissé vide) |un slug brut (`rough`, `stable`) |
-|Statut |`status` |vocabulaire contrôlé, valeur unique, //affiché sur les rôles de tâche, de liste de tâches et de routine, ou quand il n'y a aucun rôle// |Aucun (champ laissé vide) |un slug brut (`todo`, `doing`, …) |
-|Cycle de vie |`lifecycle` |vocabulaire contrôlé, valeur unique |Actif (champ laissé vide) |un slug brut (`obsolete`, `archived`) |
-|Besoins |`needs` |vocabulaire contrôlé, //liste// (une case à cocher par valeur), masqué sur les rôles de registre et de tâche |— |une liste de slugs bruts (`verify refactor`) |
+{{$:/plugins/nikorion/base-fields/readme/controls}}
 
-Un nouveau tiddler ne reçoit aucun de ces champs. Là où une valeur //par défaut// est indiquée, c'est ce que vaut le champ tant qu'il reste vide — rien n'est écrit dans le tiddler.
-
-!! Ce que dit chaque champ
-
-* ''Projet'' — le projet auquel le tiddler appartient : son rattachement organisationnel.
-* ''Épistémologie'' — comment le savoir du tiddler est produit et validé : sa famille méthodologique (philosophie, sciences formelles, sciences humaines et sociales, savoirs interprétatifs…).
-* ''Disciplines'' — le ou les champs d'étude dont relève le tiddler (herméneutique, sociologie, biologie…).
-* ''Tags'' //(champ du core, non ajouté par ce plugin)// — le sujet lui-même : ce dont parle le tiddler, un niveau sous ses disciplines — en sociologie, par exemple, la stratification sociale ou la sociologie urbaine. D'où leur place dans l'éditeur, entre les disciplines au-dessus et la techno et le matériel en dessous.
-* ''Techno'' — les technologies que le tiddler mobilise : logiciels, langages, plateformes, techniques (TiddlyWiki, Node.js…).
-* ''Matériel'' — le matériel physique qu'il mobilise : appareils, instruments, outils (ordinateur portable, fer à souder…).
-* ''Rôle'' — ce à quoi //sert// le tiddler : sa fonction dans le wiki — une porte d'entrée (hub), du savoir (concept, référence, source), une procédure (guide, routine), de quoi réutiliser (extrait, modèle), un registre (arbitrage, journal), du suivi (tâche, liste de tâches), un projet ou un outil.
-* ''Maturité'' — où en est la //rédaction// : ébauche, dégrossi, stable.
-* ''Statut'' — où en est un //travail// : envisagé, à faire, en cours, en pause, fait, abandonné.
-* ''Cycle de vie'' — si le tiddler est encore en circulation : actif, obsolète, archivé. Indépendant de la maturité : un tiddler stable peut devenir obsolète.
-* ''Besoins'' — le travail que le tiddler attend : à vérifier, à factoriser, à découper.
-
-L'onglet //Vocabularies// liste, pour les cinq champs à valeurs prédéfinies — Rôle, Maturité, Statut, Cycle de vie et Besoins —, chaque valeur, le slug stocké pour elle et son sens.
-
-Les contrôles ajoutés occupent leurs propres lignes, chacune juste à côté de la ligne du core qu'elle voisine : ''Projet'', ''Épistémologie'' et ''Disciplines'' partagent la ligne juste au-dessus de l'encadré des tags, ''Techno'' et ''Matériel'' la ligne juste après, et ''Rôle'', ''Maturité'', ''Cycle de vie'', ''Besoins'' et ''Statut'' celle sous le contrôle de type. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée.
+Les contrôles occupent leurs propres lignes, chacune juste à côté de la ligne du core qu'elle voisine : ''Projet'', ''Épistémologie'' et ''Disciplines'' partagent la ligne juste au-dessus de l'encadré des tags, ''Techno'' et ''Matériel'' la ligne juste après, et ''Rôle'', ''Maturité'', ''Cycle de vie'', ''Besoins'' et ''Statut'' celle sous le contrôle de type. Un champ que l'ontologie gagnerait plus tard reçoit lui aussi un contrôle, sans rien changer ici : un champ à vocabulaire en fin de ligne du type, un champ libre en fin de ligne sous les tags. Aucun tiddler core n'est surchargé, aucune ligne du core n'est touchée.
 
 Une ligne cale ses blocs à gauche, à leur largeur naturelle, plutôt que de les étaler : les éléments d'un même bloc restent ainsi groupés — le bouton de suppression est contre le contrôle qu'il vide, pas à l'autre bout d'une ligne étirée. Trop étroite pour les tenir tous, une ligne passe à la ligne.
 
-Les champs liste (Techno, Matériel, Disciplines) ne portent pas de libellé visible : leur placeholder dit à quoi ils servent, ce qui épargne la largeur. Projet et Épistémologie sont libellés comme Rôle, Maturité et Statut.
+Un libellé donne la description du champ en infobulle. Les champs liste (Techno, Matériel, Disciplines) n'ont pas de libellé visible : leur texte indicatif dit à quoi ils servent, ce qui épargne la largeur.
 
-Le sélecteur de chaque champ liste est strictement indépendant des autres et des tags du wiki : le menu Techno ne propose que les valeurs déjà utilisées dans `technology`, jamais celles de `equipment` ni les tags, et ainsi de suite. Les pastilles sont rendues comme celles des tags, cascade de couleur par valeur comprise, mais retombent sur une couleur qui leur est propre plutôt que sur la couleur de tag de la palette : les pastilles de champs différents restent distinguables sur un tiddler qui en porte plusieurs. Ce repli se règle dans `$:/config/nikorion/base-fields/<champ>/Colour`, un tiddler par champ liste.
+Le sélecteur de chaque champ liste est strictement indépendant des autres et des tags du wiki : la liste déroulante de Techno ne propose que les valeurs déjà utilisées dans `technology`, jamais celles d'`equipment` ni les tags, et ainsi de suite. Les pastilles se dessinent comme celles des tags, couleur par valeur comprise, mais retombent sur une couleur propre à leur champ plutôt que sur la couleur des tags de la palette : les pastilles de champs différents restent distinctes.
 
-''Statut'' dit où en est un travail : il n'apparaît donc que là où cela veut dire quelque chose — sur un tiddler dont le rôle est `task`, `tasklist` ou `routine`, ou aucun.
+Un champ n'apparaît que là où l'ontologie dit qu'il s'applique : ''Statut'', par exemple, seulement sur les tâches, listes de tâches et routines, ou sur un tiddler sans rôle. Un champ qui ne s'applique pas mais porte encore une valeur (par exemple `needs` après passage du rôle à `task`) est tout de même affiché, entouré de rouge, et son infobulle nomme le rôle et dit de vider le champ (//Les tâches n'utilisent pas ce champ — videz-le//).
 
-Un contrôle qui n'est là que parce que son champ porte encore une valeur que le rôle n'explique plus (par exemple `needs` après passage du rôle à `task`) est entouré de rouge, et son infobulle nomme le rôle et dit de vider le champ (//Les tâches n'utilisent pas ce champ — videz-le//).
+Chaque contrôle porte le même bouton de suppression que le core place sur Type, toujours visible. Un Rôle vide affiche une indication grisée en guise de valeur. Maturité, Cycle de vie et Statut sont des boutons radio, chacun doté d'une //valeur vide// (Ébauche, Actif, Aucun) qui représente le champ vide : c'est elle qui est cochée quand le champ est vide, et la choisir vide le champ.
 
-Chaque contrôle porte le même bouton de suppression que le core place sur Type, toujours visible. Un Rôle vide affiche une indication grisée en guise de valeur — un `<select>` n'a pas d'attribut placeholder, c'est donc sa première option, vide, qui en tient lieu. Maturité, Cycle de vie et Statut sont des boutons radio, chacun doté d'une //valeur vide// (Ébauche, Actif, Aucun) qui représente le champ vide : c'est elle qui est cochée quand le champ est vide, et la choisir vide le champ.
+Les champs sont masqués de la liste des champs en bas de l'éditeur, via le mécanisme propre au core `$:/config/EditTemplateFields/Visibility/` : les éditer deux fois sur le même formulaire serait un endroit de trop. Passer le tiddler correspondant à `show` en fait réapparaître un.
 
-Les dix champs sont masqués de la liste des champs en bas de l'éditeur, via le mécanisme `$:/config/EditTemplateFields/Visibility/` du core : les éditer à deux endroits d'un même formulaire en ferait un de trop. Passer le tiddler correspondant à `show` ramène celui qu'on veut.
-
-!! Vocabulaires contrôlés
-
-Un //slug// est l'identifiant court, en minuscules et sans ponctuation, qui tient lieu de valeur — `snippet`, `stub`. Le mot vient de l'imprimerie : le slug était une ligne de texte fondue d'un seul bloc de métal, et les salles de rédaction ont fini par appeler ainsi le nom de travail court inscrit sur un article en cours de fabrication. Le web l'a gardé pour l'identifiant qui représente une chose dans une URL — ou, ici, dans un champ.
-
-Seul le slug est écrit dans le champ. Icônes et libellés servent uniquement à l'affichage et sont résolus au rendu : le wiki reste lisible et filtrable quelle que soit la langue.
-
-Une valeur s'affiche partout de la même façon, listes déroulantes comprises : son icône et son libellé dans la langue du wiki — `Snippet` en anglais, `Extrait` en français. Le slug n'apparaît jamais : c'est un identifiant interne, pas quelque chose à lire. La plupart des valeurs portent aussi une description d'une ligne, affichée en infobulle au survol.
-
-L'onglet //Vocabularies// de ce plugin est la liste de référence des cinq champs à vocabulaire contrôlé (`role`, `maturity`, `status`, `lifecycle`, `needs`) et de leurs valeurs — les cinq autres prennent des valeurs libres : pour chacune, son icône et son libellé, le slug exactement tel qu'il est stocké, et ce qu'elle signifie. Rien n'y est écrit à la main : la page est régénérée à chaque affichage en lisant les vocabulaires eux-mêmes, donc elle donne toujours l'état courant du wiki, jamais celui d'origine — une valeur ajoutée, retirée ou réordonnée y figure aussitôt, et le readme que tu lis, lui, ne bouge pas. C'est donc là, et pas ici, qu'on va chercher ce qu'un champ accepte aujourd'hui, et c'est la page à montrer à un lecteur.
-
-Les vocabulaires sont livrés avec le plugin et ne se modifient pas depuis le wiki — il n'y a délibérément pas d'éditeur de vocabulaire : une valeur ajoutée depuis l'interface ne pourrait pas emporter ses traductions. Ajouter, retirer ou réordonner des valeurs demande de modifier le plugin lui-même : son [[dépôt|https://github.com/nikorion/TW-Base-Fields]] explique comment.
-
-Livré tel quel — le point de départ, avant tout ajout ou retrait propre à un wiki ; c'est l'onglet //Vocabularies// qui dit où en est un wiki donné :
-
-* `role` — hub ; //Savoir// : concept, ref, source ; //Procédure// : guide, routine ; //Réemploi// : snippet, template ; //Registre// : decision, log ; //Suivi// : task, tasklist
-* `maturity` — rough, stable (vide = ébauche)
-* `status` — considering, todo, doing, paused, done, dropped
-* `lifecycle` — obsolete, archived (vide = actif)
-* `needs` — verify, refactor, split (une liste : plusieurs peuvent s'appliquer)
-
-Des aides sont exposées globalement, pour les templates de vue et les listes.
-
-`bf-vocab-item` (icône + libellé) est une //procédure//. Une procédure appelée en `<<nom arg>>` reçoit ses arguments comme du texte littéral : la valeur d'un champ doit donc passer par une transclusion, pas par un appel de macro.
-
-```
-<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>
-```
-
-`bf-vocab-values`, `bf-vocab-label`, `bf-vocab-icon` et `bf-vocab-hint` sont des //fonctions//, et en donnent les morceaux séparément. Les appeler via l'opérateur `function`, qui lie bien leurs paramètres :
-
-```
-<$let slug={{!!role}}>{{{ [function[bf-vocab-label],[role],<slug>] }}}</$let>
-```
-
-Les valeurs d'un champ liste s'affichent en pastilles via `bf-list-pill`, avec la même cascade de couleurs que dans l'éditeur ; `readonly="yes"` retire le bouton de retrait, pour des pastilles hors d'un éditeur :
-
-```
-<$list filter="[enlist{!!technology}]" variable="value">
-<$transclude $variable="bf-list-pill" field="technology" value=<<value>> readonly="yes"/>
-</$list>
-```
-
-!! Dans des tableaux : TW-Dynamic-Table
-
-[[TW-Dynamic-Table|https://github.com/nikorion/TW-Dynamic-Table]] (`<<dyntable>>`, tableaux éditables construits depuis un filtre) fournit une colonne pour chaque champ de ce plugin, qui fonctionne comme dans l'éditeur :
-
-* `role`, `maturity`, `lifecycle` et `status` — icône et libellé en vue, liste déroulante en mode édition ; une //valeur vide// (Ébauche, Actif, Aucun) y représente aussi le champ vide, et la choisir vide le champ
-* `needs` — icônes et libellés de ses valeurs en vue, une case à cocher par valeur en mode édition
-* `disciplines`, `technology` et `equipment` — pastilles en vue, le même sélecteur que dans l'éditeur de tiddler en mode édition
-* `project` et `epistemology` — texte libre
-
-```
-<<dyntable filter:"[role[guide]]" fields:"title maturity needs technology">>
-```
-
-Aucun des deux plugins n'exige l'autre : sans celui-ci, ces colonnes affichent la valeur telle qu'elle est stockée et l'éditent en texte libre.
+[[Dynamic Table|https://github.com/nikorion/TW-Dynamic-Table]] édite ses colonnes de champs liste avec le même sélecteur que cet éditeur.
 
 !! Prérequis
 
-TiddlyWiki >= 5.3.0. Aucune autre dépendance.
+TiddlyWiki >= 5.3.0 et [[KMS Ontology|https://github.com/nikorion/TW-KMS-Ontology]].
 
 ---
 

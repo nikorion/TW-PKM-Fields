@@ -1,0 +1,31 @@
+title: $:/plugins/nikorion/base-fields/compat/vocab
+tags: $:/tags/Global
+type: text/vnd.tiddlywiki
+
+<!--
+	Deprecated since Base Fields 0.4.0, to be removed in a later version: the helpers of
+	Base Fields 0.3, kept as aliases of the KMS Ontology API they moved to, so that
+	wikitext written against them goes on working. Use the `kms-*` names.
+	(An undefined function called through the `function` operator returns every tiddler
+	of the wiki instead of failing, hence aliases rather than a silent break.)
+-->
+
+\function bf-vocab-values(field)
+[function[kms-vocab-values],<field>]
+\end
+
+\function bf-vocab-label(field,value)
+[function[kms-vocab-label],<field>,<value>]
+\end
+
+\function bf-vocab-icon(field,value)
+[function[kms-vocab-icon],<field>,<value>]
+\end
+
+\function bf-vocab-hint(field,value)
+[function[kms-vocab-hint],<field>,<value>]
+\end
+
+\procedure bf-vocab-item(field,value)
+<$transclude $variable="kms-vocab-item" field=<<field>> value=<<value>>/>
+\end

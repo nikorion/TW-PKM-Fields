@@ -3,114 +3,29 @@ type: text/vnd.tiddlywiki
 
 !! Overview
 
-Adds ten everyday fields to the tiddler edit template:
+Puts the fields of the //kms// suite in the tiddler editor. The fields themselves — what each one means, the values it allows and what they mean — are defined by [[KMS Ontology|https://github.com/nikorion/TW-KMS-Ontology]]: see its readme and its //Fields// tab. This plugin decides how each one is edited:
 
-|!Field |!Slug |!Control |!Default |!Stored value |
-|Project |`project` |single value, typed or picked |— |free text |
-|Epistemology |`epistemology` |single value, typed or picked |— |free text |
-|Disciplines |`disciplines` |list field, edited like tags |— |a list of titles |
-|Technology mobilised |`technology` |list field, edited like tags |— |a list of titles |
-|Equipment mobilised |`equipment` |list field, edited like tags |— |a list of titles |
-|Role |`role` |controlled vocabulary, single value |— |a bare slug (`concept`, `guide`, …) |
-|Maturity |`maturity` |controlled vocabulary, single value, //hidden on register and task roles// |Stub (field left empty) |a bare slug (`rough`, `stable`) |
-|Status |`status` |controlled vocabulary, single value, //shown on task, tasklist and routine roles, or when there is no role// |None (field left empty) |a bare slug (`todo`, `doing`, …) |
-|Lifecycle |`lifecycle` |controlled vocabulary, single value |Active (field left empty) |a bare slug (`obsolete`, `archived`) |
-|Needs |`needs` |controlled vocabulary, //list// (one checkbox per value), hidden on register and task roles |— |a list of bare slugs (`verify refactor`) |
+{{$:/plugins/nikorion/base-fields/readme/controls}}
 
-A new tiddler gets none of these fields. Where a //default// is given, that is what the field means as long as it stays empty — nothing is written to the tiddler.
-
-!! What each field says
-
-* ''Project'' — the project the tiddler belongs to: its organisational home.
-* ''Epistemology'' — how the knowledge in the tiddler is produced and validated: its methodological family (philosophy, formal sciences, human and social sciences, interpretive knowledge…).
-* ''Disciplines'' — the field(s) of study the tiddler belongs to (hermeneutics, sociology, biology…).
-* ''Tags'' //(the core's own field, not added by this plugin)// — the subject itself: what the tiddler is about, one level below its disciplines — within sociology, say, social stratification or urban sociology. Hence their place in the editor, between disciplines above and technology and equipment below.
-* ''Technology'' — the technologies the tiddler mobilises: software, languages, platforms, techniques (TiddlyWiki, Node.js…).
-* ''Equipment'' — the physical equipment it mobilises: devices, instruments, tools (laptop, soldering iron…).
-* ''Role'' — what the tiddler is //for//: its function in the wiki — a way in (hub), knowledge (concept, reference, source), a procedure (guide, routine), something to reuse (snippet, template), a register (decision, log), tracking (task, task list), a project or a tool.
-* ''Maturity'' — how far along the //writing// is: stub, rough, stable.
-* ''Status'' — how far along a piece of //work// is: considering, to do, doing, paused, done, dropped.
-* ''Lifecycle'' — whether the tiddler is still in circulation: active, obsolete, archived. Independent of maturity: a stable tiddler can become obsolete.
-* ''Needs'' — the work the tiddler is waiting on: to verify, to refactor, to split.
-
-The //Vocabularies// tab lists, for the five fields whose values are predefined — Role, Maturity, Status, Lifecycle and Needs — each value, the slug stored for it and its meaning.
-
-The added controls sit on rows of their own, each right next to the core row it neighbours: ''Project'', ''Epistemology'' and ''Disciplines'' share the row right above the tags box, ''Technology'' and ''Equipment'' the row right after it, and ''Role'', ''Maturity'', ''Lifecycle'', ''Needs'' and ''Status'' the one under the type control. No core tiddler is overridden and no core row is touched.
+The controls sit on rows of their own, each right next to the core row it neighbours: ''Project'', ''Epistemology'' and ''Disciplines'' share the row right above the tags box, ''Technology'' and ''Equipment'' the row right after it, and ''Role'', ''Maturity'', ''Lifecycle'', ''Needs'' and ''Status'' the one under the type control. A field the ontology gains later gets a control too, with nothing to change here: a vocabulary field at the end of the type row, a free field at the end of the row under the tags. No core tiddler is overridden and no core row is touched.
 
 A row packs its blocks to the left at their natural width rather than spreading them out, so that a block's own parts stay together — the delete button sits next to the control it clears rather than at the far end of a stretched row. Too narrow to hold them all, a row wraps.
 
-The list fields (Technology, Equipment, Disciplines) carry no visible label: their placeholder says what they are for, which spares the width. Project and Epistemology are labelled like Role, Maturity and Status.
+A label gives the field's description as its tooltip. The list fields (Technology, Equipment, Disciplines) carry no visible label: their placeholder says what they are for, which spares the width.
 
-Each list field's picker is strictly independent of the others and of the wiki's tags: the Technology dropdown offers only the values already used in `technology`, never `equipment`'s or the tags', and so on. Pills are rendered like tag pills, per-value colour cascade included, but fall back to a colour of their own rather than the palette's tag colour, so pills from different fields stay told apart on a tiddler carrying several. `$:/config/nikorion/base-fields/<field>/Colour` holds that fallback, one tiddler per list field.
+Each list field's picker is strictly independent of the others and of the wiki's tags: the Technology dropdown offers only the values already used in `technology`, never `equipment`'s or the tags', and so on. Pills are drawn like tag pills, per-value colour included, but fall back to a colour of their own field rather than the palette's tag colour, so pills from different fields stay told apart.
 
-''Status'' says how far along a piece of work is, so it only appears where that means something — on a tiddler whose role is `task`, `tasklist` or `routine`, or none at all.
+A field only shows where the ontology says it applies: ''Status'', for instance, only on tasks, task lists and routines, or on a tiddler with no role. A field that does not apply but still holds a value (say `needs` after the role changed to `task`) is shown all the same, framed in red, and its tooltip names the role and says to clear the field (//The tasks do not use this field — clear it//).
 
-A control that is only there because its field still holds a value the role no longer accounts for (say `needs` after the role changed to `task`) is framed in red, and its tooltip names the role and says to clear the field (//The tasks do not use this field — clear it//).
+Each control carries the same clear button the core puts on Type, always visible. An empty Role shows a greyed hint in place of a value. Maturity, Lifecycle and Status are radio buttons, each with a //blank value// (Stub, Active, None) that stands for the empty field: it is the one checked while the field is empty, and choosing it clears the field.
 
-Each control carries the same clear button the core puts on Type, always visible. An empty Role shows a greyed hint in place of a value — a `<select>` has no placeholder attribute, so its blank first option plays that part. Maturity, Lifecycle and Status are radio buttons instead, and each has a //blank value// (Stub, Active, None) that stands for the empty field: it is the one checked while the field is empty, and choosing it clears the field.
+The fields are hidden from the list of fields at the bottom of the editor, through the core's own `$:/config/EditTemplateFields/Visibility/` mechanism: editing them twice on one form would be one place too many. Setting the corresponding tiddler to `show` brings any of them back.
 
-The ten fields are hidden from the list of fields at the bottom of the editor, through the core's own `$:/config/EditTemplateFields/Visibility/` mechanism: editing them twice on one form would be one place too many. Setting the corresponding tiddler to `show` brings any of them back.
-
-!! Controlled vocabularies
-
-A //slug// is the short, lowercase, unpunctuated identifier that stands for a value — `snippet`, `stub`. The word comes from the printing trade: a slug was a line of text cast in a single piece of metal, and newsrooms came to call the short working name written on a story in production its slug. Web publishing kept it for the identifier that stands for something in a URL, or here in a field.
-
-Only the slug is ever written to the field. Icons and labels are display-only, resolved at render time, so a wiki stays readable and filterable in any language.
-
-A value shows the same way everywhere, dropdowns included: its icon and its label in the wiki's language — `Snippet` in English, `Extrait` in French. The slug never appears; it is an internal identifier, not something to read. Most values also carry a one-line description, shown as a tooltip on hover.
-
-The //Vocabularies// tab of this plugin is the reference list of the five controlled-vocabulary fields (`role`, `maturity`, `status`, `lifecycle`, `needs`) and their values — the other five take free values: for each one, its icon and label, the slug exactly as it is stored, and what it means. None of it is written by hand — the page is regenerated on every render from the vocabularies themselves, so it always gives the wiki's current state rather than its original one: a value added, removed or reordered shows up there at once, while this readme stays as it is. That is where to look for what a field accepts today, not here, and it is the page to point a reader at.
-
-The vocabularies come with the plugin and cannot be changed from the wiki — there is no vocabulary editor, on purpose: a value added through the interface could not carry its translations. Adding, removing or reordering values means editing the plugin itself: its [[repository|https://github.com/nikorion/TW-Base-Fields]] explains how.
-
-Shipped out of the box — the starting point, before anything a wiki adds or removes of its own; the //Vocabularies// tab is what says where a given wiki stands now:
-
-* `role` — hub; //Knowledge//: concept, ref, source; //Procedure//: guide, routine; //Reuse//: snippet, template; //Register//: decision, log; //Tracking//: task, tasklist
-* `maturity` — rough, stable (empty means stub)
-* `status` — considering, todo, doing, paused, done, dropped
-* `lifecycle` — obsolete, archived (empty means active)
-* `needs` — verify, refactor, split (a list: several can apply at once)
-
-Helpers are exposed globally, for use in view templates and lists.
-
-`bf-vocab-item` (icon + label) is a //procedure//. A procedure called as `<<name arg>>` receives its arguments as literal text, so a field's value has to be passed through a transclusion rather than a macro call:
-
-```
-<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>
-```
-
-`bf-vocab-values`, `bf-vocab-label`, `bf-vocab-icon` and `bf-vocab-hint` are //functions//, and give the pieces separately. Call them through the `function` operator, which does bind their parameters:
-
-```
-<$let slug={{!!role}}>{{{ [function[bf-vocab-label],[role],<slug>] }}}</$let>
-```
-
-A list field's values are shown as pills by `bf-list-pill`, the same colour cascade as in the editor; `readonly="yes"` drops the remove button, for pills outside an editor:
-
-```
-<$list filter="[enlist{!!technology}]" variable="value">
-<$transclude $variable="bf-list-pill" field="technology" value=<<value>> readonly="yes"/>
-</$list>
-```
-
-!! In tables: TW-Dynamic-Table
-
-[[TW-Dynamic-Table|https://github.com/nikorion/TW-Dynamic-Table]] (`<<dyntable>>`, editable tables built from a filter) has a column for each field of this plugin, which works the way the editor does:
-
-* `role`, `maturity`, `lifecycle` and `status` — icon and label in view, a dropdown in edit mode; a //blank value// (Stub, Active, None) stands for the empty field there too, and choosing it clears the field
-* `needs` — its values' icons and labels in view, one checkbox per value in edit mode
-* `disciplines`, `technology` and `equipment` — pills in view, the same picker as in the tiddler editor in edit mode
-* `project` and `epistemology` — free text
-
-```
-<<dyntable filter:"[role[guide]]" fields:"title maturity needs technology">>
-```
-
-Neither plugin requires the other: without this one, those columns show the value as stored and edit it as free text.
+[[Dynamic Table|https://github.com/nikorion/TW-Dynamic-Table]] edits its list-field columns with the same picker as this editor.
 
 !! Requirements
 
-TiddlyWiki >= 5.3.0. No other dependency.
+TiddlyWiki >= 5.3.0 and [[KMS Ontology|https://github.com/nikorion/TW-KMS-Ontology]].
 
 ---
 

@@ -46,7 +46,7 @@ type: text/vnd.tiddlywiki
 	align-items: flex-start;
 }
 
-/* The lines of the type and needs rows touch, like the rows of the core field table: no gap, more padding instead. */
+/* The lines of the type row touch, like the rows of the core field table: no gap, more padding instead. */
 .bf-type-extras {
 	row-gap: 0;
 	margin-bottom: 0;
@@ -70,7 +70,7 @@ type: text/vnd.tiddlywiki
 }
 
 /*
-	Every line of the type and needs rows below Role spans the whole row and alternates
+	Every line of the type row below its first one (Role) spans the whole row and alternates
 	its background like the field rows of the core editor below (odd / even colours, in
 	order of appearance). Role, the first line, stays plain like the Type control above.
 	Vertical padding is larger than the core's 4px; a red frame (3px, drawn inwards)
@@ -155,7 +155,7 @@ type: text/vnd.tiddlywiki
 
 /* A space between the radio button or checkbox and the icon that starts the value. */
 .bf-radio-group .tc-radio > span,
-.bf-needs-field .tc-checkbox > span {
+.bf-checkbox-field .tc-checkbox > span {
 	margin-inline-start: 0.4em;
 }
 
@@ -166,7 +166,7 @@ type: text/vnd.tiddlywiki
 
 /* After radios or checkboxes the clear button is set well apart from the last choice. */
 .bf-edit-field:has(.bf-radio-group) > .bf-delete-field,
-.bf-needs-field > .bf-delete-field {
+.bf-checkbox-field > .bf-delete-field {
 	margin-inline-start: 24px;
 }
 
@@ -249,24 +249,26 @@ type: text/vnd.tiddlywiki
 */
 
 /*
-	A control shown only because its field still holds a value the role no longer
-	accounts for: framed in red to say the value should go.
+	A control shown only because its field still holds a value although the field does
+	not apply to the tiddler (its role changed since): framed in red to say the value
+	should go.
 */
-.bf-edit-field.bf-stale {
+.bf-edit-field.bf-stale,
+.bf-list-field.bf-stale {
 	border: 3px solid <<colour alert-highlight>>;
 	border-color: color-mix(in srgb, <<colour alert-highlight>> 45%, transparent);
 	padding: 0 4px;
 }
 
 /*
-	Needs: a label, one checkbox per value, a clear button, all on one line that
-	wraps once the row runs out of width.
+	A vocabulary list field (Needs): a label, one checkbox per value, a clear button,
+	all on one line that wraps once the row runs out of width.
 */
-.bf-needs-field {
+.bf-checkbox-field {
 	flex-wrap: wrap;
 	gap: 4px 12px;
 }
 
-.bf-needs-field .bf-need {
+.bf-checkbox-field .bf-check {
 	white-space: nowrap;
 }

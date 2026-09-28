@@ -12,27 +12,18 @@ type: text/vnd.tiddlywiki
 <%if [<value>!match[]] %><code><$text text=<<value>>/></code><%else%><em><<detect-language-lingo "Playground/Empty">></em><%endif%>
 \end
 
-\procedure pg-vocab-row(field)
-<$let vocab={{{ [[$:/plugins/nikorion/base-fields/vocab/]addsuffix<field>] }}}
-	value={{{ [<currentTiddler>get<field>] }}}
-	shown={{{ [<currentTiddler>get<field>] :else[<vocab>get[blank-value]] }}}
->
-<tr>
-<td><code><$text text=<<field>>/></code></td>
-<td><<pg-raw value=<<value>> >></td>
-<td><%if [<field>match[needs]] %><$list filter="[enlist<value>]" variable="slug" join=", "><<bf-vocab-item field=<<field>> value=<<slug>> >></$list><%elseif [<shown>!match[]] %><<bf-vocab-item field=<<field>> value=<<shown>> >><%endif%></td>
-</tr>
+\procedure pg-rendered(field, kind, value)
+<%if [<kind>match[vocab]] %>
+<$let shown={{{ [<value>!match[]] :else[function[kms-vocab-blank],<field>] }}}>
+<%if [<shown>!match[]] %><$transclude $variable="kms-vocab-item" field=<<field>> value=<<shown>>/><%endif%>
 </$let>
-\end
-
-\procedure pg-text-row(field, list:"no")
-<$let value={{{ [<currentTiddler>get<field>] }}}>
-<tr>
-<td><code><$text text=<<field>>/></code></td>
-<td><<pg-raw value=<<value>> >></td>
-<td><%if [<list>match[yes]] %><$list filter="[enlist<value>]" variable="item" join=" · "><$text text=<<item>>/></$list><%else%><$text text=<<value>>/><%endif%></td>
-</tr>
-</$let>
+<%elseif [<kind>match[vocab-list]] %>
+<$list filter="[enlist<value>]" variable="slug" join=", "><$transclude $variable="kms-vocab-item" field=<<field>> value=<<slug>>/></$list>
+<%elseif [<kind>match[list]] %>
+<$list filter="[enlist<value>]" variable="item"><$transclude $variable="kms-pill" field=<<field>> value=<<item>>/></$list>
+<%else%>
+<$text text=<<value>>/>
+<%endif%>
 \end
 
 <<detect-language-lingo "Playground/Intro">>
@@ -43,43 +34,13 @@ type: text/vnd.tiddlywiki
 
 <table><tbody>
 <tr><th><<detect-language-lingo "Playground/Table1/Field">></th><th><<detect-language-lingo "Playground/Table1/RawValue">></th><th><<detect-language-lingo "Playground/Table1/Rendered">></th></tr>
-<<pg-vocab-row role>>
-<<pg-vocab-row maturity>>
-<<pg-vocab-row lifecycle>>
-<<pg-vocab-row needs>>
-<<pg-vocab-row status>>
-<<pg-text-row project>>
-<<pg-text-row epistemology>>
-<<pg-text-row disciplines list:yes>>
-<<pg-text-row technology list:yes>>
-<<pg-text-row equipment list:yes>>
-</tbody></table>
-
-<<detect-language-lingo "Playground/VocabulariesHeading" mode="block">>
-
-<$list filter="role maturity lifecycle needs status" variable="vocabField">
-<$let vocab={{{ [[$:/plugins/nikorion/base-fields/vocab/]addsuffix<vocabField>] }}}
-	blankSlug={{{ [<vocab>get[blank-value]] }}}
->
-<h3><code><$text text=<<vocabField>>/></code> → <$text text={{{ [[Fields/]addsuffix<vocabField>addsuffix[/Prompt]] :map[function[base-fields-lingo-text],<currentTiddler>trim[:]trim[]] }}}/></h3>
-<table><tbody>
-<$list filter="[function[bf-vocab-values],<vocabField>]" variable="slug">
+<$list filter="[function[kms-fields]]" variable="field">
+<$let kind={{{ [function[kms-field-kind],<field>] }}} value={{{ [<currentTiddler>get<field>] }}}>
 <tr>
-<td><<bf-vocab-item field=<<vocabField>> value=<<slug>> >></td>
-<td><%if [<slug>match<blankSlug>] %><em><<detect-language-lingo "Playground/Empty">></em><%else%><code><$text text=<<slug>>/></code><%endif%></td>
-<td><$text text={{{ [function[bf-vocab-hint],<vocabField>,<slug>] }}}/></td>
+<td><$text text={{{ [function[kms-field-label],<field>] }}}/> <code><$text text=<<field>>/></code></td>
+<td><<pg-raw value=<<value>> >></td>
+<td><<pg-rendered field=<<field>> kind=<<kind>> value=<<value>> >></td>
 </tr>
-</$list>
-</tbody></table>
 </$let>
 </$list>
-
-<<detect-language-lingo "Playground/HelpersHeading" mode="block">>
-
-|!<<detect-language-lingo "Playground/Table2/Call">> |!<<detect-language-lingo "Playground/Table2/Result">> |
-|`<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/>` |<$transclude $variable="bf-vocab-item" field="role" value={{!!role}}/> |
-|`[function[bf-vocab-label],[role],<slug>]` |<$let slug={{!!role}}>{{{ [function[bf-vocab-label],[role],<slug>] }}}</$let> |
-|`[function[bf-vocab-icon],[role],<slug>]` |<$let slug={{!!role}}>{{{ [function[bf-vocab-icon],[role],<slug>] }}}</$let> |
-|`[function[bf-vocab-hint],[role],<slug>]` |<$let slug={{!!role}}>{{{ [function[bf-vocab-hint],[role],<slug>] }}}</$let> |
-|`[function[bf-vocab-values],[maturity]]` |{{{ [function[bf-vocab-values],[maturity]] +[join[, ]] }}} |
-|`[contains:needs[verify]]` |{{{ [contains:needs[verify]] }}} |
+</tbody></table>

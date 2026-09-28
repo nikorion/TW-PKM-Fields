@@ -6,15 +6,16 @@ type: text/vnd.tiddlywiki
 \whitespace trim
 
 <!--
-	Project, Epistemology then Disciplines, sharing one row right above the tags
-	box: `list-before` puts the section there. Project is the tiddler's
-	organisational home; Disciplines (hermeneutics, sociology, biology…) and
-	Epistemology (which family or method) sit one level of abstraction above the
-	subject itself, so they follow Project rather than the tags below.
+	The row right above the tags box (`list-before` puts the section there): the fields
+	of `$:/config/nikorion/base-fields/row/pre-tags` — Project, Epistemology and
+	Disciplines out of the box, a tiddler's organisational home and the field(s) of study
+	one level of abstraction above the subject that the tags give below.
 -->
 
+<%if [function[bf-row-fields],[pre-tags]] %>
 <div class="bf-extra-row bf-pre-tags-extras">
-<<bf-single-value-field field="project">>
-<<bf-single-value-field field="epistemology">>
-<<bf-list-value-field field="disciplines">>
+<$list filter="[function[bf-row-fields],[pre-tags]]" variable="field">
+<<bf-field field=<<field>> >>
+</$list>
 </div>
+<%endif%>
