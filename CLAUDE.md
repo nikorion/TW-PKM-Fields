@@ -5,7 +5,7 @@
 ## Ce que c'est
 Éditeur de la suite kms (`$:/plugins/nikorion/base-fields`) : place dans le template d'édition les champs définis par l'ontologie (`../TW-KMS-Ontology`, requise — `dependents` du `plugin.info`). **Ne connaît aucun champ par son nom** : `bf-field` lit le `kind` du champ via l'API `kms-*` et dessine le contrôle — `vocab` → liste déroulante ou radio, `vocab-list` → une case par valeur, `value` → saisie + menu des valeurs utilisées, `list` → pastilles + saisie. Aucun JS. **Aucune surcharge de tiddler core** — sections `$:/tags/EditTemplate` placées par `list-before`/`list-after`.
 
-Trois docs, trois publics, **zéro duplication entre eux** : readme du plugin (`src/base-fields/language/<lang>/readme.tid`) = utilisateur du wiki (comportement de l'éditeur) ; `README.md` = développeur (installation dev, structure, fonctionnement, extension) ; ce fichier = instructions au modèle. Sens des champs, vocabulaires, icônes, libellés = ontologie, jamais ici. **Avant de chercher quel fichier toucher, ou d'ajouter un champ ou une nature (`kind`) → lire `README.md`** (§ Source layout, § Extending) — ne pas agir de mémoire. Toute info nouvelle va dans le seul document de son public.
+Docs (règle des trois publics : `../CLAUDE.md` § Conventions) : le readme du plugin décrit le comportement de l'éditeur ; sens des champs, vocabulaires, icônes, libellés = ontologie, jamais ici. **Avant de chercher quel fichier toucher, ou d'ajouter un champ ou une nature (`kind`) → lire `README.md`** (§ Source layout, § Extending) — ne pas agir de mémoire.
 
 ## Les 3 lignes
 | Ligne (classe) | Champs par défaut (`rows.multids`, config `$:/config/nikorion/base-fields/row/<ligne>`) | Section |
