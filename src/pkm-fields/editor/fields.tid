@@ -1,0 +1,133 @@
+title: $:/plugins/nikorion/pkm-fields/editor/fields
+tags: $:/tags/Global
+
+<!--
+	The fields of the pkm schema (PKM Schema plugin) in the tiddler editor. Nothing here
+	knows a field by name: `nk-field` reads the field's `kind` from the schema and places
+	the matching control of controls/ in the editor's dress — a label (the schema's, with
+	its description as tooltip), the control, a delete button, a red frame when the field
+	does not apply —
+
+	  kind         control
+	  vocab        a dropdown, or radio buttons (`$:/config/nikorion/pkm-fields/control/<field>: radio`)
+	  vocab-list   one checkbox per value
+	  value        an input completing on the values already used, with a dropdown of them
+	  list         pills plus an input, edited like the tags (no label: its placeholder says it)
+	  date         the browser's date input
+
+	The rows these fields sit in are the sections of editor/EditTemplate.
+-->
+
+<!-- Row layout: which fields a row shows, in order (`$:/config/nikorion/pkm-fields/row/<row>`). -->
+\function nk-row-fields(row)
+[[$:/config/nikorion/pkm-fields/row/]addsuffix<row>get[text]enlist-input[]] :intersection[function[pkm-all-fields]]
+\end
+
+\function nk-placed-fields()
+[[$:/config/nikorion/pkm-fields/row/pre-tags]get[text]enlist-input[]] [[$:/config/nikorion/pkm-fields/row/post-tags]get[text]enlist-input[]] [[$:/config/nikorion/pkm-fields/row/type]get[text]enlist-input[]]
+\end
+
+<!--
+	A field of the schema that no row names still gets a control: a vocabulary field
+	at the end of the type row, a free one at the end of the row under the tags.
+-->
+\function nk-unplaced-vocab-fields()
+[function[pkm-all-fields]] -[function[nk-placed-fields]] :filter[function[pkm-field-kind],<currentTiddler>prefix[vocab]]
+\end
+
+\function nk-unplaced-free-fields()
+[function[pkm-all-fields]] -[function[nk-placed-fields]] :filter[function[pkm-field-kind],<currentTiddler>!prefix[vocab]]
+\end
+
+<!-- The label before a control, "Role:": the schema's label (`label`, set by the caller) in the language's prompt format. -->
+\function nk-prompt()
+[function[nk-field-text-generic],[Prompt]search-replace[$label$],<label>]
+\end
+
+<!--
+	One field of the schema, drawn according to its kind. A field that does not apply
+	to the tiddler (`applies-filter` of its definition) is left out — unless it holds a
+	value: it is then shown `stale`, framed in red, so the value can be seen and cleared
+	rather than lurk unseen yet still matched by filters.
+-->
+\procedure nk-field(field)
+\whitespace trim
+<$let kind={{{ [function[pkm-field-kind],<field>] }}}
+	appliesFilter={{{ [function[pkm-field-applies-filter],<field>] }}}
+	applies={{{ [<appliesFilter>is[blank]then[yes]] :else[subfilter<appliesFilter>then[yes]] }}}
+>
+<%if [<applies>match[yes]] %>
+<$let conflictHint={{{ [function[nk-conflict-hint],<field>,<currentTiddler>] }}}>
+<$transclude $variable="nk-field-control" field=<<field>> kind=<<kind>> stale={{{ [<conflictHint>!match[]then[yes]] }}} staleHint=<<conflictHint>>/>
+</$let>
+<%elseif [<currentTiddler>has<field>] %>
+<$let staleHint={{{ [function[nk-stale-hint],<field>,<currentTiddler>] }}}>
+<<nk-field-control field=<<field>> kind=<<kind>> stale="yes" staleHint=<<staleHint>> >>
+</$let>
+<%endif%>
+</$let>
+\end
+
+\procedure nk-field-control(field,kind,stale,staleHint)
+\whitespace trim
+<%if [<kind>match[list]] %>
+<$transclude $variable="nk-list-input" field=<<field>> stale=<<stale>> staleHint=<<staleHint>> sizerText={{{ [function[nk-list-longest-placeholder]] }}}/>
+<%elseif [<kind>match[vocab]] [<kind>match[vocab-list]] [<kind>match[value]] [<kind>match[date]] %>
+<span class={{{ [[nk-edit-field]] [<kind>match[vocab-list]then[nk-checkbox-field]] [<kind>match[value]then[nk-edit-field-single]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>>>
+<<nk-field-label field=<<field>> stale=<<stale>> >>
+<%if [<kind>match[vocab]] :filter[[$:/config/nikorion/pkm-fields/control/]addsuffix<field>get[text]match[radio]] %>
+<<nk-vocab-radios field=<<field>> stale=<<stale>> >>
+<%elseif [<kind>match[vocab]] %>
+<$transclude $variable="nk-vocab-select" field=<<field>> class="tc-edit-texteditor nk-edit-select" tabindex={{$:/config/EditTabIndex}}/>
+<%elseif [<kind>match[vocab-list]] %>
+<<nk-vocab-checkboxes field=<<field>> stale=<<stale>> >>
+<%elseif [<kind>match[value]] %>
+<<nk-value-input field=<<field>> >>
+<%elseif [<kind>match[date]] %>
+<$transclude $variable="nk-date-input" field=<<field>> class="tc-edit-texteditor nk-edit-date" tabindex={{$:/config/EditTabIndex}}/>
+<%endif%>
+<<nk-delete-field-button field=<<field>> >>
+</span>
+<%endif%>
+\end
+
+<!--
+	The label of a labelled control, with the field's description (from the schema)
+	as its tooltip. Not in a red frame: the frame's own tooltip must show there, and an
+	inner `title`, even an empty one, would hide it.
+-->
+\procedure nk-field-label(field,stale)
+\whitespace trim
+<$let label={{{ [function[pkm-field-label],<field>] }}} description={{{ [function[pkm-field-description],<field>] }}}>
+<%if [<stale>match[yes]] :else[<description>is[blank]then[yes]] %>
+<em class="tc-edit tc-small-gap-right"><$text text={{{ [function[nk-prompt]] }}}/></em>
+<%else%>
+<em class="tc-edit tc-small-gap-right" title=<<description>>><$text text={{{ [function[nk-prompt]] }}}/></em>
+<%endif%>
+</$let>
+\end
+
+<!--
+	The same clear button the core offers on Type — always shown, like the core one,
+	so the row keeps a stable shape whether or not the field holds a value.
+-->
+\procedure nk-delete-field-button(field)
+\whitespace trim
+<$let label={{{ [function[pkm-field-label],<field>lowercase[]] }}}
+	hint={{{ [function[nk-field-text-generic],[Delete/Hint]search-replace[$label$],<label>] }}}
+>
+<$button class="tc-btn-invisible tc-btn-icon nk-delete-field" tooltip=<<hint>> aria-label=<<hint>>>
+{{$:/core/images/delete-button}}
+<$action-deletefield $field=<<field>>/>
+<<nk-sync-role-icon>>
+</$button>
+</$let>
+\end
+
+<!--
+	The text every list field's input is sized to in the editor: the longest placeholder
+	among the list fields, so their inputs line up.
+-->
+\function nk-list-longest-placeholder()
+[function[pkm-all-fields]] :filter[function[pkm-field-kind],<currentTiddler>match[list]] :map[function[nk-placeholder],<currentTiddler>] :sort:number:reverse[length[]] +[first[]]
+\end

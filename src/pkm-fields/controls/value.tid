@@ -1,0 +1,88 @@
+title: $:/plugins/nikorion/pkm-fields/controls/value
+tags: $:/tags/Global
+
+<!--
+	`value` kind: a single free value of `currentTiddler`'s field, typed or picked from
+	the values already used in the wiki — the same machinery as a list field's input and
+	as the core Type control, except that the input writes straight into the field
+	instead of feeding a list. The state tiddlers are qualified: whoever places several
+	of them for the same field (a table, one per row) sets a distinct `transclusion`.
+-->
+
+\procedure nk-clear-single-state()
+<$action-deletetiddler $filter="[<fieldInput>] [<fieldSelection>] [<fieldRefresh>] [<fieldPopup>]"/>
+\end
+
+\procedure nk-cancel-single-actions()
+<%if [<fieldInput>has[text]] %>
+<<nk-clear-single-state>>
+<%else%>
+<<cancel-delete-tiddler-actions "cancel">>
+<%endif%>
+\end
+
+<!--
+	The completion filters of `search-filters` name the field through `pfField`, not
+	`field`: `keyboard-driven-input` has a `field` parameter of its own (the field of the
+	input tiddler), which shadows ours where the filters are evaluated.
+-->
+\procedure nk-value-input(field)
+\whitespace trim
+<$let saveTiddler=<<currentTiddler>>
+	pfField=<<field>>
+	statePrefix={{{ [[$:/temp/]addsuffix<field>] }}}
+	inputPath={{{ [<statePrefix>addsuffix[/input]] }}}
+	selectionPath={{{ [<statePrefix>addsuffix[/selected-item]] }}}
+	refreshPath={{{ [<statePrefix>addsuffix[/refresh]] }}}
+	popupPath={{{ [[$:/state/popup/nk-]addsuffix<field>addsuffix[-dropdown]] }}}
+	ariaLabel={{{ [function[pkm-field-label],<field>] }}}
+	placeholderText={{{ [function[nk-placeholder],<field>] }}}
+	dropdownHint={{{ [function[nk-field-text],<field>,[Dropdown/Hint]] }}}
+	dropdownEmpty={{{ [function[nk-field-text],<field>,[Dropdown/Empty]] }}}
+	inputWidth={{{ [<placeholderText>length[]] [[12]] +[maxall[]addprefix[--nk-input-chars: ]] }}}
+>
+<$qualify name="fieldInput" title=<<inputPath>>>
+<$qualify name="fieldSelection" title=<<selectionPath>>>
+<$qualify name="fieldRefresh" title=<<refreshPath>>>
+<$qualify name="fieldPopup" title=<<popupPath>>>
+<span class="nk-single-control" style=<<inputWidth>> role="group" aria-label=<<ariaLabel>>>
+<$transclude $variable="keyboard-driven-input"
+	tiddler=<<currentTiddler>> field=<<field>> storeTitle=<<fieldInput>>
+	refreshTitle=<<fieldRefresh>> selectionStateTitle=<<fieldSelection>>
+	tag="input" default="" class="tc-edit-texteditor tc-popup-handle nk-edit-input"
+	placeholder=<<placeholderText>>
+	focusPopup=<<fieldPopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	configTiddlerFilter="[[$:/plugins/nikorion/pkm-fields/controls/search-filters]]"
+	firstSearchFilterField="value-search-filter"
+	inputCancelActions=<<nk-cancel-single-actions>>
+/>
+<$button popup=<<fieldPopup>> class="tc-btn-invisible tc-btn-dropdown" tooltip=<<dropdownHint>> aria-label=<<dropdownHint>>>
+{{$:/core/images/down-arrow}}
+</$button>
+<div class="tc-block-dropdown-wrapper">
+<$reveal state=<<fieldPopup>> type="nomatch" text="" default="">
+<$let userInput={{{ [<fieldInput>get[text]] }}}>
+<div class="tc-block-dropdown nk-single-dropdown">
+<$list filter="[all[tiddlers]!has[draft.of]has<field>get<field>each:value[]sort[]search:title<userInput>]" variable="val"
+	emptyMessage="""<div class="tc-dropdown-item"><$text text=<<dropdownEmpty>>/></div>"""
+>
+<$button tag="a" class={{{ [<val>addsuffix[-primaryList]] :except[<fieldSelection>get[text]] :and[then[tc-btn-invisible nk-dropdown-item]else[tc-btn-invisible nk-dropdown-item tc-tag-button-selected]] }}}>
+<$action-setfield $tiddler=<<saveTiddler>> $field=<<field>> $value=<<val>>/>
+<$action-deletetiddler $filter="[<fieldInput>] [<fieldSelection>] [<fieldPopup>]"/>
+<!-- The input keeps showing what was typed unless it is told to re-read the field:
+	an edit-text widget leaves a focused element alone so as not to clobber typing. -->
+<$action-setfield $tiddler=<<fieldRefresh>> text="yes"/>
+<<nk-value-caption value=<<val>> >>
+</$button>
+</$list>
+</div>
+</$let>
+</$reveal>
+</div>
+</span>
+</$qualify>
+</$qualify>
+</$qualify>
+</$qualify>
+</$let>
+\end

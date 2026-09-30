@@ -1,0 +1,88 @@
+title: $:/plugins/nikorion/pkm-fields/controls/vocab
+tags: $:/tags/Global
+
+<!--
+	`vocab` kind: one value from the vocabulary, as a dropdown or as radio buttons. Both
+	write the field of `currentTiddler`; a vocabulary's blank value, if any, stands for the
+	empty field (value "").
+-->
+
+<!--
+	One entry of a vocabulary dropdown: what the value looks like, and what it means
+	as the tooltip. A value shipped without a description simply gets no tooltip.
+-->
+\procedure nk-vocab-option(field,slug,blank)
+\whitespace trim
+<option value={{{ [<slug>!match<blank>] }}} title={{{ [function[pkm-vocab-tooltip],<field>,<slug>] }}}><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></option>
+\end
+
+<!--
+	A dropdown. What an empty field shows depends on `emptyText`:
+	- none (the editor): a placeholder option, the field's own. A `<select>` has no
+	  placeholder attribute, so an option plays that part: it is what an empty field
+	  shows, instead of the first vocabulary value. `hidden` keeps it out of the open
+	  list — it stands for nothing to choose — while the browser goes on showing it in
+	  the closed control; `disabled` stops the keyboard landing on it. Clearing is then
+	  up to whoever places the control (the editor's delete button).
+	- given (a table cell, which has no delete button): an option to choose, carrying
+	  `emptyText`, that clears the field — unless the vocabulary has a blank value, whose
+	  own option already does.
+
+	`default` is not optional: with no value the select widget assigns `undefined` to the
+	DOM node, which matches no option at all — the control would go blank instead of
+	falling back to the empty option.
+-->
+\procedure nk-vocab-select(field,emptyText,class,tabindex)
+\whitespace trim
+<$let blank={{{ [function[pkm-vocab-blank],<field>] }}}>
+<$select tiddler=<<currentTiddler>> field=<<field>> class=<<class>>
+	default="" tabindex=<<tabindex>> actions=<<nk-field-changed>>
+>
+<%if [<emptyText>match[]] %>
+<option value="" disabled="disabled" hidden="hidden"><$text text={{{ [function[nk-placeholder],<field>] }}}/></option>
+<%elseif [<blank>match[]] %>
+<option value=""><$text text=<<emptyText>>/></option>
+<%endif%>
+<!-- Whatever no group claims comes first, then one heading per group. -->
+<$list filter="[function[pkm-vocab-ungrouped-values],<field>]" variable="slug">
+<<nk-vocab-option field=<<field>> slug=<<slug>> blank=<<blank>> >>
+</$list>
+<$list filter="[function[pkm-vocab-groups],<field>]" variable="group">
+<optgroup label={{{ [function[pkm-vocab-group-label],<field>,<group>] }}} title={{{ [function[pkm-vocab-group-hint],<field>,<group>] }}}>
+<$list filter="[function[pkm-vocab-group-values],<field>,<group>]" variable="slug">
+<<nk-vocab-option field=<<field>> slug=<<slug>> blank=<<blank>> >>
+</$list>
+</optgroup>
+</$list>
+</$select>
+</$let>
+\end
+
+<!--
+	Radio buttons. The vocabulary's blank value, if any, stands for the empty field: its
+	button carries the value "" — checked while the field is empty, and choosing it
+	clears the field. A blank value without an icon reads as an absence (italics).
+	`stale`: no tooltip on the values, which would hide the flagged frame's own.
+-->
+\procedure nk-vocab-radios(field,stale)
+\whitespace trim
+<$let blank={{{ [function[pkm-vocab-blank],<field>] }}}>
+<span class="nk-radio-group" role="radiogroup">
+<$list filter="[function[pkm-vocab-values],<field>]" variable="slug">
+<$let icon={{{ [function[pkm-vocab-icon],<field>,<slug>] }}}
+	itemClass={{{ [<icon>is[blank]then<slug>match<blank>then[nk-vocab-none]] }}}
+>
+<$radio tiddler=<<currentTiddler>> field=<<field>> value={{{ [<slug>!match<blank>] }}} default=""
+	class="nk-radio" tabindex={{$:/config/EditTabIndex}} actions=<<nk-field-changed>>
+>
+<%if [<stale>match[yes]] %>
+<span class=<<itemClass>>><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></span>
+<%else%>
+<span class=<<itemClass>> title={{{ [function[pkm-vocab-tooltip],<field>,<slug>] }}}><$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/></span>
+<%endif%>
+</$radio>
+</$let>
+</$list>
+</span>
+</$let>
+\end

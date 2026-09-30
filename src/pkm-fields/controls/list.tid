@@ -1,0 +1,140 @@
+title: $:/plugins/nikorion/pkm-fields/controls/list
+tags: $:/tags/Global
+
+<!--
+	`list` kind: a list of free values of `currentTiddler`'s field, edited like tags —
+	pills plus an input completing on the values already used in that field elsewhere in
+	the wiki. `stale` frames it in red with `staleHint` as its tooltip (it has no wrapper
+	to carry the frame: no label, the placeholder says what it is for). The state
+	tiddlers are qualified, as for a single value.
+
+	It deliberately does //not// call the core `tag-picker` macro. That macro hardcodes
+	the tags placeholder (`$:/language/EditTemplate/Tags/Add/Placeholder`) and reuses the
+	tag input state the edit template defines once for the whole form, so the pickers
+	would fight over a single input — and a half-typed value would be added as a //tag//
+	by the save-tiddler shortcut. Driving `keyboard-driven-input` directly — the very
+	macro `tag-picker` and the core Type control are built on — keeps the same keyboard
+	behaviour (Enter to add, up/down through the suggestions, Escape to clear) while
+	owning the placeholder and the state tiddlers.
+-->
+
+\procedure nk-clear-list-state()
+<$action-deletetiddler $filter="[<newValueTiddler>] [<newValueInput>] [<newValueSelection>] [<newValueRefresh>] [<newValuePopup>]"/>
+\end
+
+<!-- `variable` is mandatory on the guard list: without it the list rebinds
+	currentTiddler to the new value, and listops would target that tiddler
+	instead of the one being edited. -->
+\procedure nk-add-list-actions()
+<$let value={{{ [<newValueTiddler>get[text]trim[]] }}}>
+<$list filter="[<value>!match[]]" variable="ignore">
+<$action-listops $tiddler=<<saveTiddler>> $field=<<field>> $subfilter="[<value>]"/>
+</$list>
+<<nk-clear-list-state>>
+</$let>
+\end
+
+\procedure nk-cancel-list-actions()
+<%if [<newValueTiddler>has[text]] :else[<newValueInput>has[text]] %>
+<<nk-clear-list-state>>
+<%else%>
+<<cancel-delete-tiddler-actions "cancel">>
+<%endif%>
+\end
+
+<!--
+	`sizerText`: the text the input is sized to (drawn, hidden, in the same grid cell as
+	the input, so the width is the text's real one in every browser and language) — the
+	field's own placeholder unless the caller gives another, e.g. to line up several
+	pickers.
+-->
+\procedure nk-list-input(field,stale,staleHint,sizerText)
+\whitespace trim
+<$let saveTiddler=<<currentTiddler>>
+	pfField=<<field>>
+	statePrefix={{{ [[$:/temp/New]addsuffix<field>addsuffix[Value]] }}}
+	inputPath={{{ [<statePrefix>addsuffix[/input]] }}}
+	selectionPath={{{ [<statePrefix>addsuffix[/selected-item]] }}}
+	refreshPath={{{ [<statePrefix>addsuffix[/refresh]] }}}
+	popupPath={{{ [[$:/state/popup/nk-]addsuffix<field>addsuffix[-dropdown]] }}}
+	ariaLabel={{{ [function[pkm-field-label],<field>] }}}
+	placeholderText={{{ [function[nk-placeholder],<field>] }}}
+	dropdownHint={{{ [function[nk-field-text],<field>,[Dropdown/Hint]] }}}
+	dropdownEmpty={{{ [function[nk-field-text],<field>,[Dropdown/Empty]] }}}
+	removeHint={{{ [function[nk-field-text],<field>,[Remove/Hint]] }}}
+	sizer={{{ [<sizerText>!match[]] :else[<placeholderText>] }}}
+>
+<$qualify name="newValueTiddler" title=<<statePrefix>>>
+<$qualify name="newValueInput" title=<<inputPath>>>
+<$qualify name="newValueSelection" title=<<selectionPath>>>
+<$qualify name="newValueRefresh" title=<<refreshPath>>>
+<$qualify name="newValuePopup" title=<<popupPath>>>
+<!--
+	No visible label: the placeholder says what the control is for, and the row has
+	only so much width to give. `role`/`aria-label` keep the control named for a
+	screen reader.
+-->
+<span class={{{ [[nk-list-field]] [<stale>match[yes]then[nk-stale]] +[join[ ]] }}} title=<<staleHint>> role="group" aria-label=<<ariaLabel>>>
+<div class="tc-edit-tags nk-list-box">
+<$list filter="[<currentTiddler>get<field>enlist-input[]sort[]]" variable="value" storyview="pop">
+<$transclude $variable="pkm-pill" field=<<field>> value=<<value>> tooltip={{{ [<stale>match[yes]then[no]else[yes]] }}}>
+<$fill $name="pkm-pill-after">
+<$button class="tc-btn-invisible tc-remove-tag-button" style.fill=<<foregroundColor>> tooltip=<<removeHint>> aria-label=<<removeHint>>>
+<$action-listops $tiddler=<<saveTiddler>> $field=<<field>> $subfilter="-[<value>]"/>
+{{$:/core/images/close-button}}
+</$button>
+</$fill>
+</$transclude>
+</$list>
+<div class="tc-edit-add-tag">
+<div class="tc-edit-add-tag-ui">
+<span class="tc-add-tag-name tc-small-gap-right">
+<span class="tc-edit-texteditor nk-input-sizer" aria-hidden="true"><$text text=<<sizer>>/></span>
+<$transclude $variable="keyboard-driven-input"
+	tiddler=<<newValueTiddler>> field="text" storeTitle=<<newValueInput>>
+	refreshTitle=<<newValueRefresh>> selectionStateTitle=<<newValueSelection>>
+	tag="input" default="" class="tc-edit-texteditor tc-popup-handle"
+	placeholder=<<placeholderText>>
+	focusPopup=<<newValuePopup>> tabindex={{$:/config/EditTabIndex}} cancelPopups="yes"
+	configTiddlerFilter="[[$:/plugins/nikorion/pkm-fields/controls/search-filters]]"
+	firstSearchFilterField="list-search-filter"
+	inputAcceptActions=<<nk-add-list-actions>>
+	inputCancelActions=<<nk-cancel-list-actions>>
+/>
+</span>
+<$button popup=<<newValuePopup>> class="tc-btn-invisible tc-btn-dropdown" tooltip=<<dropdownHint>> aria-label=<<dropdownHint>>>
+{{$:/core/images/down-arrow}}
+</$button>
+<span class="tc-add-tag-button tc-small-gap-left">
+<$button actions=<<nk-add-list-actions>>>
+{{$:/language/EditTemplate/Tags/Add/Button}}
+</$button>
+</span>
+</div>
+<div class="tc-block-dropdown-wrapper">
+<$reveal state=<<newValuePopup>> type="nomatch" text="" default="">
+<$let userInput={{{ [<newValueInput>get[text]] }}}>
+<div class="tc-block-dropdown nk-list-dropdown">
+<$list filter="[all[tiddlers]!has[draft.of]has<field>each:list-item<field>sort[]search:title<userInput>]" variable="value"
+	emptyMessage="""<div class="tc-dropdown-item"><$text text=<<dropdownEmpty>>/></div>"""
+>
+<$button tag="a" class={{{ [<value>addsuffix[-primaryList]] :except[<newValueSelection>get[text]] :and[then[tc-btn-invisible nk-dropdown-item]else[tc-btn-invisible nk-dropdown-item tc-tag-button-selected]] }}}>
+<$action-listops $tiddler=<<saveTiddler>> $field=<<field>> $subfilter="[<value>]"/>
+<<nk-clear-list-state>>
+<<nk-value-caption value=<<value>> >>
+</$button>
+</$list>
+</div>
+</$let>
+</$reveal>
+</div>
+</div>
+</div>
+</span>
+</$qualify>
+</$qualify>
+</$qualify>
+</$qualify>
+</$qualify>
+</$let>
+\end

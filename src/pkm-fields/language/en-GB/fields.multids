@@ -24,5 +24,7 @@ Fields/disciplines/Placeholder: discipline
 Fields/disciplines/Dropdown/Hint: Pick an existing discipline
 Fields/disciplines/Dropdown/Empty: No discipline used yet
 Fields/disciplines/Remove/Hint: Remove this discipline
+Fields/role/Conflict/Hint: Fields that do not apply to this role still hold a value: $fields$ — clear them or change the role
+Fields/role/Conflict/NoRole/Hint: Fields that need a role hold a value: $fields$ — give the tiddler a role or clear them
 Fields/status/Stale/Hint: Field reserved for tasks, tasklists and routines — clear it
 Fields/status/Stale/NoRole/Hint: Field reserved for tasks, tasklists and routines — give the tiddler one of these roles or clear the field

@@ -18,21 +18,26 @@ To load the plugin in another Node.js wiki, symlink `src/pkm-fields` as `$TIDDLY
 
 ## Source layout
 
+The source is in three layers, each in its own folder. `controls/` draws and writes a field's value; `editor/` and `dyntable/` place those controls, each in its own dress. The dependency goes one way only: `editor/` and `dyntable/` call `controls/`, never each other, and `controls/` calls neither — only the schema API.
+
 | Path (under `src/pkm-fields/`) | Role |
 |---|---|
-| `ui/EditTemplate/discipline-fields.tid` | row above the tags (`list-before` the core tags) |
-| `ui/EditTemplate/extra-fields.tid` | row below the tags (`list-after` the core tags), then the free fields no row names |
-| `ui/EditTemplate/vocab-fields.tid` | row below the type, then the vocabulary fields no row names |
+| `controls/<kind>.tid` | one bare control per kind — `nk-vocab-select` / `nk-vocab-radios` (`vocab`), `nk-vocab-checkboxes` (`vocab-list`), `nk-value-input` (`value`), `nk-list-input` (`list`), `nk-date-input` (`date`) — writing the field of `currentTiddler`; no label, no delete button |
+| `controls/common.tid` | what the controls share: the plugin's strings (`nk-field-text`, `nk-placeholder`), the actions run when a field changes (clear an empty value, `icon` following the role), why a field is flagged (`nk-stale-hint`) |
+| `controls/search-filters.tid` | completion filters of the free fields (`value-search-filter`, `list-search-filter`) |
+| `controls/styles.tid` | the controls' own styles |
+| `editor/fields.tid` | `nk-field`: places a field's control in the editor according to its `kind`, with a label, a delete button and a red frame; row contents (`nk-row-fields`) |
+| `editor/EditTemplate/discipline-fields.tid` | row above the tags (`list-before` the core tags) |
+| `editor/EditTemplate/extra-fields.tid` | row below the tags (`list-after` the core tags), then the free fields no row names |
+| `editor/EditTemplate/vocab-fields.tid` | row below the type, then the vocabulary fields no row names |
+| `editor/styles.tid` | layout inside each row |
 | `rows.multids` | which fields each row shows, in order (`$:/config/nikorion/pkm-fields/row/<row>`) |
-| `controls.multids` | vocabulary fields drawn as radio buttons instead of a dropdown (`…/control/<field>: radio`) |
-| `macros/edit-fields.tid` | `nk-field` (draws a field according to its `kind`) and one control per kind: `nk-select-field`, `nk-checkbox-field`, `nk-single-value-field`, `nk-list-value-field`, `nk-date-field`; delete button, editor strings (`nk-field-text`) |
-| `search-filters.tid` | completion filters of the free fields (`value-search-filter`, `list-search-filter`) |
-| `language/<lang>/fields.multids` | the editor's own strings: generic (`Fields/<key>`) and per field when the wording needs it (`Fields/<field>/<key>`) |
+| `controls.multids` | vocabulary fields drawn as radio buttons instead of a dropdown in the editor (`…/control/<field>: radio`) |
+| `language/<lang>/fields.multids` | the plugin's own strings: generic (`Fields/<key>`) and per field when the wording needs it (`Fields/<field>/<key>`) |
 | `readme/controls.tid` | the readme's table of controls, generated |
 | `default-config.multids` | hides the fields from the core field list |
-| `styles/edit-fields.tid` | layout inside each row |
-| `dyntable/body/<kind>.tid` | Dynamic Table cell templates, one per kind (`vocab`, `vocab-list`, `list`, `date`), picked by their `nk-dyntable-column-filter` |
-| `dyntable/procedures.tid` | what those templates call (`nk-pkm-*`), imported into every table (`$:/tags/nk-dyntable/Procedure`) |
+| `dyntable/body/<kind>.tid` | Dynamic Table cell templates, one per kind (`vocab`, `vocab-list`, `value`, `list`, `date`), picked by their `nk-dyntable-column-filter` |
+| `dyntable/procedures.tid` | what those templates call (`nk-pkm-*`: the value in view mode, the bare control in edit mode), imported into every table (`$:/tags/nk-dyntable/Procedure`) |
 | `dyntable/column-label.tid`, `dyntable/row-tones.tid` | a field's label as column header; a record's tones (`pkm-tones`) as row classes `nk-dyntable-row-<tone>` |
 | `dyntable/styles.tid` | the table cells' own styles |
 
@@ -47,8 +52,8 @@ To load the plugin in another Node.js wiki, symlink `src/pkm-fields` as `$TIDDLY
 ## Extending
 
 - **A field or a vocabulary value** is added to the schema (see its README), not here. A new field lands at the end of the type row (vocabulary) or of the row under the tags (free) until `rows.multids` places it; give it a line in `default-config.multids` so the core field list does not show it twice, and, if the generic editor strings read badly for it, its own `Fields/<field>/…` strings.
-- **A new kind** needs a control procedure in `macros/edit-fields.tid` and a branch in `nk-field-control`, its line in `language/<lang>/readme.multids` (`Readme/Control/<kind>`), and a table cell template `dyntable/body/<kind>.tid` (until then Dynamic Table shows the raw value).
-- **A tone** (see the schema's API) needs no change here: it reaches a table row as `nk-dyntable-row-<tone>`; style that class if Dynamic Table does not (it styles `success` and `muted`).
+- **A new kind** needs a control in `controls/<kind>.tid`, a branch placing it in `nk-field-control` (`editor/fields.tid`), its line in `language/<lang>/readme.multids` (`Readme/Control/<kind>`), and a table cell template `dyntable/body/<kind>.tid` (until then Dynamic Table shows the raw value).
+- **A tone** (see the schema's API) needs no change here: it reaches a table row as `nk-dyntable-row-<tone>`; style that class if Dynamic Table does not (it styles `success` and `danger`).
 
 ## License
 

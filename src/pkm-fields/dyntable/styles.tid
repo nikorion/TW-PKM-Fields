@@ -2,14 +2,18 @@ tags: $:/tags/Stylesheet
 title: $:/plugins/nikorion/pkm-fields/dyntable/styles
 type: text/vnd.tiddlywiki
 
-/* vocabulary-list cell in edit mode (e.g. `needs`): one checkbox per value, kept whole */
-.nk-pkm-check {
+\rules only filteredtranscludeinline transcludeinline macrodef macrocallinline
+
+/* vocabulary-list cell (e.g. `needs`, `deviation`): one value per line, in view mode (icon + label)
+  as in edit mode (checkbox + icon + label), each kept whole */
+td.nk-pkm-vocab-list .nk-pkm-value,
+td .nk-check {
+	display: block;
 	white-space: nowrap;
-	margin-right: 0.5em;
 }
 
 /* a value stays on one line in a cell, in view and edit mode: a vocabulary value (icon + label), a free
-  single value; a list's values wrap between each other only */
+  single value, each pill of a list (Dynamic Table puts one pill per line) */
 .nk-pkm-value,
 .nk-pkm-nowrap {
 	white-space: nowrap;
@@ -19,4 +23,24 @@ type: text/vnd.tiddlywiki
 td.nk-pkm-stale {
 	box-shadow: inset 0 0 0 2px <<colour alert-highlight>>;
 	box-shadow: inset 0 0 0 2px color-mix(in srgb, <<colour alert-highlight>> 45%, transparent);
+}
+
+/*
+	A single-value input in edit mode: the table squeezes its columns down to their content's
+	narrowest width, which a percentage max-width or an input's own width do not hold. The
+	control's box holds it instead: at least 12rem, or its placeholder if longer; the input
+	fills it.
+*/
+td .nk-single-control {
+	min-width: max(12rem, calc(var(--nk-input-chars, 12) * 1ch + 1.5em));
+}
+
+td .nk-single-control > .tc-keyboard {
+	flex: 1 1 auto;
+}
+
+td .nk-single-control .nk-edit-input {
+	width: 100%;
+	max-width: none;
+	box-sizing: border-box;
 }

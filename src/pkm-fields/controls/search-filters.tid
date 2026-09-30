@@ -1,4 +1,4 @@
-title: $:/plugins/nikorion/pkm-fields/search-filters
+title: $:/plugins/nikorion/pkm-fields/controls/search-filters
 type: text/vnd.tiddlywiki
 value-search-filter: [all[tiddlers]!has[draft.of]has<pfField>get<pfField>each:value[]sort[]search:title<userInput>]
 list-search-filter: [all[tiddlers]!has[draft.of]has<pfField>each:list-item<pfField>sort[]search:title<userInput>]

@@ -24,5 +24,7 @@ Fields/disciplines/Placeholder: discipline
 Fields/disciplines/Dropdown/Hint: Choisir une discipline existante
 Fields/disciplines/Dropdown/Empty: Aucune discipline utilisée pour l'instant
 Fields/disciplines/Remove/Hint: Retirer cette discipline
+Fields/role/Conflict/Hint: Des champs qui ne s'appliquent pas à ce rôle ont une valeur : $fields$ — videz-les ou changez de rôle
+Fields/role/Conflict/NoRole/Hint: Des champs qui demandent un rôle ont une valeur : $fields$ — donnez un rôle au tiddler ou videz-les
 Fields/status/Stale/Hint: Champ réservé aux tâches, listes de tâches et routines — videz-le
 Fields/status/Stale/NoRole/Hint: Champ réservé aux tâches, listes de tâches et routines — donnez un de ces rôles au tiddler ou videz le champ

@@ -1,6 +1,10 @@
-title: $:/plugins/nikorion/pkm-fields/styles/edit-fields
+title: $:/plugins/nikorion/pkm-fields/editor/styles
 tags: $:/tags/Stylesheet
 type: text/vnd.tiddlywiki
+
+\rules only filteredtranscludeinline transcludeinline macrodef macrocallinline
+
+/* The editor's layout around the controls (editor/): rows, labels, delete buttons, red frames. */
 
 /*
 	The added controls form rows of their own, each placed relative to the core row
@@ -136,29 +140,6 @@ type: text/vnd.tiddlywiki
 	font-style: italic;
 }
 
-/* Maturity and Lifecycle: radio buttons side by side, wrapping when the row is short. */
-.nk-radio-group {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 2px 14px;
-}
-
-.nk-radio-group .tc-radio {
-	white-space: nowrap;
-}
-
-/* The "none" value (empty field) reads as an absence of value. */
-.nk-vocab-none {
-	font-style: italic;
-}
-
-/* A space between the radio button or checkbox and the icon that starts the value. */
-.nk-radio-group .tc-radio > span,
-.nk-checkbox-field .tc-checkbox > span {
-	margin-inline-start: 0.4em;
-}
-
 .nk-delete-field {
 	flex: 0 0 auto;
 	padding: 0 2px;
@@ -185,136 +166,18 @@ type: text/vnd.tiddlywiki
 	width: auto;
 }
 
-/* Project: one value, typed or picked, so the input is sized for a name. */
-
-.nk-single-control {
-	display: flex;
-	align-items: center;
-	position: relative;
-}
-
-/*
-	A single-value input is as wide as its placeholder (`--nk-input-chars`, set by the
-	macro from the current language's string), so it always reads in full.
-*/
-.nk-single-control .nk-edit-input {
-	width: calc(var(--nk-input-chars, 12) * 1ch + 1.5em);
-	max-width: 100%;
-}
-
-/*
-	A list field's input shares a one-cell grid with a hidden copy of the text it is sized
-	to (`nk-input-sizer`, carrying the input's own class so its font, padding and border
-	match): the cell takes that text's real width, in any browser and language, and the
-	input fills the cell. The sizer keeps its width but not its height. The selectors
-	outweigh the core's `.tc-edit-add-tag .tc-add-tag-name input { width: 50% }` and a
-	table's own layout of the picker, whatever the order of the stylesheets.
-*/
-.nk-list-field .tc-edit-add-tag .tc-add-tag-name {
-	display: inline-grid;
-	vertical-align: middle;
-}
-
-/*
-	The theme pads and borders only an `input.tc-edit-texteditor`: both get the same
-	horizontal padding and border here, so the sizer measures what the input needs.
-*/
-.nk-list-field .tc-edit-add-tag .tc-add-tag-name > * {
-	grid-area: 1 / 1;
-}
-
-.nk-list-field .tc-edit-add-tag .tc-add-tag-name input,
-.nk-list-field .tc-edit-add-tag .nk-input-sizer {
-	padding-left: 3px;
-	padding-right: 3px;
-	border-left: 1px solid;
-	border-right: 1px solid;
-}
-
-.nk-list-field .tc-edit-add-tag .tc-add-tag-name input {
-	border-color: <<colour tiddler-editor-border>>;
-}
-
-/* `width: 0` so the input's own default width (about twenty characters) does not size the cell; `min-width` then fills it. */
-.nk-list-field .tc-edit-add-tag .tc-add-tag-name input {
-	width: 0;
-	min-width: 100%;
-	max-width: none;
-	box-sizing: border-box;
-}
-
-.nk-list-field .tc-edit-add-tag .nk-input-sizer {
-	display: block;
-	visibility: hidden;
-	border-color: transparent;
-	height: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-	border-top-width: 0;
-	border-bottom-width: 0;
-	overflow: hidden;
-	white-space: pre;
-	box-sizing: border-box;
-}
-
-/* A label with an explanation to give: shown as a tooltip, flagged by the cursor. */
+/* A label with an explanation to give: shown as a tooltip, flagged by the cursor and by faded dots. */
 .nk-edit-field > em[title]:not([title=""]) {
 	cursor: help;
-	text-decoration: underline dotted;
+	text-decoration: underline dotted color-mix(in srgb, currentColor 40%, transparent);
 }
-
-/* The dropdown arrow sits apart from the input rather than against it. */
-.nk-single-control .tc-btn-dropdown {
-	margin-inline-start: 8px;
-}
-
-/* Drop the suggestions right under the input rather than after the flex row. */
-.nk-single-control .tc-block-dropdown-wrapper {
-	position: absolute;
-	top: 100%;
-	left: 0;
-	right: 0;
-	z-index: 1000;
-}
-
-.nk-dropdown-item {
-	display: block;
-	width: 100%;
-	text-align: left;
-	padding: 3px 14px;
-	color: <<colour foreground>>;
-}
-
-.nk-dropdown-item:hover {
-	background-color: <<colour dropdown-background>>;
-	color: <<colour foreground>>;
-	text-decoration: none;
-}
-
-/* Technology, Equipment, Disciplines: a tags-style box, so the pills and the picker come styled by the core. */
-
-.nk-list-field {
-	display: flex;
-}
-
-.nk-list-field .nk-list-box {
-	flex: 1 1 auto;
-}
-
-/*
-	The core sizes the tag input at `width: 50%` of the tags box — right when the box
-	spans the row, but here the box is sized by the input, so half of it would stay
-	empty and push the next control away. The input gets a width of its own instead
-	(see the single-value inputs above).
-*/
 
 /*
 	A control shown only because its field still holds a value although the field does
 	not apply to the tiddler (its role changed since): framed in red to say the value
 	should go.
 */
-.nk-edit-field.nk-stale,
-.nk-list-field.nk-stale {
+.nk-edit-field.nk-stale {
 	border: 3px solid <<colour alert-highlight>>;
 	border-color: color-mix(in srgb, <<colour alert-highlight>> 45%, transparent);
 	padding: 0 4px;
@@ -332,3 +195,4 @@ type: text/vnd.tiddlywiki
 .nk-checkbox-field .nk-check {
 	white-space: nowrap;
 }
+

@@ -1,0 +1,14 @@
+title: $:/plugins/nikorion/pkm-fields/controls/date
+tags: $:/tags/Global
+
+<!--
+	`date` kind: one date of `currentTiddler`'s field, through the browser's own date
+	input, which writes `YYYY-MM-DD`. Emptied, it leaves an empty string: the field is
+	deleted instead.
+-->
+\procedure nk-date-input(field,class,tabindex)
+\whitespace trim
+<$edit-text tiddler=<<currentTiddler>> field=<<field>> tag="input" type="date" default=""
+	class=<<class>> tabindex=<<tabindex>> inputActions=<<nk-clear-empty-field>>
+/>
+\end

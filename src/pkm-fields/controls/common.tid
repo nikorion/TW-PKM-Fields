@@ -1,0 +1,122 @@
+title: $:/plugins/nikorion/pkm-fields/controls/common
+tags: $:/tags/Global
+
+<!--
+	What every control of controls/ shares, whatever places it (the editor, editor/, or a
+	table cell, dyntable/): the plugin's own strings, the actions run when a field changes,
+	the caption of a free value, and why a field is flagged.
+
+	controls/ draws a field's value and writes it back, nothing more: no label, no delete
+	button, no row, no cell. It calls only the schema API (`pkm-*`) and itself — never
+	editor/ nor dyntable/, which call it.
+-->
+
+<!--
+	An editor string for one field: `Fields/<field>/<key>` when the field has its own
+	wording, else the generic `Fields/<key>`. Both cascade lang → en-GB. The cascades are
+	two functions of their own because a filter run cannot be grouped: an `:else` run
+	followed by `+[…]` runs would apply those to the first cascade's result too.
+-->
+\function nk-field-text-own(field,key)
+[[$:/language]get[text]get[name]else[en-GB]] [[en-GB]]
++[addprefix[$:/plugins/nikorion/pkm-fields/language/]] +[addsuffix[/Fields/]]
++[addsuffix<field>] +[addsuffix[/]] +[addsuffix<key>]
++[get[text]] +[limit[1]]
+\end
+
+\function nk-field-text-generic(key)
+[[$:/language]get[text]get[name]else[en-GB]] [[en-GB]]
++[addprefix[$:/plugins/nikorion/pkm-fields/language/]] +[addsuffix[/Fields/]]
++[addsuffix<key>]
++[get[text]] +[limit[1]]
+\end
+
+\function nk-field-text(field,key)
+[function[nk-field-text-own],<field>,<key>] :else[function[nk-field-text-generic],<key>]
+\end
+
+<!-- The placeholder of an input: the field's own, else its label in lower case. -->
+\function nk-placeholder(field)
+[function[nk-field-text-own],<field>,[Placeholder]] :else[function[pkm-field-label],<field>lowercase[]]
+\end
+
+<!-- Choosing the empty option clears the field instead of storing an empty string. -->
+\procedure nk-clear-empty-field()
+<$list filter="[<currentTiddler>!has<field>]" variable="ignore">
+<$action-deletefield $field=<<field>>/>
+</$list>
+\end
+
+<!--
+	The tiddler's `icon` follows its role: the icon tiddler of the role's value becomes
+	the value of `icon`, and a role with no icon (or no role) removes it. An icon that
+	is not one of ours was set by hand and is left alone.
+-->
+\procedure nk-sync-role-icon()
+<%if [<field>match[role]] %>
+<$let role={{{ [<currentTiddler>get[role]] }}} iconTiddler={{{ [function[pkm-vocab-icon-tiddler],[role],<role>] }}}>
+<%if [<currentTiddler>get[icon]!match[]!prefix[$:/plugins/nikorion/pkm-schema/icons/]] %>
+<%elseif [<iconTiddler>!match[]] %>
+<$action-setfield $field="icon" $value=<<iconTiddler>>/>
+<%else%>
+<$action-deletefield $field="icon"/>
+<%endif%>
+</$let>
+<%endif%>
+\end
+
+\procedure nk-field-changed()
+<<nk-clear-empty-field>>
+<<nk-sync-role-icon>>
+\end
+
+<!--
+	Why a control is flagged: the field does not apply to the tiddler (its role changed
+	since), yet still holds a value. The tooltip names the role — "The tasks do not use
+	this field — clear it" — from the role's plural in the schema; a field may carry
+	its own sentence instead (`Fields/<field>/Stale/Hint`, which `status` does, and
+	`…/Stale/NoRole/Hint` for a tiddler with no role at all).
+-->
+\function nk-stale-with-role(plural)
+[function[nk-field-text-generic],[Stale/Prefix]] [<plural>] [function[nk-field-text-generic],[Stale/Suffix]] +[join[ ]]
+\end
+
+<!--
+	The tooltip of a stale field (`pkm-is-stale`): the field's own sentence for a tiddler
+	with no role, else its own sentence, else the generic one naming the role. Shared by the
+	editor and the table cells (dyntable/), so both say the same.
+-->
+\function nk-stale-hint-norole(field,tiddler) [<tiddler>!has[role]] :then[function[nk-field-text-own],<field>,[Stale/NoRole/Hint]]
+\function nk-stale-hint-role(tiddler) [<tiddler>get[role]] :map[function[pkm-vocab-plural],[role],<currentTiddler>] :map[function[nk-stale-with-role],<currentTiddler>]
+\function nk-stale-hint(field,tiddler)
+[function[nk-stale-hint-norole],<field>,<tiddler>] :else[function[nk-field-text-own],<field>,[Stale/Hint]] :else[function[nk-stale-hint-role],<tiddler>]
+\end
+
+<!--
+	The other side of a stale field: the field its applicability hangs on (the role) is
+	flagged too, naming the stale fields. Only a field with its own `Fields/<field>/Conflict/Hint`
+	string takes part (`role` does), so no field is named here; `…/Conflict/NoRole/Hint` when
+	the tiddler has no role. `$fields$` is replaced by the stale fields' labels. Nothing when
+	no field is stale. (`:map`, even `:map:flat`, turns an empty run into "": hence `:and`
+	and the final `!match[]`.)
+-->
+\function nk-stale-fields(tiddler) [function[pkm-all-fields]] :filter[function[pkm-is-stale],<currentTiddler>,<tiddler>]
+\function nk-stale-labels(tiddler) [function[nk-stale-fields],<tiddler>] :map[function[pkm-field-label],<currentTiddler>] +[join[, ]!match[]]
+\function nk-conflict-text(field,tiddler) [<tiddler>!has[role]] :then[function[nk-field-text-own],<field>,[Conflict/NoRole/Hint]] :else[function[nk-field-text-own],<field>,[Conflict/Hint]]
+\function nk-conflict-hint(field,tiddler)
+[function[nk-field-text-own],<field>,[Conflict/Hint]] :and[function[nk-stale-labels],<tiddler>] :map[function[nk-conflict-text],<field>,<tiddler>search-replace[$fields$],<currentTiddler>] +[!match[]]
+\end
+
+<!-- Why a field is flagged, stale or in conflict; empty when it is not. What the editor and the table cells both test. -->
+\function nk-flag-hint(field,tiddler)
+[function[pkm-is-stale],<field>,<tiddler>] :then[function[nk-stale-hint],<field>,<tiddler>] :else[function[nk-conflict-hint],<field>,<tiddler>]
+\end
+
+<!--
+	A free value as the suggestion menus show it: the `caption` of its tiddler when it has one
+	(wikitext, so it can be translated), else the value itself — as its pill shows it
+	(`pkm-pill`). Picking it still writes the value.
+-->
+\procedure nk-value-caption(value)
+<%if [<value>has[caption]] %><$transclude tiddler=<<value>> field="caption"/><%else%><$text text=<<value>>/><%endif%>
+\end

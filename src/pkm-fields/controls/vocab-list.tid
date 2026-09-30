@@ -1,0 +1,28 @@
+title: $:/plugins/nikorion/pkm-fields/controls/vocab-list
+tags: $:/tags/Global
+
+<!--
+	`vocab-list` kind: several values from the vocabulary, one checkbox each, ticked
+	when the value is in the list of `currentTiddler`'s field. Ticking adds the slug to
+	the list and unticking removes it, leaving the others alone (`listField` mode of the
+	core checkbox). No `tooltip` on the checkbox widget: the value's hint is a `title` on
+	a wrapper — none when `stale`, where it would hide the flagged frame's own.
+-->
+\procedure nk-vocab-checkboxes(field,stale)
+\whitespace trim
+<$list filter="[function[pkm-vocab-values],<field>]" variable="slug">
+<%if [<stale>match[yes]] %>
+<span class="nk-check">
+<$checkbox tiddler=<<currentTiddler>> listField=<<field>> checked=<<slug>>>
+<$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/>
+</$checkbox>
+</span>
+<%else%>
+<span class="nk-check" title={{{ [function[pkm-vocab-tooltip],<field>,<slug>] }}}>
+<$checkbox tiddler=<<currentTiddler>> listField=<<field>> checked=<<slug>>>
+<$transclude $variable="pkm-vocab-item" field=<<field>> value=<<slug>>/>
+</$checkbox>
+</span>
+<%endif%>
+</$list>
+\end

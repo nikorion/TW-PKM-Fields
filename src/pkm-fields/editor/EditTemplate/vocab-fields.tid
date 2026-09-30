@@ -1,4 +1,4 @@
-title: $:/plugins/nikorion/pkm-fields/ui/EditTemplate/vocab-fields
+title: $:/plugins/nikorion/pkm-fields/editor/EditTemplate/vocab-fields
 tags: $:/tags/EditTemplate
 list-after: $:/core/ui/EditTemplate/type
 type: text/vnd.tiddlywiki

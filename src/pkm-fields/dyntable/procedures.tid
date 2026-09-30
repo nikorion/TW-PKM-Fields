@@ -10,20 +10,25 @@ type: text/vnd.tiddlywiki
 
 	A body template (dyntable/body/*) is picked by the field's `kind`, read from the
 	schema through its `nk-dyntable-column-filter` — never by a list of field names, so a field
-	added to the schema gets its column with nothing to change here. Each mirrors the
-	editor's control for that kind:
+	added to the schema gets its column with nothing to change here. View mode mirrors the
+	editor's look for that kind; edit mode draws the very control the editor places
+	(controls/), bare — a cell has no label nor delete button:
 
-	  kind         view                          edit
-	  vocab        icon + label                  dropdown (blank value in place of "Select...")
-	  vocab-list   icons + labels                one checkbox per value
-	  list         pills, like tags              the editor's picker (nk-list-value-field)
-	  date         the date, past ones greyed    the browser's date input
-	  value        raw text, on one line         the editor's input and dropdown (nk-single-value-field)
+	  kind         view                          edit (controls/)
+	  vocab        icon + label                  nk-vocab-select, "Select..." clearing the field
+	  vocab-list   icons + labels                nk-vocab-checkboxes
+	  list         pills, like tags              nk-list-input
+	  date         the date, past ones greyed    nk-date-input
+	  value        raw text, on one line         nk-value-input
+
+	A control writes the field of `currentTiddler`: each edit procedure sets it to
+	`currentRecord`, plus a `transclusion` unique to the record and column where the control
+	keeps state tiddlers, or every row of the column would share a single input.
 
 	Three filters complete them: dyntable/column-label gives a field's label from the
 	schema as its column header, dyntable/column-hint its description as the header's
 	tooltip, dyntable/row-tones gives a record's tones (`pkm-tones`:
-	`done` reads as success, `dropped` as muted, in the fields that apply to it) as the
+	`done` reads as success, `dropped` as danger, in the fields that apply to it) as the
 	row classes `nk-dyntable-row-<tone>`, which Dynamic Table styles.
 
 	What Dynamic Table hands a template (see its README, § Extending): `currentRecord`,
@@ -31,17 +36,20 @@ type: text/vnd.tiddlywiki
 	strings and its cell classes.
 -->
 
-<!-- Choosing the blank value leaves an empty string: delete the field instead, as the editor does. -->
-\procedure nk-pkm-clear-empty()
-<$list filter="[<currentRecord>!has<currentColumn>]" variable="ignore">
-<$action-deletefield $tiddler=<<currentRecord>> $field=<<currentColumn>>/>
-</$list>
-\end nk-pkm-clear-empty
+<!--
+	A cell whose field does not apply to its record yet holds a value is flagged as in the
+	editor (`pkm-is-stale`, `nk-stale-hint`): class `nk-pkm-stale`, the reason as its tooltip.
+	As in the editor, the values inside it then have no tooltip of their own, which would hide
+	the reason: `nk-pkm-fresh` is `fresh` only in a cell that is not flagged.
+-->
+\function nk-pkm-stale-class() [function[nk-flag-hint],<currentColumn>,<currentRecord>then[nk-pkm-stale]]
+\function nk-pkm-stale-hint() [function[nk-flag-hint],<currentColumn>,<currentRecord>]
+\function nk-pkm-fresh() [function[nk-flag-hint],<currentColumn>,<currentRecord>else[fresh]match[fresh]]
 
-<!-- vocab / vocab-list: icon + label of each stored value, the tooltip above. -->
-\procedure nk-pkm-vocab-cell()
+<!-- vocab / vocab-list: icon + label of each stored value, the tooltip above; `join` between two values. -->
+\procedure nk-pkm-vocab-cell(join:", ")
 \whitespace trim
-<$list filter="[<currentRecord>get<currentColumn>enlist-input[]]" variable="slug" join=", ">
+<$list filter="[<currentRecord>get<currentColumn>enlist-input[]]" variable="slug" join=<<join>>>
 <%if [function[nk-pkm-fresh]] %>
 <span class="nk-pkm-value" title={{{ [function[pkm-vocab-tooltip],<currentColumn>,<slug>] }}}>
 <$transclude $variable="pkm-vocab-item" field=<<currentColumn>> value=<<slug>>/>
@@ -52,52 +60,18 @@ type: text/vnd.tiddlywiki
 </$list>
 \end nk-pkm-vocab-cell
 
-\procedure nk-pkm-option(slug)
-<option value={{{ [<slug>!match<blank>] }}} title={{{ [function[pkm-vocab-tooltip],<currentColumn>,<slug>] }}}><$transclude $variable="pkm-vocab-item" field=<<currentColumn>> value=<<slug>>/></option>
-\end nk-pkm-option
-
-<!--
-	vocab: a dropdown, grouped like the editor's. A vocabulary with a blank value has no
-	"Select..." option: its blank value //is// the empty field — its option carries "" and
-	choosing it clears the field.
--->
+<!-- vocab, edit mode: the dropdown; a vocabulary with no blank value gets a "Select..." option that clears the field. -->
 \procedure nk-pkm-select()
-<$let blank={{{ [function[pkm-vocab-blank],<currentColumn>] }}}>
-<$select tiddler=<<currentRecord>> field=<<currentColumn>> default="" actions=<<nk-pkm-clear-empty>>>
-<%if [<blank>match[]] %>
-<option value=''><<dyntable-lingo "Tables/Select">></option>
-<%endif%>
-<$list filter="[function[pkm-vocab-ungrouped-values],<currentColumn>]" variable="slug">
-<<nk-pkm-option slug=<<slug>> >>
-</$list>
-<$list filter="[function[pkm-vocab-groups],<currentColumn>]" variable="group">
-<optgroup label={{{ [function[pkm-vocab-group-label],<currentColumn>,<group>] }}}>
-<$list filter="[function[pkm-vocab-group-values],<currentColumn>,<group>]" variable="slug">
-<<nk-pkm-option slug=<<slug>> >>
-</$list>
-</optgroup>
-</$list>
-</$select>
+<$let currentTiddler=<<currentRecord>>>
+<$transclude $variable="nk-vocab-select" field=<<currentColumn>> emptyText=<<dyntable-lingo-text "Tables/Select">>/>
 </$let>
 \end nk-pkm-select
 
-<!-- vocab-list: one checkbox per value (`listField` mode: ticking adds the slug, unticking removes it). -->
+<!-- vocab-list, edit mode: one checkbox per value; no tooltip on a value in a flagged cell. -->
 \procedure nk-pkm-checkboxes()
-<$list filter="[function[pkm-vocab-values],<currentColumn>]" variable="slug">
-<%if [function[nk-pkm-fresh]] %>
-<span class="nk-pkm-check" title={{{ [function[pkm-vocab-tooltip],<currentColumn>,<slug>] }}}>
-<$checkbox tiddler=<<currentRecord>> listField=<<currentColumn>> checked=<<slug>>>
-<$transclude $variable="pkm-vocab-item" field=<<currentColumn>> value=<<slug>>/>
-</$checkbox>
-</span>
-<%else%>
-<span class="nk-pkm-check">
-<$checkbox tiddler=<<currentRecord>> listField=<<currentColumn>> checked=<<slug>>>
-<$transclude $variable="pkm-vocab-item" field=<<currentColumn>> value=<<slug>>/>
-</$checkbox>
-</span>
-<%endif%>
-</$list>
+<$let currentTiddler=<<currentRecord>>>
+<$transclude $variable="nk-vocab-checkboxes" field=<<currentColumn>> stale={{{ [function[nk-pkm-fresh]then[no]else[yes]] }}}/>
+</$let>
 \end nk-pkm-checkboxes
 
 <!-- list: the values as pills, each field with its own fallback colour. -->
@@ -107,40 +81,21 @@ type: text/vnd.tiddlywiki
 </$list>
 \end nk-pkm-pills
 
-<!--
-	list, edit mode: the editor's own picker (pills + input completing on the values already
-	used), its input sized to its own placeholder (`ownWidth`). The picker qualifies its state tiddlers (input, selection, popup) with
-	`transclusion`: one per record and column, or every row of the column would share a
-	single input.
--->
+<!-- list, edit mode: the picker, its input sized to its own placeholder. -->
 \procedure nk-pkm-list-edit()
 <$let currentTiddler=<<currentRecord>>
 	transclusion={{{ [[dyntable/]addsuffix<currentRecord>addsuffix[/]addsuffix<currentColumn>] }}}
 >
-<$transclude $variable="nk-list-value-field" field=<<currentColumn>> ownWidth="yes"/>
+<<nk-list-input field=<<currentColumn>> >>
 </$let>
 \end nk-pkm-list-edit
 
-<!--
-	A cell whose field does not apply to its record yet holds a value is flagged as in the
-	editor (`pkm-is-stale`, `nk-stale-hint`): class `nk-pkm-stale`, the reason as its tooltip.
-	As in the editor, the values inside it then have no tooltip of their own, which would hide
-	the reason: `nk-pkm-fresh` is `fresh` only in a cell that is not flagged.
--->
-\function nk-pkm-stale-class() [function[pkm-is-stale],<currentColumn>,<currentRecord>then[nk-pkm-stale]]
-\function nk-pkm-stale-hint() [function[pkm-is-stale],<currentColumn>,<currentRecord>] :then[function[nk-stale-hint],<currentColumn>,<currentRecord>]
-\function nk-pkm-fresh() [function[pkm-is-stale],<currentColumn>,<currentRecord>else[fresh]match[fresh]]
-
-<!--
-	value, edit mode: the editor's own control (input completing on the values already used,
-	with their dropdown), without its label and delete button; one state per record and
-	column (`transclusion`), as for a list.
--->
+<!-- value, edit mode: the input and its dropdown of the values already used. -->
 \procedure nk-pkm-value-edit()
 <$let currentTiddler=<<currentRecord>>
 	transclusion={{{ [[dyntable/]addsuffix<currentRecord>addsuffix[/]addsuffix<currentColumn>] }}}
 >
-<$transclude $variable="nk-single-value-field" field=<<currentColumn>> inCell="yes"/>
+<<nk-value-input field=<<currentColumn>> >>
 </$let>
 \end nk-pkm-value-edit
 
@@ -167,7 +122,9 @@ type: text/vnd.tiddlywiki
 </$let>
 \end nk-pkm-date-cell
 
-<!-- date, edit mode: the browser's date input, which writes `YYYY-MM-DD`; emptied, the field goes. -->
+<!-- date, edit mode: the browser's date input. -->
 \procedure nk-pkm-date-edit()
-<$edit-text tiddler=<<currentRecord>> field=<<currentColumn>> tag="input" type="date" default="" inputActions=<<nk-pkm-clear-empty>>/>
+<$let currentTiddler=<<currentRecord>>>
+<<nk-date-input field=<<currentColumn>> >>
+</$let>
 \end nk-pkm-date-edit
