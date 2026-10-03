@@ -26,7 +26,7 @@ pnpm build   # dist/TW-PKM-Fields-Plugin.json + docs/TW-PKM-Fields-Wiki.html
 
 To load the plugin in another Node.js wiki, symlink `src/pkm-fields` as `$TIDDLYWIKI_PLUGIN_PATH/nikorion/pkm-fields` (and the schema as `…/nikorion/pkm-schema`) and list both in that wiki's `tiddlywiki.info`. Requires TiddlyWiki ≥ 5.3.0 and TW-PKM-Schema.
 
-[↑ Back to contents](#contents)
+[↑](#contents "Back to contents")
 
 ## Source layout
 
@@ -53,7 +53,7 @@ The source is in three layers, each in its own folder. `controls/` draws and wri
 | `dyntable/column-label.tid`, `dyntable/row-tones.tid` | a field's label as column header; a record's tones (`pkm-tones`) as row classes `nk-dyntable-row-<tone>` |
 | `dyntable/styles.tid` | the table cells' own styles |
 
-[↑ Back to contents](#contents)
+[↑](#contents "Back to contents")
 
 ## How it works
 
@@ -63,7 +63,7 @@ The source is in three layers, each in its own folder. `controls/` draws and wri
 - **Visibility.** A field shows where its `applies-filter` accepts the tiddler; one that does not apply but holds a value shows all the same, framed in red.
 - **Tables through Dynamic Table's extension points.** Dynamic Table knows nothing of the schema: the `dyntable/` tiddlers plug into it by its tags (cell templates, column labels, row classes, procedures), so they stay inert when it is absent, and it stays usable without the pkm suite. They rely on the names it hands a template — its README, § Extending from another plugin, is that contract.
 
-[↑ Back to contents](#contents)
+[↑](#contents "Back to contents")
 
 ## Extending
 
@@ -71,10 +71,10 @@ The source is in three layers, each in its own folder. `controls/` draws and wri
 - **A new kind** needs a control in `controls/<kind>.tid`, a branch placing it in `nk-field-control` (`editor/fields.tid`), its line in `language/<lang>/readme.multids` (`Readme/Control/<kind>`), and a table cell template `dyntable/body/<kind>.tid` (until then Dynamic Table shows the raw value).
 - **A tone** (see the schema's API) needs no change here: it reaches a table row as `nk-dyntable-row-<tone>`; style that class if Dynamic Table does not (it styles `success` and `danger`).
 
-[↑ Back to contents](#contents)
+[↑](#contents "Back to contents")
 
 ## License
 
 MIT — see `LICENSE`.
 
-[↑ Back to contents](#contents)
+[↑](#contents "Back to contents")

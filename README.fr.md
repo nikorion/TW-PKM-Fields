@@ -26,7 +26,7 @@ pnpm build   # dist/TW-PKM-Fields-Plugin.json + docs/TW-PKM-Fields-Wiki.html
 
 Pour charger le plugin dans un autre wiki Node.js, créer un lien symbolique de `src/pkm-fields` vers `$TIDDLYWIKI_PLUGIN_PATH/nikorion/pkm-fields` (et du schéma vers `…/nikorion/pkm-schema`) et ajouter les deux au `tiddlywiki.info` de ce wiki. Requiert TiddlyWiki ≥ 5.3.0 et TW-PKM-Schema.
 
-[↑ Retour au sommaire](#sommaire)
+[↑](#sommaire "Retour au sommaire")
 
 ## Organisation des sources
 
@@ -53,7 +53,7 @@ Les sources se répartissent en trois couches, chacune dans son dossier. `contro
 | `dyntable/column-label.tid`, `dyntable/row-tones.tid` | le libellé d'un champ comme en-tête de colonne ; les tonalités d'un enregistrement (`pkm-tones`) comme classes de ligne `nk-dyntable-row-<tone>` |
 | `dyntable/styles.tid` | les styles propres aux cellules du tableau |
 
-[↑ Retour au sommaire](#sommaire)
+[↑](#sommaire "Retour au sommaire")
 
 ## Fonctionnement
 
@@ -63,7 +63,7 @@ Les sources se répartissent en trois couches, chacune dans son dossier. `contro
 - **Visibilité.** Un champ s'affiche là où son `applies-filter` accepte le tiddler ; un champ qui ne s'applique pas mais contient une valeur s'affiche tout de même, encadré de rouge.
 - **Les tableaux via les points d'extension de Dynamic Table.** Dynamic Table ignore tout du schéma : les tiddlers de `dyntable/` s'y branchent par ses tags (modèles de cellule, libellés de colonne, classes de ligne, procédures), si bien qu'ils restent inertes en son absence, et qu'il reste utilisable sans la suite pkm. Ils s'appuient sur les noms qu'il fournit à un modèle — son README, § Extending from another plugin, constitue ce contrat.
 
-[↑ Retour au sommaire](#sommaire)
+[↑](#sommaire "Retour au sommaire")
 
 ## Extension
 
@@ -71,10 +71,10 @@ Les sources se répartissent en trois couches, chacune dans son dossier. `contro
 - **Une nouvelle nature** exige un contrôle dans `controls/<kind>.tid`, une branche qui le place dans `nk-field-control` (`editor/fields.tid`), sa ligne dans `language/<lang>/readme.multids` (`Readme/Control/<kind>`), et un modèle de cellule de tableau `dyntable/body/<kind>.tid` (d'ici là, Dynamic Table affiche la valeur brute).
 - **Une tonalité** (voir l'API du schéma) n'exige aucune modification ici : elle atteint une ligne de tableau sous la forme `nk-dyntable-row-<tone>` ; styler cette classe si Dynamic Table ne le fait pas (il style `success` et `danger`).
 
-[↑ Retour au sommaire](#sommaire)
+[↑](#sommaire "Retour au sommaire")
 
 ## Licence
 
 MIT — voir `LICENSE`.
 
-[↑ Retour au sommaire](#sommaire)
+[↑](#sommaire "Retour au sommaire")
