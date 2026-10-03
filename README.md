@@ -1,5 +1,7 @@
 # TW-PKM-Fields
 
+**English** · [Français](README.fr.md)
+
 Source of the [TiddlyWiki](https://tiddlywiki.com) plugin `$:/plugins/nikorion/pkm-fields`, the interface of the *pkm* suite: it puts the fields defined by [TW-PKM-Schema](https://github.com/nikorion/TW-PKM-Schema) in the tiddler edit template, and in the columns of [TW-Dynamic-Table](https://github.com/nikorion/TW-Dynamic-Table) when that plugin is installed. Pure wikitext and CSS, no JavaScript, no core tiddler overridden.
 
 This README is for whoever wants to change the plugin. How the editor behaves for a wiki user is the plugin's own readme (`src/pkm-fields/language/<lang>/readme.tid`); what the fields mean, and their vocabularies, belong to the schema. The demo wiki `docs/TW-PKM-Fields-Wiki.html` has it all, with a Playground.
