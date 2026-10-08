@@ -4,14 +4,14 @@
 
 Sources du plugin [TiddlyWiki](https://tiddlywiki.com) `$:/plugins/nikorion/pkm-fields`, l'interface de la suite *pkm* : il place les champs définis par [TW-PKM-Schema](https://github.com/nikorion/TW-PKM-Schema) dans le modèle d'édition des tiddlers, et dans les colonnes de [TW-Dynamic-Table](https://github.com/nikorion/TW-Dynamic-Table) quand ce plugin est installé. Du wikitext et du CSS purs, sans JavaScript, sans aucun tiddler du core surchargé.
 
-Ce README s'adresse à qui veut modifier le plugin. Le comportement de l'éditeur pour un utilisateur du wiki relève du readme du plugin lui-même (`src/pkm-fields/language/<lang>/readme.tid`) ; le sens des champs et leurs vocabulaires relèvent du schéma. Le wiki de démo `docs/TW-PKM-Fields-Wiki.html` montre tout cela, avec un Playground.
+Ce README s'adresse à qui veut modifier le plugin. Le comportement de l'éditeur pour un utilisateur du wiki relève du readme du plugin lui-même (`src/pkm-fields/language/<lang>/readme.tid`) ; le sens des champs et leurs vocabulaires relèvent du schéma. La [démo en ligne](https://nikorion.github.io/TW-PKM-Fields/) montre tout cela, avec un Playground.
 
 ## Prise en main
 
 ```sh
 pnpm install
 pnpm dev     # wiki de dev (wiki/) + rechargement à chaud ; l'URL (port libre aléatoire) s'affiche au démarrage
-pnpm build   # dist/TW-PKM-Fields-Plugin.json + docs/TW-PKM-Fields-Wiki.html
+pnpm build   # dist/TW-PKM-Fields-Plugin.json + docs/ (wiki de démo, publié par la CI)
 ```
 
 `pnpm dev` pousse toute modification sous `src/pkm-fields` ou `wiki/tiddlers` directement dans l'onglet de navigateur déjà ouvert ; seul `plugin.info` redémarre le serveur. **Ne pas recharger l'onglet pour voir une modification** : la page reviendrait telle que le serveur l'a chargée au démarrage, en perdant ce qui a été poussé depuis. Arrêter avec deux Ctrl+C. Une modification du schéma n'est pas poussée par ce wiki : le redémarrer, ou travailler dans le wiki d'intégration de la suite (`../PKM`), qui surveille tous les plugins de la suite.
@@ -56,6 +56,19 @@ Les sources se répartissent en trois couches, chacune dans son dossier. `contro
 - **Un champ ou une valeur de vocabulaire** s'ajoute au schéma (voir son README), pas ici. Un nouveau champ se place à la fin de la rangée du type (vocabulaire) ou de la rangée sous les tags (libre) jusqu'à ce que `rows.multids` le positionne ; lui donner une ligne dans `default-config.multids` pour que la liste des champs du core ne l'affiche pas en double et, si les chaînes génériques de l'éditeur sonnent mal pour lui, ses propres chaînes `Fields/<field>/…`.
 - **Une nouvelle nature** exige un contrôle dans `controls/<kind>.tid`, une branche qui le place dans `nk-field-control` (`editor/fields.tid`), sa ligne dans `language/<lang>/readme.multids` (`Readme/Control/<kind>`), et un modèle de cellule de tableau `dyntable/body/<kind>.tid` (d'ici là, Dynamic Table affiche la valeur brute).
 - **Une tonalité** (voir l'API du schéma) n'exige aucune modification ici : elle atteint une ligne de tableau sous la forme `nk-dyntable-row-<tone>` ; styler cette classe si Dynamic Table ne le fait pas (il style `success` et `danger`).
+
+## Installation
+
+**Démo en ligne** : [https://nikorion.github.io/TW-PKM-Fields/](https://nikorion.github.io/TW-PKM-Fields/) — pour essayer le plugin avant de l'installer.
+
+**Depuis la bibliothèque de plugins nikorion** (TiddlyWiki propose ensuite chaque nouvelle version en mise à jour) :
+
+1. Dans votre wiki, créer un tiddler tagué `$:/tags/PluginLibrary`, avec un champ `url` valant `https://nikorion.github.io/tw-dev/library/index.html` et une `caption` comme `nikorion`.
+2. Ouvrir *Panneau de configuration → Plugins → Obtenir d'autres plugins*, choisir la bibliothèque nikorion et installer **PKM Fields**.
+
+**À la main** : télécharger [`TW-PKM-Fields-Plugin.json`](https://nikorion.github.io/TW-PKM-Fields/TW-PKM-Fields-Plugin.json) et le glisser-déposer sur votre wiki.
+
+Nécessite TiddlyWiki ≥ 5.3.0.
 
 ## Licence
 
