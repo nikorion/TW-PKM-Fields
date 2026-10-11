@@ -2,6 +2,8 @@
 
 [English](README.md) · **Français**
 
+![Status](https://img.shields.io/badge/status-experimental-orange)
+
 Sources du plugin [TiddlyWiki](https://tiddlywiki.com) `$:/plugins/nikorion/pkm-fields`, l'interface de la suite *pkm* : il place les champs définis par [TW-PKM-Schema](https://github.com/nikorion/TW-PKM-Schema) dans le modèle d'édition des tiddlers, et dans les colonnes de [TW-Dynamic-Table](https://github.com/nikorion/TW-Dynamic-Table) quand ce plugin est installé. Du wikitext et du CSS purs, sans JavaScript, sans aucun tiddler du core surchargé.
 
 Ce README s'adresse à qui veut modifier le plugin. Le comportement de l'éditeur pour un utilisateur du wiki relève du readme du plugin lui-même (`src/pkm-fields/language/<lang>/readme.tid`) ; le sens des champs et leurs vocabulaires relèvent du schéma. La [démo en ligne](https://nikorion.github.io/TW-PKM-Fields/) montre tout cela, avec un Playground.
